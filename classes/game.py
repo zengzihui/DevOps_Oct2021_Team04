@@ -52,3 +52,42 @@ class Game:
             row_count += 1
         game_board_string += "{:26s}".format(" +-----+-----+-----+-----+")
         print(game_board_string)
+
+    def game_menu(self, randomized_building_name=["SHP", "SHP"]):
+        """
+        Print game menu
+
+        eg.
+        1. Build a HSE
+        2. Build a BCH
+        3. See remaining buildings
+        4. See current score
+
+        5. Save game
+        0. Exit to main menu
+
+        where HSE and BCH are randomized
+
+        "randomized_building_name" in method signature will be generated from randomize_buildings() function which will be implemented
+        at a later date.
+        """
+        options = {"1": "Build a {}".format(randomized_building_name[0]), "2": "Build a {}"
+                   .format(randomized_building_name[1]), "3": "See remaining buildings",
+                   "4": "See current score", "": "", "5": "Save game",
+                   "0": "Exit to main menu"}
+
+        game_menu_string = ""
+
+        for key in options:
+            if key != "":
+                game_menu_string += "{}. {}".format(key, options[key]) + "\n"
+            else:
+                game_menu_string += "\n"
+        print(game_menu_string)
+        chosen_option = input("Your choice? ")
+
+        while chosen_option not in options.keys() or chosen_option == "":
+            print("Invalid input, please try again")
+            chosen_option = input("Your choice? ")
+
+        return chosen_option
