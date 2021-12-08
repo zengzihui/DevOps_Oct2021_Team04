@@ -52,3 +52,47 @@ class Game:
             row_count += 1
         game_board_string += "{:26s}".format(" +-----+-----+-----+-----+")
         print(game_board_string)
+
+    def game_menu(self, randomized_building_name):
+        """
+        Print game menu
+
+        eg.
+        1. Build a HSE
+        2. Build a BCH
+        3. See remaining buildings
+        4. See current score
+
+        5. Save game
+        0. Exit to main menu
+
+        where HSE and BCH are randomized
+        """
+        options = {"1": "Build a {}".format(randomized_building_name[0]), "2": "Build a {}"
+                   .format(randomized_building_name[1]), "3": "See remaining buildings",
+                   "4": "See current score", "": "", "5": "Save game",
+                   "0": "Exit to main menu"}
+
+        game_menu_string = ""
+
+        for key in options:
+            if key != "":
+                game_menu_string += "{}. {}".format(key, options[key]) + "\n"
+            else:
+                game_menu_string += "\n"
+        print(game_menu_string)
+        chosen_option = input("Your choice? ")
+
+        while chosen_option not in options.keys() or chosen_option == "":
+            print("Invalid input, please try again")
+            chosen_option = input("Your choice? ")
+
+        return chosen_option
+
+    def randomize_buildings(self):
+        """
+        NOTE: TBD, randomization not yet implemented, SHP as placeholder.
+        Randomize and create 2 building objects based on remaining buildings
+        """
+        randomized_list = ["SHP", "SHP"]
+        return randomized_list
