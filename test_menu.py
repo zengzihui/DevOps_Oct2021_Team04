@@ -11,13 +11,13 @@ def test_main_menu_display(mocker, option_list):
     """
     test if main menu options are printed correctly
     """
-    set_keyboard_input(None)
+    set_keyboard_input([None, None])
 
     # set input for menu options
     mocker.patch('builtins.input', side_effect=option_list)
 
     # run main menu function
-    selected = main_menu()
+    main_menu()
 
     # check if main_menu function displays correct output
     out = get_display_output()
