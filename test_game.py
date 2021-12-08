@@ -28,3 +28,18 @@ def test_print_turn_num(testing_turn_number, expected):
 
     # check if turn number is printed properly
     assert out[0] == "Turn {}".format(expected)
+
+
+def test_print_board():
+    """
+    test if game board is printed correctly
+    """
+    set_keyboard_input(None)
+
+    # create testing game object
+    test_game = Game()
+    test_game.print_board()
+
+    # check if print_board() displays game board correctly
+    out = get_display_output()
+    assert out[0] == '    A     B     C     D  \n +-----+-----+-----+-----+\n1|     |     |     |     |\n +-----+-----+-----+-----+\n2|     |     |     |     |\n +-----+-----+-----+-----+\n3|     |     |     |     |\n +-----+-----+-----+-----+\n4|     |     |     |     |\n +-----+-----+-----+-----+'
