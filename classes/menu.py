@@ -10,7 +10,7 @@ def main_menu():
     0. Exit
     Your choice?
 
-    Returns option selected by user: string
+    returns user's input option: string
     """
 
     options = {"1": "Start new game", "2": "Load saved game", "0": "Exit"}
