@@ -1,7 +1,7 @@
 import sys
 from unittest import mock
 import pytest
-from classes.menu import main_menu
+from classes.menu import *
 from testing_functions import *
 
 
@@ -60,3 +60,13 @@ def test_main_menu_input_invalid_inputs(mocker, option_list, expected):
             assert int(selected) == expected
             break
     assert first_accepted_option == expected
+
+
+def test_main_menu_exit_program():
+    """
+    test if program closes when exit() function is called
+    """
+    with pytest.raises(SystemExit) as e:
+        exit_game()
+    assert e.type == SystemExit
+    assert e.value.code == 1
