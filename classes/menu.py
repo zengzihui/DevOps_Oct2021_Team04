@@ -10,6 +10,8 @@ def main_menu():
     2. Load saved game
     0. Exit
     Your choice?
+
+    Returns option selected by user: string
     """
 
     options = {"1": "Start new game", "2": "Load saved game", "0": "Exit"}
@@ -25,5 +27,9 @@ def main_menu():
     print(menu_string)
     # print(repr(menu_string))
     chosen_option = input("Your choice? ")
+
+    while chosen_option not in options.keys():
+        print("Invalid input, please try again")
+        chosen_option = input("Your choice? ")
 
     return chosen_option
