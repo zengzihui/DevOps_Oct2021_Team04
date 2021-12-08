@@ -70,4 +70,3 @@ def test_main_menu_exit_program():
         exit_game()
     assert e.type == SystemExit
     assert e.value.code == 1
-

@@ -1,4 +1,3 @@
-
 def main_menu():
     """
     prints main menu and requests user for input
