@@ -33,3 +33,10 @@ def main_menu():
         chosen_option = input("Your choice? ")
 
     return chosen_option
+
+
+def exit_game():
+    """
+    exits program
+    """
+    exit(1)
