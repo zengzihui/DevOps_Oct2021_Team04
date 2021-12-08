@@ -53,7 +53,7 @@ class Game:
         game_board_string += "{:26s}".format(" +-----+-----+-----+-----+")
         print(game_board_string)
 
-    def game_menu(self, randomized_building_name):
+    def game_menu(self, randomized_building_name=["SHP", "SHP"]):
         """
         Print game menu
 
@@ -67,6 +67,9 @@ class Game:
         0. Exit to main menu
 
         where HSE and BCH are randomized
+
+        "randomized_building_name" in method signature will be generated from randomize_buildings() function which will be implemented
+        at a later date.
         """
         options = {"1": "Build a {}".format(randomized_building_name[0]), "2": "Build a {}"
                    .format(randomized_building_name[1]), "3": "See remaining buildings",
@@ -88,11 +91,3 @@ class Game:
             chosen_option = input("Your choice? ")
 
         return chosen_option
-
-    def randomize_buildings(self):
-        """
-        NOTE: TBD, randomization not yet implemented, SHP as placeholder.
-        Randomize and create 2 building objects based on remaining buildings
-        """
-        randomized_list = ["SHP", "SHP"]
-        return randomized_list

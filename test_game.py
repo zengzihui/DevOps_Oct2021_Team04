@@ -59,10 +59,7 @@ def test_game_menu_display(mocker, option_list):
     # create testing game object
     test_game = Game()
 
-    # fix output of randomize building to only show shops
-    mocker.patch('classes.game.Game.randomize_buildings', return_value=["SHP", "SHP"])
-
-    test_game.game_menu(test_game.randomize_buildings())
+    test_game.game_menu()
 
     # check if game menu displays correct output
     out = get_display_output()
@@ -82,12 +79,9 @@ def test_game_menu_input(mocker, option_list, expected):
     # create testing game object
     test_game = Game()
 
-    # fix output of randomize building to only show shops
-    mocker.patch('classes.game.Game.randomize_buildings', return_value=["SHP", "SHP"])
-
     first_accepted_option = None
 
-    selected = test_game.game_menu(test_game.randomize_buildings())
+    selected = test_game.game_menu()
     for option in option_list:
         # if user chooses to exit, run the test with exit exception
         if option == "0" or option == "1" or option == "2" or option == "3" or option == "4" or option == "5":
