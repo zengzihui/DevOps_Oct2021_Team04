@@ -26,14 +26,12 @@ def test_main_menu_display(mocker, option_list):
 
 @pytest.mark.parametrize("option_list, expected",
                          [(["2"], "2"), (["1"], "1"), (["0"], "0")])
-def test_main_menu_input(mocker, option_list, expected):
+def test_main_menu_input_success(mocker, option_list, expected):
     """
     test if main menu returns the value entered by user
     """
     # set input for menu options
     mocker.patch('builtins.input', side_effect=option_list)
-
-    first_accepted_option = None
 
     # gets value returned from main_menu()
     selected = main_menu()
