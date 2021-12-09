@@ -227,3 +227,22 @@ def test_check_building_exist(test_pass,x_coord,y_coord):
     test_game.board[0][1] = Shop()
     
     assert test_game.check_building_exist(x_coord,y_coord) == test_pass 
+
+@pytest.mark.parametrize("building_name",
+                         [("FAC"),("SHP"),("BCH"),("HWY"),("HSE")])
+def test_remove_building(building_name):
+    """
+    test if building can be removed from the building pool
+    """
+    test_game = Game()
+    test_game.remove_building(building_name)
+    assert test_game[building_name] == 7
+
+def test_display_buildings(building_name):
+    """
+    test if display buildings pool works
+    """
+    test_game = Game()
+    for key in test_game.building_pool:
+        output = "Building         Remaining\n--------         ---------\n" + key + "              " + test_game.building_pool[key] + "\n"
+    assert test_game.display_buildings() == output
