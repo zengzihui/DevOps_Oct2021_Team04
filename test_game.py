@@ -142,8 +142,7 @@ def test_sub_classes(building, expected):
                          [("a1", 0, 0), ("a2", 0, 1)])
 def test_add_building(location, x, y, mocker):
     """
-    check if coordinates are in range of game board's length and width
-    testing data is for valid coordinates
+    success cases for adding_building function
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_shop = "SHP"
@@ -155,28 +154,76 @@ def test_add_building(location, x, y, mocker):
 
 @pytest.mark.parametrize("location",
                          [("a6"), ("z2")])
-def test_add_building_failure(location, mocker):
+def test_add_building_failure_random_input(location,mocker):
     """
-    check if coordinates are in range of game board's length and width
-    testing data is for valid coordinates
+    failing cases for adding_building function for random input
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
     set_keyboard_input([location])
     test_game.add_building("SHP")
-    get_display_output()
+    output = get_display_output()
+    assert output[1] == "Your input is invalid, please follow 'letter' + 'digit' format to input for location."
 
-    assert "Your input is invalid, please follow 'letter' + 'digit' format to input for location."
-    
+
+@pytest.mark.parametrize("location",
+                         [("b1")])
+def test_add_building_failure_existing_building(location,mocker):
+    """
+    failing cases for adding_building function for placing a building on an existing one
+    """
+    mocker.patch('classes.game.Game.start_new_turn', return_value=True) 
+    test_game = Game()
+    test_game.board[0][1] = Shop()
+    set_keyboard_input([location])
+    test_game.add_building("SHP")
+    output = get_display_output()
+    assert output[1] == "You cannot build on a location that has already had a building"
+
+
+@pytest.mark.parametrize("location",
+                         [("a4")])
+def test_add_building_failure_adjacent_building(location,mocker):
+    """
+    failing cases for adding_building function for placing a building on an existing one
+    """
+    mocker.patch('classes.game.Game.start_new_turn', return_value=True) 
+    test_game = Game()
+    test_game.turn_num = 2
+    test_game.board[0][1] = Shop()
+    set_keyboard_input([location])
+    test_game.add_building("SHP")
+    output = get_display_output()
+    assert output[1] == "You must build next to an existing building."
 
 
 @pytest.mark.parametrize("location,expected_x,expected_y", [("a1", 0, 0), ("a5", 0, 4), ("b6", 1, 5)])
 def test_input_to_coordinates(location, expected_x, expected_y):
     """
-    check if coordinates are in range of game board's length and width
-    testing data is for valid coordinates
+    test function to convert input to coordinates
     """
     test_game = Game()
     x, y = test_game.input_to_coordinates(location)
     assert x == expected_x
     assert y == expected_y
+
+@pytest.mark.parametrize("test_pass, x_coord, y_coord",
+                         [(True, 1, 0), (True, 0, 1), (True, 1, 2), (True, 2, 1), (False, 3, 3), (False, 0, 3)])
+def test_check_surrounding_buildings_exist(test_pass,x_coord, y_coord):
+    """
+    test if surroundings buildings exist function works
+    """
+    test_game = Game()
+    test_game.board[1][1] = Shop()
+    assert test_game.check_surrounding_buildings_exist(x_coord, y_coord) == test_pass
+
+@pytest.mark.parametrize("test_pass, x_coord, y_coord",
+                         [(True, 1, 0), (False, 0, 1)])
+def test_check_building_exist(test_pass,x_coord,y_coord):
+    """
+    test if check building exist
+    """
+    test_game = Game()
+    test_game.board[0][1] = Shop()
+    
+    assert test_game.check_building_exist(x_coord,y_coord) == test_pass 
