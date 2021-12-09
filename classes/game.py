@@ -104,3 +104,15 @@ class Game:
 
         # calls game menu and gets back the entered option
         chosen_option = self.game_menu()
+
+    def add_building(self, building, x_coord, y_coord):
+        """
+        Add building object to the board based on coordinates
+        """
+        try:
+            self.board[y_coord][x_coord] = building
+            building.x_coord = x_coord
+            building.y_coord = y_coord
+            return True
+        except:
+            return False

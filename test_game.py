@@ -118,8 +118,8 @@ def test_start_new_turn():
                    '1. Build a SHP\n2. Build a SHP\n3. See remaining buildings\n4. See current score\n\n5. Save game\n0. Exit to main menu', 'Your choice? ']
 
 
-@pytest.mark.parametrize("building_type, building_name",
-                         [(Beach(), "BCH"), (Factory(), "FAC"), (Shop(), "SHP"), (Highway(), "HWY"), (House(),"HSe")])
+@pytest.mark.parametrize("building, expected",
+                         [(Beach(), "BCH"), (Factory(), "FAC"), (Shop(), "SHP"), (Highway(), "HWY"), (House(),"HSE")])
 def test_sub_classes(building, expected):
     '''
     test if the different buildings can be initialized
@@ -128,7 +128,7 @@ def test_sub_classes(building, expected):
 
 @pytest.mark.parametrize("x_coord, y_coord, expected",
                          [(2, 2,True), (1, 2,True), (0, 0,True), (0, 3,True), (0,4,False), (4,0,False)])
-def test_add_building(x_coord, y_coord):
+def test_add_building(x_coord, y_coord,expected):
     """
     check if coordinates are in range of game board's length and width
     testing data is for valid coordinates
@@ -136,4 +136,4 @@ def test_add_building(x_coord, y_coord):
     test_shop = Shop()
     test_game = Game()
 
-    assert test_game.add_building(test_shop, x_coord, y_coord)
+    assert test_game.add_building(test_shop, x_coord, y_coord) == expected
