@@ -98,7 +98,7 @@ class Game:
         calls functions to print_turn_num(), print_board()
         and gets input from game_menu()
         """
-        print("\n")
+        print("")
         self.print_turn_num()
         self.print_board()
 
