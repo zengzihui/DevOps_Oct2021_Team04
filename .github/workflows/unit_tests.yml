@@ -1,0 +1,71 @@
+# Workflow for unit tests
+
+name: Unit_Tests
+
+# Controls when the workflow will run
+on:
+# Workflow will run when push to all branches
+  push:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      - name: Install Python 3
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.6
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests with pytest
+        run: |
+          pytest --cov -v --junitxml=report.xml
+
+      - if: ${{failure()}}
+        name: Send telegram message to developer on unit test fail
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.DEVELOPER_TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            Pushed code has hit errors in unit tests
+            Commit message: ${{ github.event.commits[0].message }}
+            
+            Repository: ${{ github.repository }}
+
+
+      - if: ${{success()}}
+        name: Send telegram message to entire development team on unit test pass
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.DEV_TEAM_TO  }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            All unit tests has been met, please review.
+            Commit message: ${{ github.event.commits[0].message }}
+            
+            Repository: ${{ github.repository }}
+
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1.24
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          files: report.xml
