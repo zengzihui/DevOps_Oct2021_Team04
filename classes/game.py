@@ -91,3 +91,15 @@ class Game:
             chosen_option = input("Your choice? ")
 
         return chosen_option
+
+    def start_new_turn(self):
+        """
+        calls functions to print_turn_num(), print_board()
+        and gets input from game_menu()
+        """
+
+        self.print_turn_num()
+        self.print_board()
+
+        # calls game menu and gets back the entered option
+        chosen_option = self.game_menu()

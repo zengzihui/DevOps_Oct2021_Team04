@@ -1,3 +1,6 @@
+from .game import Game
+
+
 def main_menu():
     """
     prints main menu and requests user for input
@@ -32,6 +35,11 @@ def main_menu():
         chosen_option = input("Your choice? ")
 
     return chosen_option
+
+
+def start_new_game():
+    current_game = Game()
+    return current_game.start_new_turn()
 
 
 def exit_game():
