@@ -109,3 +109,24 @@ def test_start_new_turn():
     out = get_display_output()
     assert out == ['', 'Turn 1', '    A     B     C     D  \n +-----+-----+-----+-----+\n1|     |     |     |     |\n +-----+-----+-----+-----+\n2|     |     |     |     |\n +-----+-----+-----+-----+\n3|     |     |     |     |\n +-----+-----+-----+-----+\n4|     |     |     |     |\n +-----+-----+-----+-----+',
                    '1. Build a SHP\n2. Build a SHP\n3. See remaining buildings\n4. See current score\n\n5. Save game\n0. Exit to main menu', 'Your choice? ']
+
+
+@pytest.mark.parametrize("building_type, building_name",
+                         [(Beach(), "BCH"), (Factory(), "FAC"), (Shop(), "SHP"), (Highway(), "HWY"), (House(),"HSe")])
+def test_sub_classes(building, expected):
+    '''
+    test if the different buildings can be initialized
+    '''
+assert building.name == expected
+
+@pytest.mark.parametrize("x_coord, y_coord, expected",
+                         [(2, 2,True), (1, 2,True), (0, 0,True), (0, 3,True), (0,4,False), (4,0,False)])
+def test_add_building(x_coord, y_coord):
+    """
+    check if coordinates are in range of game board's length and width
+    testing data is for valid coordinates
+    """
+    test_shop = Shop()
+    test_game = Game()
+
+    assert test_game.add_building(test_shop, x_coord, y_coord)
