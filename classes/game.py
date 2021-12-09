@@ -83,6 +83,7 @@ class Game:
                 game_menu_string += "{}. {}".format(key, options[key]) + "\n"
             else:
                 game_menu_string += "\n"
+        game_menu_string = game_menu_string.rstrip()
         print(game_menu_string)
         chosen_option = input("Your choice? ")
 
@@ -91,3 +92,15 @@ class Game:
             chosen_option = input("Your choice? ")
 
         return chosen_option
+
+    def start_new_turn(self):
+        """
+        calls functions to print_turn_num(), print_board()
+        and gets input from game_menu()
+        """
+        print("")
+        self.print_turn_num()
+        self.print_board()
+
+        # calls game menu and gets back the entered option
+        chosen_option = self.game_menu()
