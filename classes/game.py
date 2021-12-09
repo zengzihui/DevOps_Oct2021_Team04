@@ -129,10 +129,13 @@ class Game:
 
         location_string = input("Build where? ")
         x_coord, y_coord = self.input_to_coordinates(location_string)
-        self.board[y_coord][x_coord] = building
-        building.x_coord = x_coord
-        building.y_coord = y_coord
-        self.turn_num += 1
+        if 0 <= x_coord < 4 and 0 <= y_coord < 4:
+            self.board[y_coord][x_coord] = building
+            building.x_coord = x_coord
+            building.y_coord = y_coord
+            self.turn_num += 1
+        else:
+            print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
         self.start_new_turn()
 
     def input_to_coordinates(self, location_string):
