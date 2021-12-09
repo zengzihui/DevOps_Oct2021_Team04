@@ -91,3 +91,21 @@ def test_game_menu_input(mocker, option_list, expected):
             break
     # check if first accepted option meets expected results
     assert first_accepted_option == expected
+
+
+def test_start_new_turn():
+    """
+    test if game board, game menu and turn number will be displayed when turn starts
+    """
+    set_keyboard_input(["0"])
+
+    # create testing game object
+    test_game = Game()
+
+    # check if game menu displays correct output
+    test_game.start_new_turn()
+
+    # check if output is expected
+    out = get_display_output()
+    assert out == ['Turn 1', '    A     B     C     D  \n +-----+-----+-----+-----+\n1|     |     |     |     |\n +-----+-----+-----+-----+\n2|     |     |     |     |\n +-----+-----+-----+-----+\n3|     |     |     |     |\n +-----+-----+-----+-----+\n4|     |     |     |     |\n +-----+-----+-----+-----+',
+                   '1. Build a SHP\n2. Build a SHP\n3. See remaining buildings\n4. See current score\n\n5. Save game\n0. Exit to main menu\n', 'Your choice? ']

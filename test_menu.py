@@ -62,6 +62,13 @@ def test_main_menu_input_invalid_inputs(mocker, option_list, expected):
     assert first_accepted_option == expected
 
 
+def test_start_new_game(mocker):
+    """
+    test if Game.start_new_turn() is called when start_new_game() is called
+    """
+    mocker.patch('classes.game.Game.start_new_turn', return_value="new turn started")
+    assert start_new_game() == "new turn started"
+
 def test_main_menu_exit_program():
     """
     test if program closes when exit() function is called
