@@ -163,7 +163,6 @@ def test_add_building_failure(location,mocker):
     test_game.add_building("SHP")
     get_display_output()
     assert "Your input is invalid, please follow 'letter' + 'digit' format to input for location."
-    
 
 
 @pytest.mark.parametrize("location,expected_x,expected_y",[("a1",0,0),("a5",0,4),("b6",1,5)])
