@@ -4,6 +4,13 @@ import pytest
 from classes.menu import *
 from testing_functions import *
 from classes.game import Game
+from classes.beach import *
+from classes.factory import *
+from classes.building import *
+from classes.highway import *
+from classes.house import *
+from classes.shop import *
+
 
 
 @pytest.mark.parametrize("testing_turn_number, expected",
@@ -117,7 +124,7 @@ def test_sub_classes(building, expected):
     '''
     test if the different buildings can be initialized
     '''
-assert building.name == expected
+    assert building.name == expected
 
 @pytest.mark.parametrize("x_coord, y_coord, expected",
                          [(2, 2,True), (1, 2,True), (0, 0,True), (0, 3,True), (0,4,False), (4,0,False)])
