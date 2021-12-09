@@ -1,5 +1,9 @@
 from .building import Building
-
+from .shop import Shop
+from .factory import Factory
+from .highway import Highway
+from .house import House
+from .beach import Beach
 
 class Game:
 
@@ -97,24 +101,42 @@ class Game:
         """
         calls functions to print_turn_num(), print_board()
         and gets input from game_menu()
+
+        "randomized_building_name" list will be replaced with a function to randomized the different buildings in the future. For now we will use only SHP
         """
+        randomized_building_name=["SHP", "SHP"]
         print("")
         self.print_turn_num()
         self.print_board()
 
         # calls game menu and gets back the entered option
         chosen_option = self.game_menu()
-        if chosen_option == "1" or chosen_option == "2":
-            self.add_building()
+        if chosen_option == "1":
+            return self.add_building(randomized_building_name[0])
+        elif chosen_option =="2":
+            return self.add_building(randomized_building_name[1])
 
-    def add_building(self, building, x_coord, y_coord):
+    def add_building(self, building_string):
         """
-        Add building object to the board based on coordinates
+        Add building object to the board based on user input
         """
+        building = Building()
+        if building_string == "SHP":
+            building = Shop()
+
+        location_string = input("Build where? ")
+        x_coord, y_coord = self.input_to_coordinates(location_string)
         self.board[y_coord][x_coord] = building
         building.x_coord = x_coord
         building.y_coord = y_coord
         self.start_new_turn()
-    
-    def input_to_coordinates():
-        return
+    def input_to_coordinates(self,location_string):
+        """
+        Converts user input location into coordinates
+        """
+        ASCII_string_value = 97
+        ASCII_int_value = 49
+        x = ord(location_string[0]) - ASCII_string_value
+        y = ord(location_string[1]) - ASCII_int_value
+
+        return x, y
