@@ -4,6 +4,13 @@ import pytest
 from classes.menu import *
 from testing_functions import *
 from classes.game import Game
+from classes.beach import *
+from classes.factory import *
+from classes.building import *
+from classes.highway import *
+from classes.house import *
+from classes.shop import *
+
 
 
 @pytest.mark.parametrize("testing_turn_number, expected",
@@ -109,3 +116,48 @@ def test_start_new_turn():
     out = get_display_output()
     assert out == ['', 'Turn 1', '    A     B     C     D  \n +-----+-----+-----+-----+\n1|     |     |     |     |\n +-----+-----+-----+-----+\n2|     |     |     |     |\n +-----+-----+-----+-----+\n3|     |     |     |     |\n +-----+-----+-----+-----+\n4|     |     |     |     |\n +-----+-----+-----+-----+',
                    '1. Build a SHP\n2. Build a SHP\n3. See remaining buildings\n4. See current score\n\n5. Save game\n0. Exit to main menu', 'Your choice? ']
+
+@pytest.mark.parametrize("option, expected",
+                         [(["1"],True),(["2"],True),(["100","2"],True)])
+def test_start_new_turn_options(option,expected,mocker):
+    """
+    run start_new_turn input options
+    """
+    mocker.patch('classes.game.Game.add_building', return_value=True) 
+    test_game = Game()
+    set_keyboard_input(option)
+    assert test_game.start_new_turn() == expected
+
+@pytest.mark.parametrize("building, expected",
+                         [(Beach(), "BCH"), (Factory(), "FAC"), (Shop(), "SHP"), (Highway(), "HWY"), (House(),"HSE")])
+def test_sub_classes(building, expected):
+    """
+    test if the different buildings can be initialized
+    """
+    assert building.name == expected
+
+@pytest.mark.parametrize("location,x,y",
+                         [("a1",0,0), ("a2", 0,1)])
+def test_add_building(location, x, y,mocker):
+    """
+    check if coordinates are in range of game board's length and width
+    testing data is for valid coordinates
+    """
+    mocker.patch('classes.game.Game.start_new_turn', return_value=True) 
+    test_shop = "SHP"
+    test_game = Game()
+    set_keyboard_input([location])
+    test_game.add_building(test_shop)
+    assert isinstance(test_game.board[y][x],Shop)
+
+@pytest.mark.parametrize("location,expected_x,expected_y",[("a1",0,0),("a5",0,4),("b6",1,5)])
+def test_input_to_coordinates(location, expected_x,expected_y):
+    """
+    check if coordinates are in range of game board's length and width
+    testing data is for valid coordinates
+    """
+    test_game = Game()
+    x,  y = test_game.input_to_coordinates(location)
+    assert x == expected_x
+    assert y == expected_y
+
