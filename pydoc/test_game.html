@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>test_game</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Czheng%5Conedrive%5Cdesktop%5Cdevops_oct2021_team04%5Ctest_game.py">c:\users\zheng\onedrive\desktop\devops_oct2021_team04\test_game.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:d%3A%5Cpitreproject%5Clasta%5Cdevops_oct2021_team04%5Ctest_game.py">d:\pitreproject\lasta\devops_oct2021_team04\test_game.py</a></font></td></tr></table>
     <p></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -28,16 +28,19 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-test_add_building"><strong>test_add_building</strong></a>(location, x, y, mocker)</dt><dd><tt>check&nbsp;if&nbsp;coordinates&nbsp;are&nbsp;in&nbsp;range&nbsp;of&nbsp;game&nbsp;board's&nbsp;length&nbsp;and&nbsp;width<br>
-testing&nbsp;data&nbsp;is&nbsp;for&nbsp;valid&nbsp;coordinates</tt></dd></dl>
- <dl><dt><a name="-test_add_building_failure"><strong>test_add_building_failure</strong></a>(location, mocker)</dt><dd><tt>check&nbsp;if&nbsp;coordinates&nbsp;are&nbsp;in&nbsp;range&nbsp;of&nbsp;game&nbsp;board's&nbsp;length&nbsp;and&nbsp;width<br>
-testing&nbsp;data&nbsp;is&nbsp;for&nbsp;valid&nbsp;coordinates</tt></dd></dl>
+<td width="100%"><dl><dt><a name="-test_add_building"><strong>test_add_building</strong></a>(location, x, y, mocker)</dt><dd><tt>success&nbsp;cases&nbsp;for&nbsp;adding_building&nbsp;function</tt></dd></dl>
+ <dl><dt><a name="-test_add_building_failure_adjacent_building"><strong>test_add_building_failure_adjacent_building</strong></a>(location, mocker)</dt><dd><tt>failing&nbsp;cases&nbsp;for&nbsp;adding_building&nbsp;function&nbsp;for&nbsp;placing&nbsp;a&nbsp;building&nbsp;on&nbsp;an&nbsp;existing&nbsp;one</tt></dd></dl>
+ <dl><dt><a name="-test_add_building_failure_existing_building"><strong>test_add_building_failure_existing_building</strong></a>(location, mocker)</dt><dd><tt>failing&nbsp;cases&nbsp;for&nbsp;adding_building&nbsp;function&nbsp;for&nbsp;placing&nbsp;a&nbsp;building&nbsp;on&nbsp;an&nbsp;existing&nbsp;one</tt></dd></dl>
+ <dl><dt><a name="-test_add_building_failure_random_input"><strong>test_add_building_failure_random_input</strong></a>(location, mocker)</dt><dd><tt>failing&nbsp;cases&nbsp;for&nbsp;adding_building&nbsp;function&nbsp;for&nbsp;random&nbsp;input</tt></dd></dl>
+ <dl><dt><a name="-test_check_building_exist"><strong>test_check_building_exist</strong></a>(test_pass, x_coord, y_coord)</dt><dd><tt>test&nbsp;if&nbsp;check&nbsp;building&nbsp;exist</tt></dd></dl>
+ <dl><dt><a name="-test_check_surrounding_buildings_exist"><strong>test_check_surrounding_buildings_exist</strong></a>(test_pass, x_coord, y_coord)</dt><dd><tt>test&nbsp;if&nbsp;surroundings&nbsp;buildings&nbsp;exist&nbsp;function&nbsp;works</tt></dd></dl>
+ <dl><dt><a name="-test_display_building"><strong>test_display_building</strong></a>(mocker)</dt><dd><tt>test&nbsp;if&nbsp;display&nbsp;buildings&nbsp;pool&nbsp;works</tt></dd></dl>
  <dl><dt><a name="-test_game_menu_display"><strong>test_game_menu_display</strong></a>(mocker, option_list)</dt><dd><tt>test&nbsp;if&nbsp;game&nbsp;menu&nbsp;options&nbsp;are&nbsp;printed&nbsp;correctly</tt></dd></dl>
  <dl><dt><a name="-test_game_menu_input"><strong>test_game_menu_input</strong></a>(mocker, option_list, expected)</dt><dd><tt>test&nbsp;if&nbsp;game&nbsp;menu&nbsp;is&nbsp;printed&nbsp;correctly&nbsp;and&nbsp;the&nbsp;option&nbsp;entered&nbsp;is&nbsp;returned</tt></dd></dl>
- <dl><dt><a name="-test_input_to_coordinates"><strong>test_input_to_coordinates</strong></a>(location, expected_x, expected_y)</dt><dd><tt>check&nbsp;if&nbsp;coordinates&nbsp;are&nbsp;in&nbsp;range&nbsp;of&nbsp;game&nbsp;board's&nbsp;length&nbsp;and&nbsp;width<br>
-testing&nbsp;data&nbsp;is&nbsp;for&nbsp;valid&nbsp;coordinates</tt></dd></dl>
+ <dl><dt><a name="-test_input_to_coordinates"><strong>test_input_to_coordinates</strong></a>(location, expected_x, expected_y)</dt><dd><tt>test&nbsp;function&nbsp;to&nbsp;convert&nbsp;input&nbsp;to&nbsp;coordinates</tt></dd></dl>
  <dl><dt><a name="-test_print_board"><strong>test_print_board</strong></a>()</dt><dd><tt>test&nbsp;if&nbsp;game&nbsp;board&nbsp;is&nbsp;printed&nbsp;correctly</tt></dd></dl>
  <dl><dt><a name="-test_print_turn_num"><strong>test_print_turn_num</strong></a>(testing_turn_number, expected)</dt><dd><tt>test&nbsp;if&nbsp;turn&nbsp;number&nbsp;is&nbsp;printed&nbsp;correctly</tt></dd></dl>
+ <dl><dt><a name="-test_remove_building"><strong>test_remove_building</strong></a>(building_name)</dt><dd><tt>test&nbsp;if&nbsp;building&nbsp;can&nbsp;be&nbsp;removed&nbsp;from&nbsp;the&nbsp;building&nbsp;pool</tt></dd></dl>
  <dl><dt><a name="-test_start_new_turn"><strong>test_start_new_turn</strong></a>()</dt><dd><tt>test&nbsp;if&nbsp;game&nbsp;board,&nbsp;game&nbsp;menu&nbsp;and&nbsp;turn&nbsp;number&nbsp;will&nbsp;be&nbsp;displayed&nbsp;when&nbsp;turn&nbsp;starts</tt></dd></dl>
  <dl><dt><a name="-test_start_new_turn_options"><strong>test_start_new_turn_options</strong></a>(option, expected, mocker)</dt><dd><tt>run&nbsp;start_new_turn&nbsp;input&nbsp;options</tt></dd></dl>
  <dl><dt><a name="-test_sub_classes"><strong>test_sub_classes</strong></a>(building, expected)</dt><dd><tt>test&nbsp;if&nbsp;the&nbsp;different&nbsp;buildings&nbsp;can&nbsp;be&nbsp;initialized</tt></dd></dl>

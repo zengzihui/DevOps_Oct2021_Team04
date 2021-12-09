@@ -189,6 +189,9 @@ class Game:
         return False
 
     def display_building(self):
+        """
+        Display all buildings left in the building pool
+        """
         spaces = " "
         output ="Building{0}Remaining\n--------{0}--------\n".format(spaces*9,spaces*9)
         for key in self.building_pool:
@@ -197,5 +200,8 @@ class Game:
         self.start_new_turn()
     
     def remove_building(self,building_name):
+        """
+        Remove a building from the building pool
+        """
         self.building_pool[building_name] -=1
     
