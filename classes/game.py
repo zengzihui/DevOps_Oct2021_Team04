@@ -5,6 +5,7 @@ from .highway import Highway
 from .house import House
 from .beach import Beach
 
+
 class Game:
 
     def __init__(self, height=3, width=3):
@@ -104,7 +105,7 @@ class Game:
 
         "randomized_building_name" list will be replaced with a function to randomized the different buildings in the future. For now we will use only SHP
         """
-        randomized_building_name=["SHP", "SHP"]
+        randomized_building_name = ["SHP", "SHP"]
         print("")
         self.print_turn_num()
         self.print_board()
@@ -113,8 +114,10 @@ class Game:
         chosen_option = self.game_menu()
         if chosen_option == "1":
             return self.add_building(randomized_building_name[0])
-        elif chosen_option =="2":
+        elif chosen_option == "2":
             return self.add_building(randomized_building_name[1])
+        elif chosen_option == "0":
+            return 0
 
     def add_building(self, building_string):
         """
@@ -134,7 +137,8 @@ class Game:
         else:
             print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
         self.start_new_turn()
-    def input_to_coordinates(self,location_string):
+
+    def input_to_coordinates(self, location_string):
         """
         Converts user input location into coordinates
         """
@@ -142,7 +146,5 @@ class Game:
         ASCII_int_value = 49
         x = ord(location_string[0]) - ASCII_string_value
         y = ord(location_string[1]) - ASCII_int_value
-    
-        return x, y
 
-    
+        return x, y
