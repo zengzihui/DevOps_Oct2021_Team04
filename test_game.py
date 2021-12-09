@@ -120,6 +120,9 @@ def test_start_new_turn():
 @pytest.mark.parametrize("option, expected",
                          [(["1"],True),(["2"],True),(["100","2"],True)])
 def test_start_new_turn_options(option,expected,mocker):
+    """
+    run start_new_turn input options
+    """
     mocker.patch('classes.game.Game.add_building', return_value=True) 
     test_game = Game()
     set_keyboard_input(option)
@@ -128,9 +131,9 @@ def test_start_new_turn_options(option,expected,mocker):
 @pytest.mark.parametrize("building, expected",
                          [(Beach(), "BCH"), (Factory(), "FAC"), (Shop(), "SHP"), (Highway(), "HWY"), (House(),"HSE")])
 def test_sub_classes(building, expected):
-    '''
+    """
     test if the different buildings can be initialized
-    '''
+    """
     assert building.name == expected
 
 @pytest.mark.parametrize("location,x,y",

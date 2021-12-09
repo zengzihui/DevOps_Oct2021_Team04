@@ -129,6 +129,7 @@ class Game:
         self.board[y_coord][x_coord] = building
         building.x_coord = x_coord
         building.y_coord = y_coord
+        self.turn_num += 1
         self.start_new_turn()
     def input_to_coordinates(self,location_string):
         """
