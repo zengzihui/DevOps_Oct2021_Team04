@@ -137,3 +137,15 @@ def test_add_building(x_coord, y_coord,expected):
     test_game = Game()
 
     assert test_game.add_building(test_shop, x_coord, y_coord) == expected
+
+@pytest.mark.parametrize("input,expected_x,expected_y",[("a1",0,0),("a5",0,4),("b6",1,5)])
+def test_input_to_coordinates(input, expected_x,expected_y):
+    """
+    check if coordinates are in range of game board's length and width
+    testing data is for valid coordinates
+    """
+    test_game = Game()
+    x,  y = test_game.input_to_coordinates(input)
+    assert x == expected_x
+    assert y == expected_y
+
