@@ -21,7 +21,7 @@ def test_main_menu_display(mocker, option_list):
 
     # check if main_menu function displays correct output
     out = get_display_output()
-    assert out[0] == 'Welcome, mayor of Simp City!        \n----------------------------\n1. Start new game\n2. Load saved game\n0. Exit\n'
+    assert out[0] == 'Welcome, mayor of Simp City!\n----------------------------\n1. Start new game\n2. Load saved game\n\n0. Exit'
 
 
 @pytest.mark.parametrize("option_list, expected",

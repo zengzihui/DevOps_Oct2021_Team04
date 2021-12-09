@@ -64,7 +64,7 @@ def test_game_menu_display(mocker, option_list):
     # check if game menu displays correct output
     out = get_display_output()
 
-    assert out[0] == '1. Build a SHP\n2. Build a SHP\n3. See remaining buildings\n4. See current score\n\n5. Save game\n0. Exit to main menu\n'
+    assert out[0] == '1. Build a SHP\n2. Build a SHP\n3. See remaining buildings\n4. See current score\n\n5. Save game\n0. Exit to main menu'
 
 
 @pytest.mark.parametrize("option_list, expected",
