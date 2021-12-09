@@ -127,10 +127,17 @@ class Game:
         location_string = input("Build where? ")
         x_coord, y_coord = self.input_to_coordinates(location_string)
         if 0 <= x_coord < 4 and 0 <= y_coord < 4:
-            self.board[y_coord][x_coord] = building
-            building.x_coord = x_coord
-            building.y_coord = y_coord
-            self.turn_num += 1
+            if self.check_building_exist(x_coord,y_coord):
+                print("You cannot build on a location that has already had a building")
+            else:
+                if self.check_surrounding_buildings_exist(x_coord,y_coord) or self.turn_num == 1:
+                    self.board[y_coord][x_coord] = building
+                    building.x_coord = x_coord
+                    building.y_coord = y_coord
+                    self.turn_num += 1
+                else:
+                    print("You must build next to an existing building.")
+
         else:
             print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
         self.start_new_turn()
@@ -145,4 +152,30 @@ class Game:
     
         return x, y
 
+    def check_building_exist(self,x_coord,y_coord):
+        """
+        check if building exists at the coordinate
+        """
+        if self.board[y_coord][x_coord].name == "":
+            return False
+        else:
+            return True
+    
+    def check_surrounding_buildings_exist(self,x_coord,y_coord):
+        """
+        check if there are adjacent buildings
+        """
+        temp_x_lower = x_coord - 1
+        temp_x_higher = x_coord + 1
+        temp_y_lower = y_coord - 1
+        temp_y_higher = y_coord + 1
+        if (0 <= temp_x_lower < 4) and self.board[y_coord][temp_x_lower].name != "":
+            return True
+        elif (0 <= temp_x_higher < 4) and self.board[y_coord][temp_x_higher].name != "":
+            return True
+        elif (0 <= temp_y_lower < 4) and self.board[temp_y_lower][x_coord].name != "":
+            return True
+        elif (0 <= temp_y_higher < 4) and self.board[temp_y_higher][x_coord].name != "":
+            return True
+        return False
     
