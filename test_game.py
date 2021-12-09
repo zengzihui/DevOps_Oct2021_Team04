@@ -162,6 +162,7 @@ def test_add_building_failure(location,mocker):
     set_keyboard_input([location])
     test_game.add_building("SHP")
     get_display_output()
+
     assert "Your input is invalid, please follow 'letter' + 'digit' format to input for location."
 
 
