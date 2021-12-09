@@ -92,7 +92,7 @@ class Game:
         chosen_option = input("Your choice? ")
 
         while chosen_option not in options.keys() or chosen_option == "":
-            print("Invalid input, please try again")
+            print("Invalid Input. Please enter a valid input (\"1\" / \"2\" / \"3\" / \"4\" / \"5\" / \"0\").")
             chosen_option = input("Your choice? ")
 
         return chosen_option
