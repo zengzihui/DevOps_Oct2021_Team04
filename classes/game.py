@@ -139,5 +139,7 @@ class Game:
         ASCII_int_value = 49
         x = ord(location_string[0]) - ASCII_string_value
         y = ord(location_string[1]) - ASCII_int_value
-
+    
         return x, y
+
+    
