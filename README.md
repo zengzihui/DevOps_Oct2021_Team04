@@ -40,6 +40,9 @@ In this iteration, we will cover the following features:
 6. See Remaining Buildings
 7. Exit to Main Menu
 
+### Class Diagram As Of Iteration 1
+<img src="https://user-images.githubusercontent.com/64000939/145531915-82ef0a93-6965-4b1d-86cf-63c5fdfe394d.png" width=60%>
+
 ### Iteration 2
 In this iteration, we will be covering the follow features:
 1. Load Saved Game
@@ -69,8 +72,6 @@ Automated Kanban board is used.
 | `Done` | COntains tasks that are completed and reviewed |
 
 **Please take note, finished user stories will still be in Project Backlog Column. The issue will be closed and it will be placed at the bottom of the Project Backlog column.*
-
-
 
 ### User Story Card
 <img src="https://user-images.githubusercontent.com/93191650/145514046-923f3303-1fc3-4a6c-ba1b-3e703ec53fcf.png" width=60%>
