@@ -13,7 +13,8 @@ This is the dev repo used by T01 Team 4 for Ngee Ann Polytechnic DevOps module's
 
 
 ## Project Background
->You are the mayor of Simp City, and you want to build the happiest and most prosperous 
+```
+You are the mayor of Simp City, and you want to build the happiest and most prosperous 
 city possible, i.e., score the most points.
 This city-building strategy game is played over 16 turns. In each turn, you will build one 
 of two randomly-selected buildings in your 4x4 city. In the first turn, you can build 
@@ -21,11 +22,13 @@ anywhere in the city. In subsequent turns, you can only build on squares that ar
 connected to existing buildings. The other building that you did not build is discarded.
 Each building scores in a different way. The objective of the game is to build a city that 
 scores as many points as possible
+```
 
 ## Project Approach 
-This Simp City project will be split into 2 development iteration. Each iteration will be done over a period of 3-4 weeks.
+```
+This Simp City project will be split into 2 development iterations. Each iteration will be done over a period of 3-4 weeks.
 The software development methodologies used for this project is Kanban Methodology for Agile software development.
-
+```
 ### Iteration 1
 In this iteration, we will cover the following features:
 1. Display Main Menu
@@ -45,7 +48,7 @@ In this iteration, we will be covering the follow features:
 5. Display Final Score
 6. New Requirements (If any)
 
-The 4 Software Development Methodologies considered are
+### 4 Software Development Methodologies Considered
 1. Spiral Model
 2. Iterative Model
 3. Evolutionary Model
@@ -64,7 +67,7 @@ Automated Kanban board is used.
 | `In Review` | Contains tasks that are completed and require reviewers to review |
 | `Done` | COntains tasks that are completed and reviewed |
 
-*Please take note, finished user stories will still be in Project Backlog Column. The issue will be closed and it will be placed at the bottom of the Project Backlog column.
+**Please take note, finished user stories will still be in Project Backlog Column. The issue will be closed and it will be placed at the bottom of the Project Backlog column.*
 
 
 
@@ -87,7 +90,7 @@ Inside the User Story card, the following components will be there
 | `Tech Lead Merge to Main` | Tech Lead will merge to main after the 3 testings (Unit test, QA test, Acceptance Test) at pull request are define done  |
 | `PM Comment` | PM will close the issue after the merge  |
 
-*tasks list is used to monitor the individual user story progress
+**Tasks list is used to monitor the individual user story progress*
 
 
 
