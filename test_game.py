@@ -17,6 +17,8 @@ from classes.shop import *
 def test_print_turn_num(testing_turn_number, expected):
     """
     test if turn number is printed correctly
+
+    Zheng Jiongjie T01 9th December
     """
     set_keyboard_input(None)
 
@@ -39,6 +41,8 @@ def test_print_turn_num(testing_turn_number, expected):
 def test_print_board():
     """
     test if game board is printed correctly
+
+    Zheng Jiongjie T01 9th December
     """
     set_keyboard_input(None)
 
@@ -56,6 +60,8 @@ def test_print_board():
 def test_game_menu_display(mocker, option_list):
     """
     test if game menu options are printed correctly
+
+    Zheng Jiongjie T01 9th December
     """
     set_keyboard_input(None)
 
@@ -78,6 +84,8 @@ def test_game_menu_display(mocker, option_list):
 def test_game_menu_input(mocker, option_list, expected):
     """
     test if game menu is printed correctly and the option entered is returned
+
+    Zheng Jiongjie T01 9th December
     """
     # set input for menu options
     mocker.patch('builtins.input', side_effect=option_list)
@@ -102,6 +110,8 @@ def test_game_menu_input(mocker, option_list, expected):
 def test_start_new_turn():
     """
     test if game board, game menu and turn number will be displayed when turn starts
+
+    Zheng Jiongjie T01 9th December
     """
     set_keyboard_input(["0"])
 
@@ -122,6 +132,8 @@ def test_start_new_turn():
 def test_start_new_turn_options(option, expected, mocker):
     """
     run start_new_turn input options
+
+    Zheng Jiongjie T01 9th December
     """
     mocker.patch('classes.game.Game.add_building', return_value=1)
     mocker.patch('classes.game.Game.display_building', return_value=2)
@@ -135,6 +147,8 @@ def test_start_new_turn_options(option, expected, mocker):
 def test_sub_classes(building, expected):
     """
     test if the different buildings can be initialized
+
+    Swah Jianoon T01 9th December
     """
     assert building.name == expected
 
@@ -144,6 +158,8 @@ def test_sub_classes(building, expected):
 def test_add_building(location, x, y, mocker):
     """
     success cases for adding_building function
+
+    Swah Jianoon T01 9th December
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_shop = "SHP"
@@ -155,9 +171,11 @@ def test_add_building(location, x, y, mocker):
 
 @pytest.mark.parametrize("location",
                          [("a6"), ("z2")])
-def test_add_building_failure_random_input(location,mocker):
+def test_add_building_failure_random_input(location, mocker):
     """
     failing cases for adding_building function for random input
+
+    Swah Jianoon T01 9th December
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
@@ -169,11 +187,13 @@ def test_add_building_failure_random_input(location,mocker):
 
 @pytest.mark.parametrize("location",
                          [("b1")])
-def test_add_building_failure_existing_building(location,mocker):
+def test_add_building_failure_existing_building(location, mocker):
     """
     failing cases for adding_building function for placing a building on an existing one
+
+    Swah Jianoon T01 9th December
     """
-    mocker.patch('classes.game.Game.start_new_turn', return_value=True) 
+    mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
     test_game.board[0][1] = Shop()
     set_keyboard_input([location])
@@ -184,11 +204,13 @@ def test_add_building_failure_existing_building(location,mocker):
 
 @pytest.mark.parametrize("location",
                          [("a4")])
-def test_add_building_failure_adjacent_building(location,mocker):
+def test_add_building_failure_adjacent_building(location, mocker):
     """
     failing cases for adding_building function for placing a building on an existing one
+
+    Swah Jianoon T01 9th December
     """
-    mocker.patch('classes.game.Game.start_new_turn', return_value=True) 
+    mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
     test_game.turn_num = 2
     test_game.board[0][1] = Shop()
@@ -202,27 +224,35 @@ def test_add_building_failure_adjacent_building(location,mocker):
 def test_input_to_coordinates(location, expected_x, expected_y):
     """
     test function to convert input to coordinates
+
+    Swah Jianoon T01 9th December
     """
     test_game = Game()
     x, y = test_game.input_to_coordinates(location)
     assert x == expected_x
     assert y == expected_y
 
+
 @pytest.mark.parametrize("test_pass, x_coord, y_coord",
                          [(True, 1, 0), (True, 0, 1), (True, 1, 2), (True, 2, 1), (False, 3, 3), (False, 0, 3)])
-def test_check_surrounding_buildings_exist(test_pass,x_coord, y_coord):
+def test_check_surrounding_buildings_exist(test_pass, x_coord, y_coord):
     """
     test if surroundings buildings exist function works
+
+    Swah Jianoon T01 9th December
     """
     test_game = Game()
     test_game.board[1][1] = Shop()
     assert test_game.check_surrounding_buildings_exist(x_coord, y_coord) == test_pass
 
+
 @pytest.mark.parametrize("test_pass, x_coord, y_coord",
                          [(True, 1, 0), (False, 0, 1)])
-def test_check_building_exist(test_pass,x_coord,y_coord):
+def test_check_building_exist(test_pass, x_coord, y_coord):
     """
     test if check building exist
+
+    Swah Jianoon T01 9th December
     """
     test_game = Game()
     test_game.board[0][1] = Shop()
@@ -234,6 +264,8 @@ def test_check_building_exist(test_pass,x_coord,y_coord):
 def test_remove_building(building_name):
     """
     test if building can be removed from the building pool
+
+    Swah Jianoon T01 9th December
     """
     test_game = Game()
     test_game.remove_building(building_name)
@@ -242,6 +274,8 @@ def test_remove_building(building_name):
 def test_display_building(mocker):
     """
     test if display buildings pool works
+
+    Swah Jianoon T01 9th December
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     set_keyboard_input(None)

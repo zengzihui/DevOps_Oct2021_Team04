@@ -10,6 +10,8 @@ from testing_functions import *
 def test_main_menu_display(mocker, option_list):
     """
     test if main menu options are printed correctly
+
+    Zheng Jiongjie T01 9th December
     """
     set_keyboard_input([None, None])
 
@@ -29,6 +31,8 @@ def test_main_menu_display(mocker, option_list):
 def test_main_menu_display_without_welcome(mocker, option_list):
     """
     test if main menu options are printed correctly
+
+    Zheng Jiongjie T01 9th December
     """
     set_keyboard_input([None, None])
 
@@ -48,6 +52,8 @@ def test_main_menu_display_without_welcome(mocker, option_list):
 def test_main_menu_input_success(mocker, option_list, expected):
     """
     test if main_menu() returns the value entered by user
+
+    Zheng Jiongjie T01 9th December
     """
     # set input for menu options
     mocker.patch('builtins.input', side_effect=option_list)
@@ -65,6 +71,8 @@ def test_main_menu_input_invalid_inputs(mocker, option_list, expected):
     """
     test if main menu accepts another input after invalid input is entered
     test if accepted option is returned from main_menu()
+
+    Zheng Jiongjie T01 9th December
     """
     # set input for menu options
     mocker.patch('builtins.input', side_effect=option_list)
@@ -84,6 +92,8 @@ def test_main_menu_input_invalid_inputs(mocker, option_list, expected):
 def test_start_new_game(mocker):
     """
     test if Game.start_new_turn() is called when start_new_game() is called
+
+    Zheng Jiongjie T01 9th December
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value="new turn started")
     assert start_new_game() == "new turn started"
@@ -92,6 +102,8 @@ def test_start_new_game(mocker):
 def test_main_menu_exit_program():
     """
     test if program closes when exit() function is called
+
+    Zheng Jiongjie T01 9th December
     """
     with pytest.raises(SystemExit) as e:
         exit_game()
