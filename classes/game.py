@@ -13,6 +13,8 @@ class Game:
         init function for game class
         default turn number is 1
         """
+        
+        self.building_pool ={"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
         self.height = height
         self.width = width
         self.board = []
@@ -116,6 +118,8 @@ class Game:
             return self.add_building(randomized_building_name[0])
         elif chosen_option == "2":
             return self.add_building(randomized_building_name[1])
+        elif chosen_option =="3":
+            return self.display_building()
         elif chosen_option == "0":
             return 0
 
@@ -135,6 +139,7 @@ class Game:
             else:
                 if self.check_surrounding_buildings_exist(x_coord,y_coord) or self.turn_num == 1:
                     self.board[y_coord][x_coord] = building
+                    self.remove_building(building_string)
                     building.x_coord = x_coord
                     building.y_coord = y_coord
                     self.turn_num += 1
@@ -153,6 +158,8 @@ class Game:
         ASCII_int_value = 49
         x = ord(location_string[0]) - ASCII_string_value
         y = ord(location_string[1]) - ASCII_int_value
+
+        return x,y
 
     def check_building_exist(self,x_coord,y_coord):
         """
@@ -180,4 +187,21 @@ class Game:
         elif (0 <= temp_y_higher < 4) and self.board[temp_y_higher][x_coord].name != "":
             return True
         return False
+
+    def display_building(self):
+        """
+        Display all buildings left in the building pool
+        """
+        spaces = " "
+        output ="Building{0}Remaining\n--------{0}--------\n".format(spaces*9,spaces*9)
+        for key in self.building_pool:
+            output += "{0}{1}{2}\n".format(key,spaces*14,self.building_pool[key])
+        print(output)
+        self.start_new_turn()
+    
+    def remove_building(self,building_name):
+        """
+        Remove a building from the building pool
+        """
+        self.building_pool[building_name] -=1
     

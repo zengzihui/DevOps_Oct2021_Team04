@@ -118,12 +118,13 @@ def test_start_new_turn():
 
 
 @pytest.mark.parametrize("option, expected",
-                         [(["1"], True), (["2"], True), (["100", "2"], True)])
+                         [(["1"], 1), (["2"], 1), (["100", "2"],1), (["3"],2)])
 def test_start_new_turn_options(option, expected, mocker):
     """
     run start_new_turn input options
     """
-    mocker.patch('classes.game.Game.add_building', return_value=True)
+    mocker.patch('classes.game.Game.add_building', return_value=1)
+    mocker.patch('classes.game.Game.display_building', return_value=2)
     test_game = Game()
     set_keyboard_input(option)
     assert test_game.start_new_turn() == expected
@@ -227,3 +228,32 @@ def test_check_building_exist(test_pass,x_coord,y_coord):
     test_game.board[0][1] = Shop()
     
     assert test_game.check_building_exist(x_coord,y_coord) == test_pass 
+
+@pytest.mark.parametrize("building_name",
+                         [("FAC"),("SHP"),("BCH"),("HWY"),("HSE")])
+def test_remove_building(building_name):
+    """
+    test if building can be removed from the building pool
+    """
+    test_game = Game()
+    test_game.remove_building(building_name)
+    assert test_game.building_pool[building_name] == 7
+
+def test_display_building(mocker):
+    """
+    test if display buildings pool works
+    """
+    mocker.patch('classes.game.Game.start_new_turn', return_value=True)
+    set_keyboard_input(None)
+    test_game = Game()
+    match = '''Building         Remaining
+--------         --------
+HSE              8
+FAC              8
+SHP              8
+HWY              8
+BCH              8\n'''
+
+    test_game.display_building()
+    output = get_display_output()
+    assert match==output[0]
