@@ -14,6 +14,8 @@ def main_menu(from_game_menu=None):
     Your choice?
 
     Returns option selected by user: string
+
+    Zheng Jiongjie T01 9th December
     """
 
     options = {"1": "Start new game", "2": "Load saved game", "": "", "0": "Exit"}
@@ -42,6 +44,11 @@ def main_menu(from_game_menu=None):
 
 
 def start_new_game():
+    """
+    intializes new game object and start the turn
+
+    Zheng Jiongjie T01 9th December
+    """
     current_game = Game()
     return current_game.start_new_turn()
 
@@ -49,5 +56,7 @@ def start_new_game():
 def exit_game():
     """
     exits program
+
+    Zheng Jiongjie T01 9th December
     """
     exit(1)
