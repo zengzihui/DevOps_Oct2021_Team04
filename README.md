@@ -26,7 +26,8 @@ scores as many points as possible
 
 ## Project Approach 
 ```
-This Simp City project will be split into 2 development iterations. Each iteration will be done over a period of 3-4 weeks.
+This Simp City project will be split into 2 development iterations. 
+Each iteration will be done over a period of 3-4 weeks.
 The software development methodologies used for this project is Kanban Methodology for Agile software development.
 ```
 ### Iteration 1
