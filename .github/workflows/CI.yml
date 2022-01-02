@@ -23,7 +23,7 @@ jobs:
     - name: Checkout Own Repo
       uses: actions/checkout@v2
       with: 
-        repository: rlry72/DevOpsQA_Team4
+        repository: zengzihui/DevOps_Oct2021_Team04
     - name: Checkout Test Script
       uses: actions/checkout@v2
       with:
