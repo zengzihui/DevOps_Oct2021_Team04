@@ -1,0 +1,45 @@
+name: CI for pull requests
+
+on: 
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install Libraries
+      run: |
+        pip install flake8 pytest pytest-cov
+    - name: Checkout Own Repo
+      uses: actions/checkout@v2
+      with: 
+        repository: rlry72/HelloWorldDemo
+    - name: Checkout Test Script
+      uses: actions/checkout@v2
+      with:
+        repository: rlry72/DevOpsQATest_rlry
+        path: tests
+        token: ${{ secrets.QA_TEST }}
+    - name: Linter Check with Flake8
+      run: |
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Label the PR Size
+      uses: coverwallet/pr-labeler@v1.2.1
+      with:
+        xs_max_size: '10'
+        s_max_size: '100'
+        m_max_size': '500'
+        l_max_size: '1000'
+        exclude_files: '.txt'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Begin Pytest
+      run: |
+        mv ./tests/*.* ./
+        pytest --cov -v --junitxml=report.xml > pytest-coverage.txt
+    - name: Comment coverage
+      uses: coroo/pytest-coverage-commentator@v1.0.2
