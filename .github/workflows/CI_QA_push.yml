@@ -34,15 +34,11 @@ jobs:
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        
     - name: Begin Pytest
       run: |
         pytest --cov -v --junitxml=reportTestScript.xml
-    - name: Publish Test Script Results
-      uses: EnricoMi/publish-unit-test-result-action@v1.24
-      if: always()
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        files: reportTestScript.xml
+        
     - name: Send mail
       uses: dawidd6/action-send-mail@v3
       with:
@@ -57,7 +53,7 @@ jobs:
         #CHANGE to SECRETS ASAP ${{secrets.MAIL_PASSWORD}}
         password: pitrecapstone
         # Required mail subject:
-        subject: Test Scripts has Finished Running
+        subject: Test Scripts has Finished Running (Push)
         # Required recipients' addresses:
         to: s10195746@connect.np.edu.sg,s10195732@connect.np.edu.sg
         # Required sender full name (address can be skipped):
@@ -71,6 +67,13 @@ jobs:
         # Optional converting Markdown to HTML (set content_type to text/html too):
         convert_markdown: true
         # Optional attachments:
+      
+    - name: Publish Test Script Results
+      uses: EnricoMi/publish-unit-test-result-action@v1.24
+      if: always()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        files: reportTestScript.xml
 
         
     
