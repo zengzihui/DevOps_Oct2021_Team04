@@ -36,7 +36,6 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Begin Pytest
       run: |
-        mv ./tests/*.* ./
         pytest --cov -v --junitxml=report.xml
     - name: Publish Test Script Results
       uses: EnricoMi/publish-unit-test-result-action@v1.24
