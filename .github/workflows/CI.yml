@@ -29,7 +29,7 @@ jobs:
       with:
         repository: rlry72/DevOpsQA_Team4
         path: tests
-        token: ${{ secrets.QA_T4 }}
+        token: ${{ secrets.QA_REPO }}
     - name: Linter Check with Flake8
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
