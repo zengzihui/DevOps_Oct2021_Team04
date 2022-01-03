@@ -36,13 +36,13 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Begin Pytest
       run: |
-        pytest --cov -v --junitxml=report.xml
+        pytest --cov -v --junitxml=reportTestScript.xml
     - name: Publish Test Script Results
       uses: EnricoMi/publish-unit-test-result-action@v1.24
       if: always()
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        files: report.xml
+        files: reportTestScript.xml
     - name: Send mail
       uses: dawidd6/action-send-mail@v3
       with:
