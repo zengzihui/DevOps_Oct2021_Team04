@@ -19,7 +19,7 @@ jobs:
         python-version: 3.8
     - name: Install Libraries
       run: |
-        pip install flake8 pytest pytest-cov
+        pip install flake8 pytest pytest-cov classes mocker pytest-mock
     - name: Checkout Own Repo
       uses: actions/checkout@v2
       with: 
