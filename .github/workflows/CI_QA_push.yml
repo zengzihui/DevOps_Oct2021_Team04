@@ -19,7 +19,7 @@ jobs:
         python-version: 3.8
     - name: Install Libraries
       run: |
-        pip install flake8 pytest pytest-cov classes mocker pytest-mock
+        pip install flake8 pytest pytest-cov classes mocker pytest-mock pytest-html
     - name: Checkout Own Repo
       uses: actions/checkout@v2
       with: 
@@ -37,7 +37,7 @@ jobs:
         
     - name: Begin Pytest
       run: |
-        pytest --cov -v --junitxml=reportTestScript.xml
+        pytest --cov -v --junitxml=reportTestScript.xml --html=report.html
         
     - name: Send mail
       if: ${{success()}}
@@ -68,7 +68,7 @@ jobs:
         # Optional converting Markdown to HTML (set content_type to text/html too):
         convert_markdown: true
         # Optional attachments:
-        attachments: reportTestScript.xml
+        attachments: report.html
         
     - name: Send mail
       if: ${{failure()}}
