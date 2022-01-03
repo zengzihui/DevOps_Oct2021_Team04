@@ -72,7 +72,7 @@ jobs:
       uses: dorny/test-reporter@v1
       if: always()    # run this step even if previous step failed
       with:
-        name: JEST Tests            # Name of the check run which will be created
+        name: Test Scripts            # Name of the check run which will be created
         path: reportTestScript.xml    # Path to test results
         reporter: java-junit        # Format of test results
 
