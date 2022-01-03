@@ -67,13 +67,16 @@ jobs:
         # Optional converting Markdown to HTML (set content_type to text/html too):
         convert_markdown: true
         # Optional attachments:
-      
-    - name: Publish Test Script Results
-      uses: EnricoMi/publish-unit-test-result-action@v1.24
-      if: always()
+        
+    - run: npm ci                   # install packages
+    - run: npm test    
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()    # run this step even if previous step failed
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        files: reportTestScript.xml
+        name: JEST Tests            # Name of the check run which will be created
+        path: reports/jest-*.xml    # Path to test results
+        reporter: jest-junit        # Format of test results
 
         
     
