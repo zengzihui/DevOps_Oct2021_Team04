@@ -44,5 +44,34 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         files: report.xml
+    - name: Send mail
+      uses: dawidd6/action-send-mail@v3
+      with:
+        # Required mail server address:
+        server_address: smtp.gmail.com
+        # Required mail server port:
+        server_port: 465
+        # Optional (recommended): mail server username:
+        #CHANGE TO SECRETS ASAP ${{secrets.MAIL_USERNAME}}
+        username: pitrecapstone@gmail.com
+        # Optional (recommended) mail server password:
+        #CHANGE to SECRETS ASAP ${{secrets.MAIL_PASSWORD}}
+        password: pitrecapstone
+        # Required mail subject:
+        subject: Test Scripts has Finished Running
+        # Required recipients' addresses:
+        to: s10195746@connect.np.edu.sg,s10195732@connect.np.edu.sg
+        # Required sender full name (address can be skipped):
+        from: Github Actions # <user@example.com>
+        # Optional whether this connection use TLS (default is true if server_port is 465)
+        secure: true
+        # Optional plain body:
+        body: Test Scripts of ${{github.repository}} has finished running!
+        # Optional unsigned/invalid certificates allowance:
+        ignore_cert: true
+        # Optional converting Markdown to HTML (set content_type to text/html too):
+        convert_markdown: true
+        # Optional attachments:
+
         
     
