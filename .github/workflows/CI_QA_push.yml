@@ -38,3 +38,11 @@ jobs:
       run: |
         mv ./tests/*.* ./
         pytest --cov -v --junitxml=report.xml
+    - name: Publish Test Script Results
+      uses: EnricoMi/publish-unit-test-result-action@v1.24
+      if: always()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        files: report.xml
+        
+    
