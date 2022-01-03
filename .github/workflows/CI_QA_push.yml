@@ -99,7 +99,7 @@ jobs:
         # Optional converting Markdown to HTML (set content_type to text/html too):
         convert_markdown: true
         # Optional attachments:
-        attachments: reportTestScript.xml
+        attachments: report.html
           
     - name: Test Report
       uses: dorny/test-reporter@v1
