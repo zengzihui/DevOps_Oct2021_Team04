@@ -52,7 +52,7 @@ jobs:
         server_port: 465
         # Optional (recommended): mail server username:
         #CHANGE TO SECRETS ASAP ${{secrets.MAIL_USERNAME}}
-        username: pitrecapstone@gmail.com
+        username: pitrecapstone
         # Optional (recommended) mail server password:
         #CHANGE to SECRETS ASAP ${{secrets.MAIL_PASSWORD}}
         password: pitrecapstone
@@ -65,7 +65,7 @@ jobs:
         # Optional whether this connection use TLS (default is true if server_port is 465)
         secure: true
         # Optional plain body:
-        body: Test Scripts of ${{github.repository}} has finished running!
+        body: Test Scripts of ${{github.repository}} has finished running! (Push)
         # Optional unsigned/invalid certificates allowance:
         ignore_cert: true
         # Optional converting Markdown to HTML (set content_type to text/html too):
