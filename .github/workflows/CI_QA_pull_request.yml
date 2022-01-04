@@ -12,7 +12,7 @@ jobs:
         python-version: 3.8
     - name: Install Libraries
       run: |
-        pip install flake8 pytest pytest-cov
+        pip install flake8 pytest pytest-cov classes mocker pytest-mock pytest-html
     - name: Checkout Own Repo
       uses: actions/checkout@v2
       with: 
@@ -40,6 +40,76 @@ jobs:
     - name: Begin Pytest
       run: |
         mv ./tests/*.* ./
-        pytest --cov -v --junitxml=report.xml > pytest-coverage.txt
+        pytest --cov -v --junitxml=reportTestScript.xml > pytest-coverage.txt --html=report.html
     - name: Comment coverage
       uses: coroo/pytest-coverage-commentator@v1.0.2
+      
+    - name: Send mail
+      if: ${{success()}}
+      uses: dawidd6/action-send-mail@v3
+      with:
+        # Required mail server address:
+        server_address: smtp.gmail.com
+        # Required mail server port:
+        server_port: 465
+        # Optional (recommended): mail server username:
+        #CHANGE TO SECRETS ASAP ${{secrets.MAIL_USERNAME}} RMB
+        username: pitrecapstone
+        # Optional (recommended) mail server password:
+        #CHANGE to SECRETS ASAP ${{secrets.MAIL_PASSWORD}}
+        password: pitrecapstone
+        # Required mail subject:
+        subject: Test Scripts has Finished Running (Push)
+        # Required recipients' addresses:
+        to: s10195746@connect.np.edu.sg,s10195732@connect.np.edu.sg
+        # Required sender full name (address can be skipped):
+        from: Github Actions # <user@example.com>
+        # Optional whether this connection use TLS (default is true if server_port is 465)
+        secure: true
+        # Optional plain body:
+        body: Test Scripts of ${{github.repository}} has finished running! (Push) All Test Scripts Successful!
+        # Optional unsigned/invalid certificates allowance:
+        ignore_cert: true
+        # Optional converting Markdown to HTML (set content_type to text/html too):
+        convert_markdown: true
+        # Optional attachments:
+        attachments: report.html
+        
+    - name: Send mail
+      if: ${{failure()}}
+      uses: dawidd6/action-send-mail@v3
+      with:
+        # Required mail server address:
+        server_address: smtp.gmail.com
+        # Required mail server port:
+        server_port: 465
+        # Optional (recommended): mail server username:
+        #CHANGE TO SECRETS ASAP ${{secrets.MAIL_USERNAME}} RMB
+        username: pitrecapstone
+        # Optional (recommended) mail server password:
+        #CHANGE to SECRETS ASAP ${{secrets.MAIL_PASSWORD}}
+        password: pitrecapstone
+        # Required mail subject:
+        subject: Test Scripts has Finished Running (Push)
+        # Required recipients' addresses:
+        to: s10195746@connect.np.edu.sg,s10195732@connect.np.edu.sg
+        # Required sender full name (address can be skipped):
+        from: Github Actions # <user@example.com>
+        # Optional whether this connection use TLS (default is true if server_port is 465)
+        secure: true
+        # Optional plain body:
+        body: Test Scripts of ${{github.repository}} has finished running! (Push) Some Test Scripts Failed!
+        # Optional unsigned/invalid certificates allowance:
+        ignore_cert: true
+        # Optional converting Markdown to HTML (set content_type to text/html too):
+        convert_markdown: true
+        # Optional attachments:
+        attachments: report.html
+        
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: always()    # run this step even if previous step failed
+      with:
+        name: Test Scripts            # Name of the check run which will be created
+        path: reportTestScript.xml    # Path to test results
+        reporter: java-junit        # Format of test results
