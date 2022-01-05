@@ -16,13 +16,13 @@ jobs:
     - name: Checkout Own Repo
       uses: actions/checkout@v2
       with: 
-        repository: rlry72/HelloWorldDemo
+        repository:  zengzihui/DevOps_Oct2021_Team04 
     - name: Checkout Test Script
       uses: actions/checkout@v2
       with:
-        repository: rlry72/DevOpsQATest_rlry
+        repository: rlry72/DevOpsQA_Team4
         path: tests
-        token: ${{ secrets.QA_TEST }}
+        token: ${{ secrets.QA_REPO }}
     - name: Linter Check with Flake8
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
