@@ -120,10 +120,10 @@ jobs:
       uses: peter-evans/create-issue-from-file@v3
       if: ${{failure()}}
       with:
-        title: Test GitHub Action Issue
+        title: Failed Test Scripts
         content-filepath: report.html
         labels: |
-          report
+          Failed Test Script
           automated issue
         assignees:
           JianOon
