@@ -6,9 +6,12 @@ name: Unit_Tests
 on:
 # Workflow will run when push to all branches
   push:
-
+    branches-ignore:
+      - staging
+      - launchpad
+      - production
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  #workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -32,10 +35,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # create pull request on push to new branch
+      - name: Auto-Pull-Request
+        uses: vsoch/pull-request-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_PREFIX: "update/"
+          PULL_REQUEST_BRANCH: "master"
+
+      # pytest
       - name: Run tests with pytest
         run: |
           pytest --cov -v --junitxml=report.xml
 
+      # send message to developer when unit test fails
       - if: ${{failure()}}
         name: Send telegram message to developer on unit test fail
         uses: appleboy/telegram-action@master
@@ -49,7 +62,7 @@ jobs:
             
             Repository: ${{ github.repository }}
 
-
+      # sends message to tech lead and developers when all unit tests pass
       - if: ${{success()}}
         name: Send telegram message to entire development team on unit test pass
         uses: appleboy/telegram-action@master
@@ -63,6 +76,7 @@ jobs:
             
             Repository: ${{ github.repository }}
 
+      # publish test results to github
       - name: Publish Unit Test Results
         uses: EnricoMi/publish-unit-test-result-action@v1.24
         if: always()
