@@ -113,3 +113,16 @@ jobs:
         name: Test Scripts            # Name of the check run which will be created
         path: reportTestScript.xml    # Path to test results
         reporter: java-junit        # Format of test results
+        
+    - name: Create Issue From File
+      uses: peter-evans/create-issue-from-file@v3
+      with:
+        title: Test GitHub Action Issue
+        content-filepath: report.html
+        labels: |
+          report
+          automated issue
+        assignees:
+          JianOon
+          rlry72
+
