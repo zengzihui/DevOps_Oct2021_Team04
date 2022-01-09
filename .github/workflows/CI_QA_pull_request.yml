@@ -14,7 +14,7 @@ jobs:
         python-version: 3.8
     - name: Install Libraries
       run: |
-        pip install flake8 pytest pytest-cov classes mocker pytest-mock pytest-html
+        pip install flake8 pytest pytest-cov classes mocker pytest-mock pytest-html pytest-md
     - name: Checkout Own Repo
       uses: actions/checkout@v2
       with: 
@@ -42,7 +42,7 @@ jobs:
     - name: Begin Pytest
       run: |
         mv ./tests/*.* ./
-        pytest --cov -v --junitxml=reportTestScript.xml > pytest-coverage.txt --html=report.html
+        pytest --cov -v --junitxml=reportTestScript.xml > pytest-coverage.txt --html=report.html --md=report.md
     - name: Comment coverage
       uses: coroo/pytest-coverage-commentator@v1.0.2
       
@@ -121,7 +121,7 @@ jobs:
       if: ${{failure()}}
       with:
         title: Failed Test Scripts
-        content-filepath: report.html
+        content-filepath: report.md
         labels: |
           Failed Test Script
           automated issue
