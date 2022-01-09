@@ -118,6 +118,7 @@ jobs:
         
     - name: Create Issue From File
       uses: peter-evans/create-issue-from-file@v3
+      if: ${{failure()}}
       with:
         title: Test GitHub Action Issue
         content-filepath: report.html
