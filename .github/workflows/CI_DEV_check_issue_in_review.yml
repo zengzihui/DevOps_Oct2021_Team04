@@ -17,7 +17,8 @@ jobs:
           issue-number: ${{ github.event.issue.number }}
           body: |
             @JianOon please review the pull request attached to this issue
-
+          
+      - if: github.event.label.name == 'Dev Task'
         # send telegram message to remind him to review pull request attached to issue which is moved to "in review"
         name: Send telegram message to tech lead to review pull request attached to issue
         uses: appleboy/telegram-action@master
