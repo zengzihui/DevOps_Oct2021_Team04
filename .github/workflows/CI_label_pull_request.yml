@@ -1,7 +1,5 @@
 # Workflow for approving pull requests
-
 name: Approve_Pull_Requests
-description: Label relevant project board cards "Dev Team Approved" on the project board once tech lead approves code review
 
 # Control
 on:
@@ -20,22 +18,26 @@ jobs:
       
       # Task to run
       steps:
+  
+            
         # labelling pull-request with 'Dev Team Approved' once tech lead approves of code review.
         - name: Add label to pull request
-          if: ${{ github.event.PullRequestReviewCommentEvent.action == 'APPROVED' }}
+          if: ${{ github.event.review.state == 'approved' }}
           
         # labelling issue with 'Dev Team Approved' once tech lead approves of code review.
-          uses: dessant/label-actions@v2.2.0
+          uses: buildsville/add-remove-label@v1
           with:
-            label: 'Dev Team Approved'
-
+            token: ${{secrets.GITHUB_TOKEN}}
+            label: Dev Team Approved
+            type: add
+            
         - name: Remove label to pull request
-          if: ${{ github.event.PullRequestReviewCommentEvent.action != 'APPROVED' }}
+          if: ${{ github.event.review.state != 'approved' }}
           
         # labelling issue with 'Dev Team Approved' once tech lead approves of code review.
-          uses: dessant/label-actions@v2.2.0
+          uses: buildsville/add-remove-label@v1
           with:
-            unlabel: 'Dev Team Approved'
-              
-
-    
+            token: ${{secrets.GITHUB_TOKEN}}
+            label: Dev Team Approved
+            type: remove
+          
