@@ -1,11 +1,14 @@
 # workflow for QA tests
 
-name: CI for push in all branches
+# run again after merge pull request into main just in case merge has error
+name: CI for push into main branch
 
 # Controls when the workflow will run
 on:
 # Workflow will run when pushed to any branch
   push:
+    branches:
+      - main
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
