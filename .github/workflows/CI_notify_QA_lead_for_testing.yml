@@ -1,0 +1,15 @@
+name: Move backlog task into in progress when self-assigned
+on:
+  issues:
+    types: [assigned]
+
+jobs:
+  move-task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "move-assigned-card"
+        uses: kin/gh-action-move-issues-to-column@v1.0
+        with:
+          access-token: "${{ secrets.GITHUB_TOKEN }}"
+          project-name: "SimpCity"
+          target-column: "In progress"
