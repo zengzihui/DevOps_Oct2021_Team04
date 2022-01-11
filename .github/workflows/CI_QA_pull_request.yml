@@ -131,3 +131,18 @@ jobs:
           JianOon
           rlry72
 
+    - if: ${{success()}}
+      name: Discord notification
+      env:
+        DISCORD_WEBHOOK: https://discord.com/api/webhooks/918820417467199498/9bnSpC3afr6euVolvsCDuNXwM6hUcElqeN5Vl2LDUObNbXEEhWiYV1tlddCHURgHBphV
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'Test Scripts for {{ EVENT_PAYLOAD.repository.full_name }} successfully passed.'
+        
+    - if: ${{failure()}}
+      name: Discord notification
+      env:
+        DISCORD_WEBHOOK: https://discord.com/api/webhooks/918820417467199498/9bnSpC3afr6euVolvsCDuNXwM6hUcElqeN5Vl2LDUObNbXEEhWiYV1tlddCHURgHBphV
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'Test Scripts for {{ EVENT_PAYLOAD.repository.full_name }} has failed.'
