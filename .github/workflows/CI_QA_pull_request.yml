@@ -128,8 +128,8 @@ jobs:
           Failed Test Script
           automated issue
         assignees:
-          JianOon # Tech Lead
-          rlry72  # QA Lead
+          JianOon
+          rlry72
 
     - if: ${{success()}}
       name: Discord notification
