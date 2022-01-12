@@ -9,7 +9,7 @@ jobs:
   notify-tech-lead:
     runs-on: ubuntu-latest
     steps:
-      - if: github.event.label.name == 'Dev Task'
+      - if: contains(github.event.labels.*.name, 'Dev Task')
         # notify tech lead in github issue comments
         name: Notify Tech Lead on Issue In-Review
         uses: peter-evans/create-or-update-comment@a35cf36e5301d70b76f316e867e7788a55a31dae
@@ -18,7 +18,7 @@ jobs:
           body: |
             @JianOon please review the pull request attached to this issue
           
-      - if: github.event.label.name == 'Dev Task'
+      - if: contains(github.event.labels.*.name, 'Dev Task')
         # send telegram message to remind him to review pull request attached to issue which is moved to "in review"
         name: Send telegram message to tech lead to review pull request attached to issue
         uses: appleboy/telegram-action@master
