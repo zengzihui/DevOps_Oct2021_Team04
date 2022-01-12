@@ -128,3 +128,14 @@ jobs:
       with:
         args: 'Test Scripts for {{ EVENT_PAYLOAD.repository.full_name }} (Push to main) have failed.'
     
+    - name: Create Issue From File
+      uses: peter-evans/create-issue-from-file@v3
+      if: ${{failure()}}
+      with:
+        title: Failed Test Scripts
+        content-filepath: report.md
+        labels: |
+          Failed Test Script
+          automated issue
+        assignees:
+          JianOon 
