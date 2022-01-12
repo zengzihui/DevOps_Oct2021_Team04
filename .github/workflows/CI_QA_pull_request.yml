@@ -57,11 +57,9 @@ jobs:
         # Required mail server port:
         server_port: 465
         # Optional (recommended): mail server username:
-        #CHANGE TO SECRETS ASAP ${{secrets.MAIL_USERNAME}} RMB
-        username: pitrecapstone
+        username: ${{secrets.MAIL_USERNAME}}
         # Optional (recommended) mail server password:
-        #CHANGE to SECRETS ASAP ${{secrets.MAIL_PASSWORD}}
-        password: pitrecapstone
+        password: ${{secrets.MAIL_PASSWORD}}
         # Required mail subject:
         subject: Test Scripts have Finished Running (Pull Request)
         # Required recipients' addresses:
@@ -88,11 +86,9 @@ jobs:
         # Required mail server port:
         server_port: 465
         # Optional (recommended): mail server username:
-        #CHANGE TO SECRETS ASAP ${{secrets.MAIL_USERNAME}} RMB
-        username: pitrecapstone
+        username: ${{secrets.MAIL_USERNAME}}
         # Optional (recommended) mail server password:
-        #CHANGE to SECRETS ASAP ${{secrets.MAIL_PASSWORD}}
-        password: pitrecapstone
+        password: ${{secrets.MAIL_PASSWORD}}
         # Required mail subject:
         subject: Test Scripts has Finished Running (Pull Request)
         # Required recipients' addresses:
