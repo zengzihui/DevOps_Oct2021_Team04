@@ -118,18 +118,13 @@ jobs:
         path: reportTestScript.xml    # Path to test results
         reporter: java-junit        # Format of test results
         
-    - name: Create Issue From File
-      uses: peter-evans/create-issue-from-file@v3
+    - name: Notify Tech Lead on Issue In-Review
+      uses: peter-evans/create-or-update-comment@v1.4.5
       if: ${{failure()}}
       with:
-        title: Failed Test Scripts
-        content-filepath: report.md
-        labels: |
-          Failed Test Script
-          automated issue
-        assignees:
-          JianOon # Tech Lead
-          rlry72  # QA Lead
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          @JianOon Please review with @rlry72
 
     - if: ${{success()}}
       name: Discord notification
