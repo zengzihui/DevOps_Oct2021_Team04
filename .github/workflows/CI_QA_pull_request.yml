@@ -8,19 +8,23 @@ on:
 
 jobs:
   build:
+    # only if pull request is labeled 'Dev Team Approved', run Actions. 
     if: ${{ github.event.label.name == 'Dev Team Approved' }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/setup-python@v2
       with:
         python-version: 3.8
+    # install required libraries to run pytest scripts
     - name: Install Libraries
       run: |
         pip install flake8 pytest pytest-cov classes mocker pytest-mock pytest-html pytest-md
+    # checkout dev repo to retrieve source code
     - name: Checkout Own Repo
       uses: actions/checkout@v2
       with: 
         repository:  zengzihui/DevOps_Oct2021_Team04 
+    # checkout QA repo to retrieve QA test scripts
     - name: Checkout Test Script
       uses: actions/checkout@v2
       with:
@@ -31,6 +35,7 @@ jobs:
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    # label size of the pull request in the pull request
     - name: Label the PR Size
       uses: coverwallet/pr-labeler@v1.2.1
       with:
@@ -41,13 +46,15 @@ jobs:
         exclude_files: '.txt'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # run test scripts and get coverage and test reports
     - name: Begin Pytest
       run: |
         mv ./tests/*.* ./
         pytest --cov -v --junitxml=reportTestScript.xml > pytest-coverage.txt --html=report.html --md=report.md
+    # create a comment in pull request with the coverage of test scripts
     - name: Comment coverage
       uses: coroo/pytest-coverage-commentator@v1.0.2
-      
+    # send email saying test scripts passed with test report if test scripts have passed
     - name: Send mail
       if: ${{success()}}
       uses: dawidd6/action-send-mail@v3
@@ -77,6 +84,7 @@ jobs:
         # Optional attachments:
         attachments: report.html
         
+    # send email saying test scripts failed with test report if test scripts have failed     
     - name: Send mail
       if: ${{failure()}}
       uses: dawidd6/action-send-mail@v3
@@ -106,6 +114,7 @@ jobs:
         # Optional attachments:
         attachments: report.html
         
+    # create test report in the pull request
     - name: Test Report
       uses: dorny/test-reporter@v1
       if: always()    # run this step even if previous step failed
@@ -113,15 +122,15 @@ jobs:
         name: Test Scripts            # Name of the check run which will be created
         path: reportTestScript.xml    # Path to test results
         reporter: java-junit        # Format of test results
-        
-    - name: Notify Tech Lead on Issue In-Review
+    # tag tech lead and QA lead in the pull request if the test scripts failed
+    - name: Notify Tech Lead on Pull Request In-Review
       uses: peter-evans/create-or-update-comment@v1.4.5
       if: ${{failure()}}
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
           @JianOon Please review with @rlry72
-
+    # if test scripts pass, send discord notification in devops channel notifying that test scripts from pull request have passed
     - if: ${{success()}}
       name: Discord notification
       env:
@@ -130,6 +139,7 @@ jobs:
       with:
         args: 'Test Scripts for {{ EVENT_PAYLOAD.repository.full_name }} (Pull Request) have successfully passed.'
         
+    # if test scripts fail, send discord notification in devops channel notifying that test scripts from pull request have failed       
     - if: ${{failure()}}
       name: Discord notification
       env:
