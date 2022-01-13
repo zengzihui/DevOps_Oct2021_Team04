@@ -5,7 +5,7 @@ name: CI for push into main branch
 
 # Controls when the workflow will run
 on:
-# Workflow will run when pushed to any branch
+# Workflow will run when pushed to main branch only (after merge)
   push:
     branches:
       - main
@@ -20,13 +20,16 @@ jobs:
     - uses: actions/setup-python@v2
       with:
         python-version: 3.8
+    # install libraries needed to run pytest
     - name: Install Libraries
       run: |
         pip install flake8 pytest pytest-cov classes mocker pytest-mock pytest-html pytest-md
+    # checkout dev repo to retrieve source code
     - name: Checkout Own Repo
       uses: actions/checkout@v2
       with: 
         repository: zengzihui/DevOps_Oct2021_Team04
+    # checkout QA repo to retrieve test scripts
     - name: Checkout Test Script
       uses: actions/checkout@v2
       with:
@@ -37,11 +40,11 @@ jobs:
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-        
+    # start running test scripts
     - name: Begin Pytest
       run: |
         pytest --cov -v --junitxml=reportTestScript.xml --html=report.html
-        
+    # if test scripts passed, send email notifying test scripts passed to QA lead and Tech lead
     - name: Send mail
       if: ${{success()}}
       uses: dawidd6/action-send-mail@v3
@@ -70,7 +73,7 @@ jobs:
         convert_markdown: true
         # Optional attachments:
         attachments: report.html
-        
+    # if test scripts fail, send email notifying test scripts failed to QA lead and Tech lead
     - name: Send mail
       if: ${{failure()}}
       uses: dawidd6/action-send-mail@v3
@@ -99,7 +102,7 @@ jobs:
         convert_markdown: true
         # Optional attachments:
         attachments: report.html
-          
+    # create test report in github actions
     - name: Test Report
       uses: dorny/test-reporter@v1
       if: always()    # run this step even if previous step failed
@@ -107,7 +110,7 @@ jobs:
         name: Test Scripts            # Name of the check run which will be created
         path: reportTestScript.xml    # Path to test results
         reporter: java-junit        # Format of test results
-
+    # if test scripts pass, send discord notification that test scripts have passed in devops channel
     - if: ${{success()}}
       name: Discord notification
       env:
@@ -116,6 +119,7 @@ jobs:
       with:
         args: 'Test Scripts for {{ EVENT_PAYLOAD.repository.full_name }} (Push to main) successfully passed.'
         
+    # if test scripts fail, send discord notification that test scripts have failed in devops channel    
     - if: ${{failure()}}
       name: Discord notification
       env:
@@ -124,6 +128,7 @@ jobs:
       with:
         args: 'Test Scripts for {{ EVENT_PAYLOAD.repository.full_name }} (Push to main) have failed.'
     
+    # if test scripts fail, get test report and create an issue, showing what test scripts have failed, and assign tech lead to the issue
     - name: Create Issue From File
       uses: peter-evans/create-issue-from-file@v3
       id: ciff
@@ -137,6 +142,7 @@ jobs:
         assignees:
           JianOon 
 
+    # if test scripts fail, comment on the issue above tagging tech lead
     - name: Notify Tech Lead on Issue In-Review
       uses: peter-evans/create-or-update-comment@v1.4.5
       if: ${{failure()}}
