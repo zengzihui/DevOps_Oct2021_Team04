@@ -24,44 +24,28 @@ class Shop(Building):
                 score_dict[key] = 1
                 continue
         
-        temp_x_lower = self.x_coord - 1
-        if (0 <= temp_x_lower < game_board.width):
-            pass
-        else:
-            temp_x_lower = 0
+        if self.get_top_building(game_board) != None:
+            building = self.get_top_building(game_board)
+            if score_dict[building] == 1:
+                score_dict[building] = 0
+                total_score += 1
 
-        temp_x_higher = self.x_coord + 1
-        if (0 <= temp_x_higher < game_board.width):
-            pass
-        else:
-            temp_x_higher = game_board.width
+        if self.get_bot_building(game_board) != None:
+            building = self.get_bot_building(game_board)
+            if score_dict[building] == 1:
+                score_dict[building] = 0
+                total_score += 1
 
-        temp_y_lower = self.y_coord - 1
-        if (0 <= temp_y_lower < game_board.height):
-            pass
-        else:
-            temp_x_lower = 0
-        
-        temp_y_higher = self.y_coord + 1
-        if (0 <= temp_y_higher < game_board.height):
-            pass
-        else:
-            temp_x_higher = game_board.height
-        
-        if score_dict[game_board.board[self.y_coord][temp_x_lower].name] == 1:
-            score_dict[game_board.board[self.y_coord][temp_x_lower].name] = 0
-            total_score += 1
-        
-        if score_dict[game_board.board[self.y_coord][temp_x_higher].name] == 1:
-            score_dict[game_board.board[self.y_coord][temp_x_higher].name] = 0
-            total_score += 1
+        if self.get_left_building(game_board) != None:
+            building = self.get_left_building(game_board)
+            if score_dict[building] == 1:
+                score_dict[building] = 0
+                total_score += 1
 
-        if score_dict[game_board.board[temp_y_lower][self.x_coord].name] == 1:
-            score_dict[game_board.board[temp_y_lower][self.x_coord].name] = 0
-            total_score += 1
-        
-        if score_dict[game_board.board[temp_y_higher][self.x_coord].name] == 1:
-            score_dict[game_board.board[temp_y_higher][self.x_coord].name] = 0
-            total_score += 1
+        if self.get_right_building(game_board) != None:
+            building = self.get_right_building(game_board)
+            if score_dict[building] == 1:
+                score_dict[building] = 0
+                total_score += 1
 
         return total_score
