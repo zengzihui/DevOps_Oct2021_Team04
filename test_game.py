@@ -153,20 +153,30 @@ def test_sub_classes(building, expected):
     assert building.name == expected
 
 
-@pytest.mark.parametrize("location,x,y",
-                         [("a1", 0, 0), ("a2", 0, 1)])
-def test_add_building(location, x, y, mocker):
+@pytest.mark.parametrize("location,x,y,building_type",
+                         [("a1", 0, 0,"SHP"), ("a1", 0, 0,"FAC"),("a1", 0, 0,"HSE"),("a1", 0, 0,"HWY"),("a1", 0, 0,"BCH")])
+def test_add_building(location, x, y, building_type, mocker):
     """
     success cases for adding_building function
 
     Swah Jianoon T01 9th December
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
-    test_shop = "SHP"
+    test_shop = building_type
     test_game = Game()
     set_keyboard_input([location])
     test_game.add_building(test_shop)
-    assert isinstance(test_game.board[y][x], Shop)
+    if building_type == "SHP":
+        building_obj = Shop
+    elif building_type == "HSE":
+        building_obj = House
+    elif building_type == "FAC":
+        building_obj = Factory
+    elif building_type == "HWY":
+        building_obj = Highway
+    elif building_type == "BCH":
+        building_obj = Beach
+    assert isinstance(test_game.board[y][x], building_obj)
 
 
 @pytest.mark.parametrize("location",
