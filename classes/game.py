@@ -1,5 +1,4 @@
 from random import randrange
-from tkinter.messagebox import NO
 
 from .building import Building
 from .shop import Shop
