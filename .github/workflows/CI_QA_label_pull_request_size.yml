@@ -4,7 +4,7 @@ on:
   [pull_request]
 
 jobs:
-  pr-labeler:
+  build:
     runs-on: ubuntu-latest
     # label size of the pull request in the pull request
     - name: Label the PR Size
