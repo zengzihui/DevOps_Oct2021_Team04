@@ -179,6 +179,14 @@ class Game:
         building = Building()
         if building_string == "SHP":
             building = Shop()
+        elif building_string == "HSE":
+            building = House()
+        elif building_string == "FAC":
+            building = Factory()
+        elif building_string == "HWY":
+            building = Highway()
+        elif building_string == "BCH":
+            building = Beach()
 
         location_string = input("Build where? ")
         x_coord, y_coord = self.input_to_coordinates(location_string)
