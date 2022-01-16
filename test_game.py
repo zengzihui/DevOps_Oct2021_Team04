@@ -1,4 +1,3 @@
-from cgi import test
 import sys
 from unittest import mock
 import pytest
@@ -299,79 +298,79 @@ BCH              8\n'''
     assert match == output[0]
 
 
-# def test_randomize_two_buildings_from_pool_random():
-#     """
-#     tests get_two_buildings_from_pool() function if the results are properly randomized
+def test_randomize_two_buildings_from_pool_random():
+    """
+    tests get_two_buildings_from_pool() function if the results are properly randomized
 
-#     Zheng Jiongjie T01 16th January
-#     """
-#     # run randomze buildings for 10 turns 10 times
-#     for i in range(0, 10):
-#         test_game = Game()
+    Zheng Jiongjie T01 16th January
+    """
+    # run randomze buildings for 10 turns 10 times
+    for i in range(0, 10):
+        test_game = Game()
 
-#         # generate randomized buildings for turn 1
-#         test_game.get_two_buildings_from_pool(test_game.building_pool)
+        # generate randomized buildings for turn 1
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
 
-#         # generate randomized buildings for turn 2
-#         test_game.turn_num = 2
-#         test_game.get_two_buildings_from_pool(test_game.building_pool)
+        # generate randomized buildings for turn 2
+        test_game.turn_num = 2
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
 
-#         # generate randomized buildings for turn 3
-#         test_game.turn_num = 3
-#         test_game.get_two_buildings_from_pool(test_game.building_pool)
+        # generate randomized buildings for turn 3
+        test_game.turn_num = 3
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
 
-#         # generate randomized buildings for turn 4
-#         test_game.turn_num = 4
-#         test_game.get_two_buildings_from_pool(test_game.building_pool)
+        # generate randomized buildings for turn 4
+        test_game.turn_num = 4
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
 
-#         # generate randomized buildings for turn 5
-#         test_game.turn_num = 5
-#         test_game.get_two_buildings_from_pool(test_game.building_pool)
+        # generate randomized buildings for turn 5
+        test_game.turn_num = 5
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
 
-#         # generate randomized buildings for turn 6
-#         test_game.turn_num = 6
-#         test_game.get_two_buildings_from_pool(test_game.building_pool)
+        # generate randomized buildings for turn 6
+        test_game.turn_num = 6
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
 
-#         # generate randomized buildings for turn 7
-#         test_game.turn_num = 7
-#         test_game.get_two_buildings_from_pool(test_game.building_pool)
+        # generate randomized buildings for turn 7
+        test_game.turn_num = 7
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
 
-#         # generate randomized buildings for turn 8
-#         test_game.turn_num = 8
-#         test_game.get_two_buildings_from_pool(test_game.building_pool)
+        # generate randomized buildings for turn 8
+        test_game.turn_num = 8
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
 
-#         # generate randomized buildings for turn 9
-#         test_game.turn_num = 9
-#         test_game.get_two_buildings_from_pool(test_game.building_pool)
+        # generate randomized buildings for turn 9
+        test_game.turn_num = 9
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
 
-#         # generate randomized buildings for turn 10
-#         test_game.turn_num = 10
-#         test_game.get_two_buildings_from_pool(test_game.building_pool)
+        # generate randomized buildings for turn 10
+        test_game.turn_num = 10
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
 
-#         # assert randomly generated buildings across all 10 turns are not the same
-#         assert not (test_game.randomized_building_history["1"] == test_game.randomized_building_history["2"] ==
-#                     test_game.randomized_building_history["3"] == test_game.randomized_building_history["4"] ==
-#                     test_game.randomized_building_history["5"] == test_game.randomized_building_history["6"] ==
-#                     test_game.randomized_building_history["7"] == test_game.randomized_building_history["8"] ==
-#                     test_game.randomized_building_history["9"] == test_game.randomized_building_history["10"])
+        # assert randomly generated buildings across all 10 turns are not the same
+        assert not (test_game.randomized_building_history["1"] == test_game.randomized_building_history["2"] ==
+                    test_game.randomized_building_history["3"] == test_game.randomized_building_history["4"] ==
+                    test_game.randomized_building_history["5"] == test_game.randomized_building_history["6"] ==
+                    test_game.randomized_building_history["7"] == test_game.randomized_building_history["8"] ==
+                    test_game.randomized_building_history["9"] == test_game.randomized_building_history["10"])
 
 
-# def test_randomize_two_buildings_from_pool_when_no_building():
-#     """
-#     tests get_two_buildings_from_pool() function if the it returns buildings with 0 buildings left in pool
+def test_randomize_two_buildings_from_pool_when_no_building():
+    """
+    tests get_two_buildings_from_pool() function if the it returns buildings with 0 buildings left in pool
 
-#     Zheng Jiongjie T01 16th January
-#     """
-#     test_game = Game()
+    Zheng Jiongjie T01 16th January
+    """
+    test_game = Game()
 
-#     # remove all beaches from building pool
-#     test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 0}
+    # remove all beaches from building pool
+    test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 0}
 
-#     # loop through 10 times, BCH must never be the value returned from get_two_buildings_from_pool()
-#     for i in range(0, 10):
-#         # get randomized building
-#         test_game.get_two_buildings_from_pool(test_game.building_pool)
-#         # check each item in randomized building
-#         for item in test_game.randomized_building_history[str(test_game.turn_num)]:
-#             # BCH must never appear from randomized building, since there is 0 of it left in the pool
-#             assert item != "BCH"
+    # loop through 10 times, BCH must never be the value returned from get_two_buildings_from_pool()
+    for i in range(0, 10):
+        # get randomized building
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
+        # check each item in randomized building
+        for item in test_game.randomized_building_history[str(test_game.turn_num)]:
+            # BCH must never appear from randomized building, since there is 0 of it left in the pool
+            assert item != "BCH"
