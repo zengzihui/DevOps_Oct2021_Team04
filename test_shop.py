@@ -20,7 +20,7 @@ from classes.game import *
                                  ],0,0,0), 
 
                              ([
-                                 [Shop(0,0), Highway(), Building(), Building()],
+                                 [Shop(0,0), Highway(1,0), Building(), Building()],
                                  [Building(),Building(),Building(),Building()],
                                  [Building(),Building(),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
@@ -28,14 +28,14 @@ from classes.game import *
                                  ],1,0,0), 
                              (
                                  [
-                                     [House(0,0), Shop(1,0),Highway(),Building()],
+                                     [House(0,0), Shop(1,0),Highway(2,0),Building()],
                                      [Building(),Building(),Building(),Building()],
                                      [Building(),Building(),Building(),Building()],
                                      [Building(),Building(),Building(),Building()]
                                  ],2 ,1,0),
                              (
                                  [
-                                     [House(0,0), Shop(1,0),Highway(),Building()],
+                                     [House(0,0), Shop(1,0),Highway(2,0),Building()],
                                      [Building(),Beach(),Building(),Building()],
                                      [Building(),Building(),Building(),Building()],
                                      [Building(),Building(),Building(),Building()]
@@ -43,8 +43,8 @@ from classes.game import *
                              (
                                  [
                                      [Building(),Beach(),Building(),Building()],
-                                     [House(0,1),Shop(1,1),Highway(),Building()],
-                                     [Building(),Factory(),Building(),Building()],
+                                     [House(0,1),Shop(1,1),Highway(2,1),Building()],
+                                     [Building(),Factory(1,2),Building(),Building()],
                                      [Building(),Building(),Building(),Building()]
                                  ],4, 1, 1),
                          

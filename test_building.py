@@ -13,11 +13,11 @@ from classes.game import *
                          [
                              ([
                                  [Building, Shop(1,0), Building() , Building()],
-                                 [Factory(),Building(),House(2,1),Building()],
+                                 [Factory(0,1),Building(),House(2,1),Building()],
                                  [Building(),Beach(),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
-                                 ],"SHP",1,1)
+                                 ],Shop,1,1)
 
                          ])
 def test_get_top_building(game_board,building_name,x_coord,y_coord):
@@ -27,18 +27,18 @@ def test_get_top_building(game_board,building_name,x_coord,y_coord):
     test_building.y_coord = y_coord
     test_game = Game()
     test_game.board = game_board
-    assert test_building.get_top_building(test_game) == building_name
+    assert isinstance(test_building.get_top_building(test_game),building_name )
 
 
 @pytest.mark.parametrize("game_board, building_name,x_coord,y_coord",
                          [
                              ([
                                  [Building, Shop(1,0), Building() , Building()],
-                                 [Factory(),Building(),House(2,1),Building()],
+                                 [Factory(0,1),Building(),House(2,1),Building()],
                                  [Building(),Beach(),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
-                                 ],"BCH",1,1)
+                                 ], Beach,1,1)
 
                          ])
 def test_get_bot_building(game_board,building_name,x_coord,y_coord):
@@ -48,17 +48,17 @@ def test_get_bot_building(game_board,building_name,x_coord,y_coord):
     test_building.y_coord = y_coord
     test_game = Game()
     test_game.board = game_board
-    assert test_building.get_bot_building(test_game) == building_name
+    assert isinstance(test_building.get_bot_building(test_game),building_name )
 
 @pytest.mark.parametrize("game_board, building_name,x_coord,y_coord",
                          [
                              ([
                                  [Building, Shop(1,0), Building() , Building()],
-                                 [Factory(),Building(),House(2,1),Building()],
+                                 [Factory(0,1),Building(),House(2,1),Building()],
                                  [Building(),Beach(),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
-                                 ],"HSE",1,1)
+                                 ],House,1,1)
 
                          ])
 def test_get_right_building(game_board,building_name,x_coord,y_coord):
@@ -68,17 +68,17 @@ def test_get_right_building(game_board,building_name,x_coord,y_coord):
     test_building.y_coord = y_coord
     test_game = Game()
     test_game.board = game_board
-    assert test_building.get_right_building(test_game) == building_name
+    assert isinstance(test_building.get_right_building(test_game),building_name )
 
 @pytest.mark.parametrize("game_board, building_name,x_coord,y_coord",
                          [
                              ([
                                  [Building, Shop(1,0), Building() , Building()],
-                                 [Factory(),Building(),House(2,1),Building()],
+                                 [Factory(0,1),Building(),House(2,1),Building()],
                                  [Building(),Beach(),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
-                                 ],"FAC",1,1)
+                                 ],Factory,1,1)
 
                          ])
 def test_get_left_building(game_board,building_name,x_coord,y_coord):
@@ -88,14 +88,14 @@ def test_get_left_building(game_board,building_name,x_coord,y_coord):
     test_building.y_coord = y_coord
     test_game = Game()
     test_game.board = game_board
-    assert test_building.get_left_building(test_game) == building_name
+    assert isinstance(test_building.get_left_building(test_game),building_name )
 
 
 @pytest.mark.parametrize("game_board, building_name,x_coord,y_coord",
                          [
                              ([
                                  [Building, Shop(1,0), Building() , Building()],
-                                 [Factory(),Building(),House(2,1),Building()],
+                                 [Factory(0,1),Building(),House(2,1),Building()],
                                  [Building(),Beach(),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
@@ -116,7 +116,7 @@ def test_get_top_building_out_of_bounds(game_board,building_name,x_coord,y_coord
                          [
                              ([
                                  [Building, Shop(1,0), Building() , Building()],
-                                 [Factory(),Building(),House(2,1),Building()],
+                                 [Factory(0,1),Building(),House(2,1),Building()],
                                  [Building(),Beach(),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
@@ -137,7 +137,7 @@ def test_get_left_building_out_of_bounds(game_board,building_name,x_coord,y_coor
                          [
                              ([
                                  [Building, Shop(1,0), Building() , Building()],
-                                 [Factory(),Building(),House(2,1),Building()],
+                                 [Factory(0,1),Building(),House(2,1),Building()],
                                  [Building(),Beach(),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
@@ -157,7 +157,7 @@ def test_get_bot_building_out_of_bounds(game_board,building_name,x_coord,y_coord
                          [
                              ([
                                  [Building, Shop(1,0), Building() , Building()],
-                                 [Factory(),Building(),House(2,1),Building()],
+                                 [Factory(0,1),Building(),House(2,1),Building()],
                                  [Building(),Beach(),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
