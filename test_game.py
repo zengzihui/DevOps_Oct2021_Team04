@@ -143,7 +143,7 @@ def test_start_new_turn_options(option, expected, mocker):
 
 
 @pytest.mark.parametrize("building, expected",
-                         [(Beach(), "BCH"), (Factory(), "FAC"), (Shop(), "SHP"), (Highway(), "HWY"), (House(), "HSE")])
+                         [(Beach(0,0), "BCH"), (Factory(0,0), "FAC"), (Shop(0,0), "SHP"), (Highway(0,0), "HWY"), (House(0,0), "HSE")])
 def test_sub_classes(building, expected):
     """
     test if the different buildings can be initialized

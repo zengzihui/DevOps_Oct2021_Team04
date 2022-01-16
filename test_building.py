@@ -12,9 +12,9 @@ from classes.game import *
 @pytest.mark.parametrize("game_board, building_name,x_coord,y_coord",
                          [
                              ([
-                                 [Building, Shop(1,0), Building() , Building()],
+                                 [Building(), Shop(1,0), Building() , Building()],
                                  [Factory(0,1),Building(),House(2,1),Building()],
-                                 [Building(),Beach(),Building(),Building()],
+                                 [Building(),Beach(1,2),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
                                  ],Shop,1,1)
@@ -33,9 +33,9 @@ def test_get_top_building(game_board,building_name,x_coord,y_coord):
 @pytest.mark.parametrize("game_board, building_name,x_coord,y_coord",
                          [
                              ([
-                                 [Building, Shop(1,0), Building() , Building()],
+                                 [Building(), Shop(1,0), Building() , Building()],
                                  [Factory(0,1),Building(),House(2,1),Building()],
-                                 [Building(),Beach(),Building(),Building()],
+                                 [Building(),Beach(1,2),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
                                  ], Beach,1,1)
@@ -53,9 +53,9 @@ def test_get_bot_building(game_board,building_name,x_coord,y_coord):
 @pytest.mark.parametrize("game_board, building_name,x_coord,y_coord",
                          [
                              ([
-                                 [Building, Shop(1,0), Building() , Building()],
+                                 [Building(), Shop(1,0), Building() , Building()],
                                  [Factory(0,1),Building(),House(2,1),Building()],
-                                 [Building(),Beach(),Building(),Building()],
+                                 [Building(),Beach(1,2),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
                                  ],House,1,1)
@@ -73,9 +73,9 @@ def test_get_right_building(game_board,building_name,x_coord,y_coord):
 @pytest.mark.parametrize("game_board, building_name,x_coord,y_coord",
                          [
                              ([
-                                 [Building, Shop(1,0), Building() , Building()],
+                                 [Building(), Shop(1,0), Building() , Building()],
                                  [Factory(0,1),Building(),House(2,1),Building()],
-                                 [Building(),Beach(),Building(),Building()],
+                                 [Building(),Beach(1,2),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
                                  ],Factory,1,1)
@@ -94,9 +94,9 @@ def test_get_left_building(game_board,building_name,x_coord,y_coord):
 @pytest.mark.parametrize("game_board, building_name,x_coord,y_coord",
                          [
                              ([
-                                 [Building, Shop(1,0), Building() , Building()],
+                                 [Building(), Shop(1,0), Building() , Building()],
                                  [Factory(0,1),Building(),House(2,1),Building()],
-                                 [Building(),Beach(),Building(),Building()],
+                                 [Building(),Beach(1,2),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
                                  ],None,0,0)
@@ -115,9 +115,9 @@ def test_get_top_building_out_of_bounds(game_board,building_name,x_coord,y_coord
 @pytest.mark.parametrize("game_board, building_name,x_coord,y_coord",
                          [
                              ([
-                                 [Building, Shop(1,0), Building() , Building()],
+                                 [Building(), Shop(1,0), Building() , Building()],
                                  [Factory(0,1),Building(),House(2,1),Building()],
-                                 [Building(),Beach(),Building(),Building()],
+                                 [Building(),Beach(1,2),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
                                  ],None,0,0)
@@ -136,9 +136,9 @@ def test_get_left_building_out_of_bounds(game_board,building_name,x_coord,y_coor
 @pytest.mark.parametrize("game_board, building_name,x_coord,y_coord",
                          [
                              ([
-                                 [Building, Shop(1,0), Building() , Building()],
+                                 [Building(), Shop(1,0), Building() , Building()],
                                  [Factory(0,1),Building(),House(2,1),Building()],
-                                 [Building(),Beach(),Building(),Building()],
+                                 [Building(),Beach(1,2),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
                                  ],None,3,3)
@@ -156,9 +156,9 @@ def test_get_bot_building_out_of_bounds(game_board,building_name,x_coord,y_coord
 @pytest.mark.parametrize("game_board, building_name,x_coord,y_coord",
                          [
                              ([
-                                 [Building, Shop(1,0), Building() , Building()],
+                                 [Building(), Shop(1,0), Building() , Building()],
                                  [Factory(0,1),Building(),House(2,1),Building()],
-                                 [Building(),Beach(),Building(),Building()],
+                                 [Building(),Beach(1,2),Building(),Building()],
                                  [Building(),Building(),Building(),Building()]
 
                                  ],None,3,3)
