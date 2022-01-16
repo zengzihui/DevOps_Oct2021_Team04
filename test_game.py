@@ -1,5 +1,3 @@
-from cgi import test
-from ctypes.wintypes import HWINSTA
 import sys
 from unittest import mock
 import pytest
@@ -197,7 +195,7 @@ def test_add_building_failure_existing_building(location, mocker):
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
-    test_game.board[0][1] = Shop()
+    test_game.board[0][1] = Shop(0,1)
     set_keyboard_input([location])
     test_game.add_building("SHP")
     output = get_display_output()
@@ -215,7 +213,7 @@ def test_add_building_failure_adjacent_building(location, mocker):
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
     test_game.turn_num = 2
-    test_game.board[0][1] = Shop()
+    test_game.board[0][1] = Shop(0,1)
     set_keyboard_input([location])
     test_game.add_building("SHP")
     output = get_display_output()
@@ -244,7 +242,7 @@ def test_check_surrounding_buildings_exist(test_pass, x_coord, y_coord):
     Swah Jianoon T01 9th December
     """
     test_game = Game()
-    test_game.board[1][1] = Shop()
+    test_game.board[1][1] = Shop(1,1)
     assert test_game.check_surrounding_buildings_exist(x_coord, y_coord) == test_pass
 
 
@@ -257,7 +255,7 @@ def test_check_building_exist(test_pass, x_coord, y_coord):
     Swah Jianoon T01 9th December
     """
     test_game = Game()
-    test_game.board[0][1] = Shop()
+    test_game.board[0][1] = Shop(0,1)
     
     assert test_game.check_building_exist(x_coord,y_coord) == test_pass 
 
@@ -309,7 +307,22 @@ SHP: 2 + 2 + 3 = 7
 HWY: 4 + 4 + 4 + 4 = 16
 BCH: 3 + 3 + 3 = 9
 Total score: 50'''
+                                 ),
+                                 ([
+                                 [Shop(0,0), Shop(1,0), House(2,0) , Factory(3,0)],
+                                 [Beach(0,1),House(1,1),House(2,1),Beach(3,1)],
+                                 [Beach(0,2),Shop(1,2),House(2,2),House(3,2)],
+                                 [Highway(0,3),Highway(1,3),Highway(2,3),Building()]
+
+                                 ],
+                                 '''HSE: 1 + 5 + 5 + 3 + 3 = 17
+FAC: 1 = 1
+SHP: 2 + 2 + 3 = 7
+HWY: 3 + 3 + 3 = 9
+BCH: 3 + 3 + 3 = 9
+Total score: 43'''
                                  )
+
                             ])
 def test_display_all_scores(game_board, output):
     test_game = Game()

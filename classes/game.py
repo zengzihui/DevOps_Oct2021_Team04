@@ -140,8 +140,6 @@ class Game:
         Swah Jianoon T01 9th December
         """
         building = Building()
-        if building_string == "SHP":
-            building = Shop()
 
         location_string = input("Build where? ")
         x_coord, y_coord = self.input_to_coordinates(location_string)
@@ -150,6 +148,8 @@ class Game:
                 print("You cannot build on a location that has already had a building")
             else:
                 if self.check_surrounding_buildings_exist(x_coord, y_coord) or self.turn_num == 1:
+                    if building_string == "SHP":
+                        building = Shop(x_coord,y_coord)
                     self.board[y_coord][x_coord] = building
                     self.remove_building(building_string)
                     building.x_coord = x_coord
@@ -238,13 +238,14 @@ class Game:
 
         for h in range(0, self.height + 1):
             for w in range(0, self.width + 1):
-                score = self.board[h][w].calculate_score(self)
-                total_score += score
-                total_dict[self.board[h][w].name] += int(score)
-                if display_dict[self.board[h][w].name] != "":
-                    display_dict[self.board[h][w].name] += " + {0}".format(str(score))
-                else:
-                    display_dict[self.board[h][w].name] = str(score)
+                if self.board[h][w].name != "":
+                    score = self.board[h][w].calculate_score(self)
+                    total_score += score
+                    total_dict[self.board[h][w].name] += int(score)
+                    if display_dict[self.board[h][w].name] != "":
+                        display_dict[self.board[h][w].name] += " + {0}".format(str(score))
+                    else:
+                        display_dict[self.board[h][w].name] = str(score)
 
         for building in display_dict:
             if building != "":

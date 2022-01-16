@@ -17,11 +17,10 @@ class Building:
 
         temp_y_lower =  self.y_coord - 1
         if (0 <= temp_y_lower <= game.height):
-            pass
+            return game.board[temp_y_lower][self.x_coord]
         else:
             return None
             
-        return game.board[temp_y_lower][self.x_coord]
 
     def get_bot_building(self,game):
         """
@@ -30,12 +29,10 @@ class Building:
 
         temp_y_higher = self.y_coord + 1
         if (0 <= temp_y_higher <= game.width):
-            pass
+            return game.board[temp_y_higher][self.x_coord]
         else:
             return None
             
-        return game.board[temp_y_higher][self.x_coord]
-    
     def get_left_building(self,game):
         """
         Return name of left building if exist
@@ -43,11 +40,10 @@ class Building:
 
         temp_x_lower = self.x_coord - 1
         if (0 <= temp_x_lower <= game.width):
-            pass
+            return game.board[self.y_coord][temp_x_lower]
         else:
             return None
             
-        return game.board[self.y_coord][temp_x_lower]
 
     def get_right_building(self,game):
         """
@@ -56,13 +52,12 @@ class Building:
 
         temp_x_higher = self.x_coord + 1
         if (0 <= temp_x_higher <= game.width):
-            pass
+            return game.board[self.y_coord][temp_x_higher]
         else:
             return None
             
-        return game.board[self.y_coord][temp_x_higher]
 
-    def calculate_score(self, game):
+    def calculate_score(self):
         return None
 
    
