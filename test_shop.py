@@ -36,13 +36,13 @@ from classes.game import *
                              (
                                  [
                                      [House(0,0), Shop(1,0),Highway(2,0),Building()],
-                                     [Building(),Beach(),Building(),Building()],
+                                     [Building(),Beach(1,1),Building(),Building()],
                                      [Building(),Building(),Building(),Building()],
                                      [Building(),Building(),Building(),Building()]
                                  ],3, 1,0 ),
                              (
                                  [
-                                     [Building(),Beach(),Building(),Building()],
+                                     [Building(),Beach(1,0),Building(),Building()],
                                      [House(0,1),Shop(1,1),Highway(2,1),Building()],
                                      [Building(),Factory(1,2),Building(),Building()],
                                      [Building(),Building(),Building(),Building()]

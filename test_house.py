@@ -33,7 +33,7 @@ from classes.game import *
                                  ],1,0,0),
                              (
                                  [
-                                     [House(0,0), Beach(), Building(), Building()],
+                                     [House(0,0), Beach(1,0), Building(), Building()],
                                      [Building(),Building(),Building(),Building()],
                                      [Building(),Building(),Building(),Building()],
                                      [Building(),Building(),Building(),Building()]
@@ -41,7 +41,7 @@ from classes.game import *
                              (
                                  [
                                      [Building(),Shop(1,0),Building(),Building()],
-                                     [Beach(),House(1,1), House(2,1),Building()],
+                                     [Beach(0,1),House(1,1), House(2,1),Building()],
                                      [Building(),Building(),Building(),Building()],
                                      [Building(),Building(),Building(),Building()]
                                  ],4,1,1),
@@ -55,7 +55,7 @@ from classes.game import *
                             (
                                 [
                                      [Building(),Shop(1,0),Building(),Building()],
-                                     [Beach(),House(1,1), House(2,1),Building()],
+                                     [Beach(0,1),House(1,1), House(2,1),Building()],
                                      [Building(),Factory(1,2),Building(),Building()],
                                      [Building(),Building(),Building(),Building()]
                                  ], 1,1,1)
