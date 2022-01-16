@@ -2,8 +2,6 @@ name: CI for pull requests - label PR size
 
 on: 
   [pull_request]
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 jobs:
   pr-labeler:
