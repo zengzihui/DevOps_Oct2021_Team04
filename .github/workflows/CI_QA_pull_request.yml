@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     # only if pull request is labeled 'Dev Team Approved', run Actions. 
-    if: ${{ github.event.label.name == 'Dev Team Approved' }}
+    if: contains(github.event.labels.*.name, 'Dev Team Approved')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/setup-python@v2
