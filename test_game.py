@@ -305,8 +305,8 @@ def test_randomize_two_buildings_from_pool_random():
 
     Zheng Jiongjie T01 16th January
     """
-    # run randomze buildings for 10 turns 100 times
-    for i in range(0, 100):
+    # run randomze buildings for 10 turns 10 times
+    for i in range(0, 10):
         test_game = Game()
 
         # generate randomized buildings for turn 1
@@ -367,8 +367,8 @@ def test_randomize_two_buildings_from_pool_when_no_building():
     # remove all beaches from building pool
     test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 0}
 
-    # loop through 100 times, BCH must never be the value returned from get_two_buildings_from_pool()
-    for i in range(0, 100):
+    # loop through 10 times, BCH must never be the value returned from get_two_buildings_from_pool()
+    for i in range(0, 10):
         # get randomized building
         test_game.get_two_buildings_from_pool(test_game.building_pool)
         # check each item in randomized building
