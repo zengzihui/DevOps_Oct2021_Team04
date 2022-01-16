@@ -1,3 +1,5 @@
+from cgi import test
+from ctypes.wintypes import HWINSTA
 import sys
 from unittest import mock
 import pytest
@@ -291,3 +293,29 @@ BCH              8\n'''
     test_game.display_building()
     output = get_display_output()
     assert match==output[0]
+
+@pytest.mark.parametrize("game_board, output",
+                         [
+                             ([
+                                 [Shop(0,0), Shop(), House() , Factory()],
+                                 [Beach(),House(),House(),Beach()],
+                                 [Beach(),Shop(),House(),House()],
+                                 [Highway(),Highway(),Highway(),Highway()]
+
+                                 ],
+                                 '''
+                                 HSE: 1 + 5 + 5 + 3 + 3 = 17
+FAC: 1 = 1
+SHP: 2 + 2 + 3 = 7
+HWY: 4 + 4 + 4 + 4 = 16
+BCH: 3 + 3 + 3 = 9
+Total score: 50
+
+                                 '''
+                                 )
+                            ])
+def test_calculate_all_scores(game_board, output):
+    test_game = Game()
+    test_game.board = game_board
+    assert test_game.calculate_all_scores() == output
+
