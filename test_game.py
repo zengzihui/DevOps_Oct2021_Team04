@@ -128,7 +128,7 @@ def test_start_new_turn():
 
 
 @pytest.mark.parametrize("option, expected",
-                         [(["1"], 1), (["2"], 1), (["100", "2"],1), (["3"],2)])
+                         [(["1"], 1), (["2"], 1), (["100", "2"],1), (["3"],2), (["4"],3)])
 def test_start_new_turn_options(option, expected, mocker):
     """
     run start_new_turn input options
@@ -137,6 +137,7 @@ def test_start_new_turn_options(option, expected, mocker):
     """
     mocker.patch('classes.game.Game.add_building', return_value=1)
     mocker.patch('classes.game.Game.display_building', return_value=2)
+    mocker.patch('classes.game.Game.display_all_scores', return_value=3)
     test_game = Game()
     set_keyboard_input(option)
     assert test_game.start_new_turn() == expected
@@ -292,7 +293,7 @@ BCH              8\n'''
     output = get_display_output()
     assert match==output[0]
 
-@pytest.mark.parametrize("game_board, output",
+@pytest.mark.parametrize("game_board, match",
                          [
                              ([
                                  [Shop(0,0), Shop(1,0), House(2,0) , Factory(3,0)],
@@ -324,8 +325,12 @@ Total score: 43'''
                                  )
 
                             ])
-def test_display_all_scores(game_board, output):
+def test_display_all_scores(game_board, match):
+    set_keyboard_input(None)
     test_game = Game()
     test_game.board = game_board
-    assert test_game.display_all_scores() == output
+
+    test_game.display_all_scores()
+    output = get_display_output()
+    assert output[0] == match
 

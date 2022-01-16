@@ -58,10 +58,14 @@ from classes.game import *
                          
                          ])
 def test_calculate_score(game_board, total_score, x_coord, y_coord, counted_factory):
-
+    """
+        Test calculate score function of factory object
+    """
     test_building = Factory(x_coord, y_coord)
     test_game = Game()
     test_game.board = game_board
+
+    # test score if there are >4 existing factory
     for h in range(0,test_game.height + 1):
         for w in range(0,test_game.width + 1):
             if test_game.board[h][w].name == "FAC" and counted_factory != 0:

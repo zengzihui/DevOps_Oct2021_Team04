@@ -14,6 +14,9 @@ class Highway(Building):
         self.y_coord = y_coord
     
     def calculate_score(self, game):
+        """
+        This function calculates the score for a highway object on the game board
+        """
         left_count = 0
         left_count = self.check_left(game,left_count)
         right_count = 0

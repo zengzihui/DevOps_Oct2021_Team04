@@ -13,6 +13,9 @@ class Beach(Building):
         self.y_coord = y_coord  
     
     def calculate_score(self, game):
+        """
+        This function calculates the score for a beach object on the game board
+        """
         if self.x_coord == 0 or self.x_coord == game.width:
             return 3
         else: 

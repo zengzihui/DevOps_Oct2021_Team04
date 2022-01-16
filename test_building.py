@@ -21,7 +21,9 @@ from classes.game import *
 
                          ])
 def test_get_top_building(game_board,building_name,x_coord,y_coord):
-
+    """
+        Test to retrieve the building object above the current building
+    """
     test_building = Building()
     test_building.x_coord = x_coord
     test_building.y_coord = y_coord
@@ -42,7 +44,9 @@ def test_get_top_building(game_board,building_name,x_coord,y_coord):
 
                          ])
 def test_get_bot_building(game_board,building_name,x_coord,y_coord):
-
+    """
+        Test to retrieve the building object below the current building
+    """
     test_building = Building()
     test_building.x_coord = x_coord
     test_building.y_coord = y_coord
@@ -62,7 +66,9 @@ def test_get_bot_building(game_board,building_name,x_coord,y_coord):
 
                          ])
 def test_get_right_building(game_board,building_name,x_coord,y_coord):
-
+    """
+        Test to retrieve the building object to the right of the current building
+    """
     test_building = Building()
     test_building.x_coord = x_coord
     test_building.y_coord = y_coord
@@ -82,7 +88,9 @@ def test_get_right_building(game_board,building_name,x_coord,y_coord):
 
                          ])
 def test_get_left_building(game_board,building_name,x_coord,y_coord):
-
+    """
+        Test to retrieve the building object to the left of the current building
+    """
     test_building = Building()
     test_building.x_coord = x_coord
     test_building.y_coord = y_coord
@@ -103,7 +111,9 @@ def test_get_left_building(game_board,building_name,x_coord,y_coord):
 
                          ])
 def test_get_top_building_out_of_bounds(game_board,building_name,x_coord,y_coord):
-
+    """
+        Test to retrieve the building object above the current building but out of bounds
+    """
     test_building = Building()
     test_building.x_coord = x_coord
     test_building.y_coord = y_coord
@@ -124,7 +134,9 @@ def test_get_top_building_out_of_bounds(game_board,building_name,x_coord,y_coord
 
                          ])
 def test_get_left_building_out_of_bounds(game_board,building_name,x_coord,y_coord):
-
+    """
+        Test to retrieve the building object to the left of the current building but out of bounds
+    """
     test_building = Building()
     test_building.x_coord = x_coord
     test_building.y_coord = y_coord
@@ -145,7 +157,9 @@ def test_get_left_building_out_of_bounds(game_board,building_name,x_coord,y_coor
 
                          ])
 def test_get_bot_building_out_of_bounds(game_board,building_name,x_coord,y_coord):
-
+    """
+        Test to retrieve the building object below the current building but out of bounds
+    """
     test_building = Building()
     test_building.x_coord = x_coord
     test_building.y_coord = y_coord
@@ -165,7 +179,9 @@ def test_get_bot_building_out_of_bounds(game_board,building_name,x_coord,y_coord
 
                          ])
 def test_get_right_building_out_of_bounds(game_board,building_name,x_coord,y_coord):
-
+    """
+        Test to retrieve the building object to the right of the current building but out of bounds
+    """
     test_building = Building()
     test_building.x_coord = x_coord
     test_building.y_coord = y_coord

@@ -130,6 +130,8 @@ class Game:
             return self.add_building(randomized_building_name[1])
         elif chosen_option =="3":
             return self.display_building()
+        elif chosen_option =="4":
+            return self.display_all_scores()
         elif chosen_option == "0":
             return 0
 
@@ -228,6 +230,19 @@ class Game:
         self.building_pool[building_name] -=1
     
     def display_all_scores(self):
+        """
+        Display the current score of the game
+
+        Eg .
+
+        HSE: 1 + 5 + 5 + 3 + 3 = 17
+        FAC: 1 = 1
+        SHP: 2 + 2 + 3 = 7
+        HWY: 4 + 4 + 4 + 4 = 16
+        BCH: 3 + 3 + 3 = 9
+        Total score: 50
+
+        """
         total_dict = {"": 0}
         display_dict = {"":""}
         output_string = ""
@@ -251,4 +266,4 @@ class Game:
             if building != "":
                 output_string += "{0}: {1} = {2}\n".format(building,display_dict[building],str(total_dict[building]))
         output_string += "Total score: {0}".format(total_score)
-        return output_string
+        print(output_string)

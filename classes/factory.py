@@ -14,6 +14,9 @@ class Factory(Building):
         self.counted = False
     
     def calculate_score(self,game):
+        """
+        This function calculates the score for a factory object on the game board
+        """
         similar_building = 0
         temp_list = []
         for h in range(0, game.width + 1):
