@@ -227,7 +227,7 @@ class Game:
         """
         self.building_pool[building_name] -=1
     
-    def calculate_all_scores(self):
+    def display_all_scores(self):
         total_dict = {"": 0}
         display_dict = {"":""}
         output_string = ""

@@ -311,8 +311,8 @@ BCH: 3 + 3 + 3 = 9
 Total score: 50'''
                                  )
                             ])
-def test_calculate_all_scores(game_board, output):
+def test_display_all_scores(game_board, output):
     test_game = Game()
     test_game.board = game_board
-    assert test_game.calculate_all_scores() == output
+    assert test_game.display_all_scores() == output
 
