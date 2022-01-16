@@ -37,7 +37,7 @@ from classes.game import *
                          ])
 def test_calculate_score(game_board, total_score, x_coord, y_coord):
 
-    test_building = Factory(x_coord, y_coord)
+    test_building = Beach(x_coord, y_coord)
     test_game = Game()
     test_game.board = game_board
 
