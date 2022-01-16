@@ -227,3 +227,27 @@ class Game:
         """
         self.building_pool[building_name] -=1
     
+    def calculate_all_scores(self):
+        total_dict = {"": 0}
+        display_dict = {"":""}
+        output_string = ""
+        total_score = 0
+        for key in self.building_pool:
+            total_dict[key] = 0
+            display_dict[key] = ""
+
+        for h in range(0, self.height + 1):
+            for w in range(0, self.width + 1):
+                score = self.board[h][w].calculate_score(self)
+                total_score += score
+                total_dict[self.board[h][w].name] += int(score)
+                if display_dict[self.board[h][w].name] != "":
+                    display_dict[self.board[h][w].name] += " + {0}".format(str(score))
+                else:
+                    display_dict[self.board[h][w].name] = str(score)
+
+        for building in display_dict:
+            if building != "":
+                output_string += "{0}: {1} = {2}\n".format(building,display_dict[building],str(total_dict[building]))
+        output_string += "Total score: {0}".format(total_score)
+        return output_string

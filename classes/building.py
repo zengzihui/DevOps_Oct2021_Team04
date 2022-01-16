@@ -62,4 +62,7 @@ class Building:
             
         return game.board[self.y_coord][temp_x_higher]
 
+    def calculate_score(self, game):
+        return None
+
    

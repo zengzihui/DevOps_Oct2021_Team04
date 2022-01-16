@@ -20,9 +20,7 @@ class Shop(Building):
         score_dict = {"":0,self.name:0}
         # fill up score_dict dictionary with 4 different types of building with 1 count
         for key in game.building_pool:
-            if key != "SHP":
-                score_dict[key] = 1
-                continue
+            score_dict[key] = 1
         
         if self.get_top_building(game) != None:
             building = self.get_top_building(game).name

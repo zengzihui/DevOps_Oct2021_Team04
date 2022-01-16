@@ -172,3 +172,8 @@ def test_get_right_building_out_of_bounds(game_board,building_name,x_coord,y_coo
     test_game = Game()
     test_game.board = game_board
     assert test_building.get_right_building(test_game) == building_name
+
+def test_calculate_score():
+    test_building = Building()
+    test_game = Game()
+    assert test_building.calculate_score(test_game) == None

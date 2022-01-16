@@ -297,21 +297,18 @@ BCH              8\n'''
 @pytest.mark.parametrize("game_board, output",
                          [
                              ([
-                                 [Shop(0,0), Shop(), House() , Factory()],
-                                 [Beach(),House(),House(),Beach()],
-                                 [Beach(),Shop(),House(),House()],
-                                 [Highway(),Highway(),Highway(),Highway()]
+                                 [Shop(0,0), Shop(1,0), House(2,0) , Factory(3,0)],
+                                 [Beach(0,1),House(1,1),House(2,1),Beach(3,1)],
+                                 [Beach(0,2),Shop(1,2),House(2,2),House(3,2)],
+                                 [Highway(0,3),Highway(1,3),Highway(2,3),Highway(3,3)]
 
                                  ],
-                                 '''
-                                 HSE: 1 + 5 + 5 + 3 + 3 = 17
+                                 '''HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
 SHP: 2 + 2 + 3 = 7
 HWY: 4 + 4 + 4 + 4 = 16
 BCH: 3 + 3 + 3 = 9
-Total score: 50
-
-                                 '''
+Total score: 50'''
                                  )
                             ])
 def test_calculate_all_scores(game_board, output):
