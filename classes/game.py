@@ -152,6 +152,14 @@ class Game:
                 if self.check_surrounding_buildings_exist(x_coord, y_coord) or self.turn_num == 1:
                     if building_string == "SHP":
                         building = Shop(x_coord,y_coord)
+                    elif building_string == "HSE":
+                        building = House(x_coord,y_coord)
+                    elif building_string == "FAC":
+                        building = Factory(x_coord,y_coord)
+                    elif building_string == "HWY":
+                        building = Highway(x_coord,y_coord)
+                    elif building_string == "BCH":
+                        building = Beach(x_coord,y_coord)
                     self.board[y_coord][x_coord] = building
                     self.remove_building(building_string)
                     building.x_coord = x_coord
