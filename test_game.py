@@ -325,6 +325,11 @@ Total score: 43'''
 
                             ])
 def test_display_all_scores(game_board, match):
+    """
+    test if all scores are displayed
+
+    Swah Jianoon T01 17th Janunary
+    """
     set_keyboard_input(None)
     test_game = Game()
     test_game.board = game_board

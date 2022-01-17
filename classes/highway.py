@@ -16,6 +16,8 @@ class Highway(Building):
     def calculate_score(self, game):
         """
         This function calculates the score for a highway object on the game board
+                            
+        Swah Jianoon T01 17th Janunary
         """
         left_count = 0
         left_count = self.check_left(game,left_count)
@@ -27,6 +29,8 @@ class Highway(Building):
     def check_left(self,game,count):
         """
         recursively check if left side of board has highway
+
+        Swah Jianoon T01 17th Janunary
         """
         if self.get_left_building(game) == None or self.get_left_building(game).name != self.name:
             return count
@@ -38,6 +42,8 @@ class Highway(Building):
     def check_right(self,game,count):
         """
         recursively check if right side of board has highway
+                          
+        Swah Jianoon T01 17th Janunary
         """
         if self.get_right_building(game) == None or self.get_right_building(game).name != self.name:
             return count

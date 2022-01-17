@@ -37,7 +37,9 @@ from classes.game import *
                          ])
 def test_calculate_score(game_board, total_score, x_coord, y_coord):
     """
-        Test calculate score function of beach object
+    Test calculate score function of beach object
+    
+    Swah Jianoon T01 17th Janunary
     """
     test_building = Beach(x_coord, y_coord)
     test_game = Game()

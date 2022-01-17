@@ -51,7 +51,9 @@ from classes.game import *
                          ])
 def test_calculate_score(game_board, score, x_coord, y_coord):
     """
-        Test calculate score function of shop object
+    Test calculate score function of shop object
+    
+    Swah Jianoon T01 17th Janunary
     """
     test_building = Shop(x_coord, y_coord)
     test_game = Game()

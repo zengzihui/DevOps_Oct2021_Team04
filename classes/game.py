@@ -249,7 +249,8 @@ class Game:
         HWY: 4 + 4 + 4 + 4 = 16
         BCH: 3 + 3 + 3 = 9
         Total score: 50
-
+ 
+        Swah Jianoon T01 17th Janunary
         """
         total_dict = {"": 0}
         display_dict = {"":""}

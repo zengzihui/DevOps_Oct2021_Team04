@@ -16,6 +16,8 @@ class Factory(Building):
     def calculate_score(self,game):
         """
         This function calculates the score for a factory object on the game board
+                    
+        Swah Jianoon T01 17th Janunary
         """
         similar_building = 0
         temp_list = []

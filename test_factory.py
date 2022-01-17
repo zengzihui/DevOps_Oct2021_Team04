@@ -59,7 +59,9 @@ from classes.game import *
                          ])
 def test_calculate_score(game_board, total_score, x_coord, y_coord, counted_factory):
     """
-        Test calculate score function of factory object
+    Test calculate score function of factory object
+
+    Swah Jianoon T01 17th Janunary
     """
     test_building = Factory(x_coord, y_coord)
     test_game = Game()

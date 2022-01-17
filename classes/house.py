@@ -16,6 +16,8 @@ class House(Building):
     def calculate_score(self,game):
         """
         This function calculates the score for a house object on the game board
+                            
+        Swah Jianoon T01 17th Janunary
         """
         total_score = 0
         score_dict = {"HSE": 1, "FAC": 1, "SHP": 1, "BCH": 2}
