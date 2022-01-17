@@ -155,17 +155,25 @@ class Game:
             for i in range(0, building_pool[building_type]):
                 temp_building_list.append(building_type)
 
-        # generate a random index for building 1
-        random_building_one_index = randrange(len(temp_building_list))
-        # get randomized building 1's string
-        random_building_one_name = temp_building_list[random_building_one_index]
-        # remove the first randomized building from temporary pool
-        temp_building_list.pop(random_building_one_index)
+        try:
+            # generate a random index for building 1
+            random_building_one_index = randrange(len(temp_building_list))
+            # get randomized building 1's string
+            random_building_one_name = temp_building_list[random_building_one_index]
+            # remove the first randomized building from temporary pool
+            temp_building_list.pop(random_building_one_index)
+        except Exception as ex:
+            # if no more buildings
+            random_building_one_name = ""
 
-        # generate a random index for building 2
-        random_building_two_index = randrange(len(temp_building_list))
-        # get randomized building 2's string
-        random_building_two_name = temp_building_list[random_building_two_index]
+        try:
+            # generate a random index for building 2
+            random_building_two_index = randrange(len(temp_building_list))
+            # get randomized building 2's string
+            random_building_two_name = temp_building_list[random_building_two_index]
+        except Exception as ex:
+            # if only 1 building left
+            random_building_two_name = random_building_one_name
 
         # updates randomized building history with the list of 2 randomized buildings
         self.randomized_building_history[str(self.turn_num)] = [random_building_one_name, random_building_two_name]
