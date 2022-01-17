@@ -166,7 +166,7 @@ def test_add_building(location, x, y, mocker):
     test_game = Game()
     set_keyboard_input([location])
     test_game.add_building(test_shop)
-    assert isinstance(test_game.board[y][x], Shop
+    assert isinstance(test_game.board[y][x], Shop)
 
 
 @pytest.mark.parametrize("location",
