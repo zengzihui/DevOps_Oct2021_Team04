@@ -8,9 +8,9 @@ on:
 
 jobs:
   build:
-    # only if pull request is labeled 'Dev Team Approved', run Actions. 
-    if: ${{ github.event.label.name == 'Dev Team Approved' }}
     runs-on: ubuntu-latest
+    # only if pull request is labeled 'Dev Team Approved', run Actions. 
+    if: contains(github.event.pull_request.labels.*.name, 'Dev Team Approved')
     steps:
     - uses: actions/setup-python@v2
       with:
@@ -35,17 +35,6 @@ jobs:
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    # label size of the pull request in the pull request
-    - name: Label the PR Size
-      uses: coverwallet/pr-labeler@v1.2.1
-      with:
-        xs_max_size: '10'
-        s_max_size: '100'
-        m_max_size': '500'
-        l_max_size: '1000'
-        exclude_files: '.txt'
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     # run test scripts and get coverage and test reports
     - name: Begin Pytest
       run: |
