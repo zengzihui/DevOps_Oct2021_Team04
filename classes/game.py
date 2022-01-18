@@ -8,30 +8,24 @@ from .beach import Beach
 
 class Game:
 
-    def __init__(self, height=3, width=3):
+    def __init__(self, height=4, width=4):
         """
         init function for game class
         default turn number is 1
 
         Zheng Jiongjie T01 9th December
         """
-        
-        self.building_pool ={"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
+
+        self.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8}
         self.height = height
         self.width = width
         self.board = []
         self.turn_num = 1
 
-        width_counter = 0
-        while (width_counter <= width):
-            height_counter = 0
+        for row in range(0, self.height):
             self.board.append([])
-
-            while (height_counter <= height):
-                self.board[width_counter].append(Building())
-                height_counter += 1
-
-            width_counter += 1
+            for col in range(0, self.width):
+                self.board[row].append(Building())
 
     def print_turn_num(self):
         """
@@ -44,27 +38,27 @@ class Game:
     def print_board(self):
         """
         Print the map board with the building names
-        
+
         Zheng Jiongjie T01 9th December
         """
-        game_board_string = " "
-        row_count = 0
-        for header in range(0, self.width + 1):
-            game_board_string += '   {:1s}  '.format(chr(header + 65))
-        game_board_string += "\n"
-        for row in self.board:
-            game_board_string += "{:26s}".format(" +-----+-----+-----+-----+") + "\n"
-            game_board_string += str(row_count + 1)
-            for building in row:
-                building_short = ""
-                if building:
-                    building_short = building.name
-                game_board_string += '|'
-                game_board_string += ' {:3s} '.format(building_short)
-            game_board_string += "|\n"
-            row_count += 1
-        game_board_string += "{:26s}".format(" +-----+-----+-----+-----+")
-        print(game_board_string)
+
+        column_names = "  "
+        for header in range(0, self.width):
+            column_names += '   {:1s}  '.format(chr(header + 65))
+        print(column_names)
+        row_seperation_string = "  +"
+        for i in range(0, self.width):
+            row_seperation_string += "-----+"
+
+        for i in range(0, self.height):
+            print(row_seperation_string)
+            row_string = "{:>2}".format(i + 1)
+            for building in self.board[i]:
+                row_string += "|"
+                row_string += " {:3} ".format(building.name)
+            row_string += "|"
+            print(row_string)
+        print(row_seperation_string)
 
     def game_menu(self, randomized_building_name=["SHP", "SHP"]):
         """
@@ -83,7 +77,7 @@ class Game:
 
         "randomized_building_name" in method signature will be generated from randomize_buildings() function which will be implemented
         at a later date.
-        
+
         Zheng Jiongjie T01 9th December
         """
         options = {"1": "Build a {}".format(randomized_building_name[0]), "2": "Build a {}"
@@ -91,15 +85,11 @@ class Game:
                    "4": "See current score", "": "", "5": "Save game",
                    "0": "Exit to main menu"}
 
-        game_menu_string = ""
-
         for key in options:
             if key != "":
-                game_menu_string += "{}. {}".format(key, options[key]) + "\n"
+                print("{}. {}".format(key, options[key]))
             else:
-                game_menu_string += "\n"
-        game_menu_string = game_menu_string.rstrip()
-        print(game_menu_string)
+                print("")
         chosen_option = input("Your choice? ")
 
         while chosen_option not in options.keys() or chosen_option == "":
@@ -114,7 +104,7 @@ class Game:
         and gets input from game_menu()
 
         "randomized_building_name" list will be replaced with a function to randomized the different buildings in the future. For now we will use only SHP
-        
+
         Zheng Jiongjie T01 9th December
         """
         randomized_building_name = ["SHP", "SHP"]
@@ -128,7 +118,7 @@ class Game:
             return self.add_building(randomized_building_name[0])
         elif chosen_option == "2":
             return self.add_building(randomized_building_name[1])
-        elif chosen_option =="3":
+        elif chosen_option == "3":
             return self.display_building()
         elif chosen_option == "0":
             return 0
@@ -173,9 +163,9 @@ class Game:
         x = ord(location_string[0]) - ASCII_string_value
         y = ord(location_string[1]) - ASCII_int_value
 
-        return x,y
+        return x, y
 
-    def check_building_exist(self,x_coord,y_coord):
+    def check_building_exist(self, x_coord, y_coord):
         """
         check if building exists at the coordinate
 
@@ -213,17 +203,16 @@ class Game:
         Swah Jianoon T01 9th December
         """
         spaces = " "
-        output ="Building{0}Remaining\n--------{0}--------\n".format(spaces*9,spaces*9)
+        output = "Building{0}Remaining\n--------{0}--------\n".format(spaces * 9, spaces * 9)
         for key in self.building_pool:
-            output += "{0}{1}{2}\n".format(key,spaces*14,self.building_pool[key])
+            output += "{0}{1}{2}\n".format(key, spaces * 14, self.building_pool[key])
         print(output)
         self.start_new_turn()
-    
-    def remove_building(self,building_name):
+
+    def remove_building(self, building_name):
         """
         Remove a building from the building pool
 
         Swah Jianoon T01 9th December
         """
-        self.building_pool[building_name] -=1
-    
+        self.building_pool[building_name] -= 1
