@@ -1,3 +1,5 @@
+from random import randrange
+
 from .building import Building
 from .shop import Shop
 from .factory import Factory
@@ -15,12 +17,13 @@ class Game:
 
         Zheng Jiongjie T01 9th December
         """
-        
-        self.building_pool ={"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
+
+        self.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8}
         self.height = height
         self.width = width
         self.board = []
         self.turn_num = 1
+        self.randomized_building_history = {}
 
         width_counter = 0
         while (width_counter <= width):
@@ -44,7 +47,7 @@ class Game:
     def print_board(self):
         """
         Print the map board with the building names
-        
+
         Zheng Jiongjie T01 9th December
         """
         game_board_string = " "
@@ -83,7 +86,7 @@ class Game:
 
         "randomized_building_name" in method signature will be generated from randomize_buildings() function which will be implemented
         at a later date.
-        
+
         Zheng Jiongjie T01 9th December
         """
         options = {"1": "Build a {}".format(randomized_building_name[0]), "2": "Build a {}"
@@ -92,7 +95,6 @@ class Game:
                    "0": "Exit to main menu"}
 
         game_menu_string = ""
-
         for key in options:
             if key != "":
                 game_menu_string += "{}. {}".format(key, options[key]) + "\n"
@@ -114,24 +116,67 @@ class Game:
         and gets input from game_menu()
 
         "randomized_building_name" list will be replaced with a function to randomized the different buildings in the future. For now we will use only SHP
-        
+
         Zheng Jiongjie T01 9th December
         """
-        randomized_building_name = ["SHP", "SHP"]
+
+        # generate random buildings for turn if buildings for the turn has yet to be generated
+        if str(self.turn_num) not in self.randomized_building_history:
+            self.get_two_buildings_from_pool(self.building_pool)
+        # retrieve 2 random genrated buildings from randomized building history
+        randomized_building_names = self.randomized_building_history[str(self.turn_num)]
+
         print("")
         self.print_turn_num()
         self.print_board()
 
         # calls game menu and gets back the entered option
-        chosen_option = self.game_menu()
+        chosen_option = self.game_menu(randomized_building_names)
         if chosen_option == "1":
-            return self.add_building(randomized_building_name[0])
+            return self.add_building(randomized_building_names[0])
         elif chosen_option == "2":
-            return self.add_building(randomized_building_name[1])
-        elif chosen_option =="3":
+            return self.add_building(randomized_building_names[1])
+        elif chosen_option == "3":
             return self.display_building()
         elif chosen_option == "0":
             return 0
+
+    def get_two_buildings_from_pool(self, building_pool):
+        """
+        Get 2 random building names from pool of buildings
+
+        Zheng Jiongjie T01 16th January
+        """
+        # create temporary list to store all buildings
+        temp_building_list = []
+
+        # populate list with the number of buildings left in the pool
+        for building_type in building_pool:
+            for i in range(0, building_pool[building_type]):
+                temp_building_list.append(building_type)
+
+        try:
+            # generate a random index for building 1
+            random_building_one_index = randrange(len(temp_building_list))
+            # get randomized building 1's string
+            random_building_one_name = temp_building_list[random_building_one_index]
+            # remove the first randomized building from temporary pool
+            temp_building_list.pop(random_building_one_index)
+        except Exception as ex:
+            # if no more buildings
+            random_building_one_name = ""
+
+        try:
+            # generate a random index for building 2
+            random_building_two_index = randrange(len(temp_building_list))
+            # get randomized building 2's string
+            random_building_two_name = temp_building_list[random_building_two_index]
+        except Exception as ex:
+            # if only 1 building left
+            random_building_two_name = random_building_one_name
+
+        # updates randomized building history with the list of 2 randomized buildings
+        self.randomized_building_history[str(self.turn_num)] = [random_building_one_name, random_building_two_name]
 
     def add_building(self, building_string):
         """
@@ -173,9 +218,9 @@ class Game:
         x = ord(location_string[0]) - ASCII_string_value
         y = ord(location_string[1]) - ASCII_int_value
 
-        return x,y
+        return x, y
 
-    def check_building_exist(self,x_coord,y_coord):
+    def check_building_exist(self, x_coord, y_coord):
         """
         check if building exists at the coordinate
 
@@ -213,17 +258,16 @@ class Game:
         Swah Jianoon T01 9th December
         """
         spaces = " "
-        output ="Building{0}Remaining\n--------{0}--------\n".format(spaces*9,spaces*9)
+        output = "Building{0}Remaining\n--------{0}--------\n".format(spaces * 9, spaces * 9)
         for key in self.building_pool:
-            output += "{0}{1}{2}\n".format(key,spaces*14,self.building_pool[key])
+            output += "{0}{1}{2}\n".format(key, spaces * 14, self.building_pool[key])
         print(output)
         self.start_new_turn()
-    
-    def remove_building(self,building_name):
+
+    def remove_building(self, building_name):
         """
         Remove a building from the building pool
 
         Swah Jianoon T01 9th December
         """
-        self.building_pool[building_name] -=1
-    
+        self.building_pool[building_name] -= 1
