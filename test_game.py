@@ -118,6 +118,9 @@ def test_start_new_turn():
     # create testing game object
     test_game = Game()
 
+    # fill game object with fake randomized building history
+    test_game.randomized_building_history = {"1": ["SHP", "SHP"]}
+
     # check if game menu displays correct output
     test_game.start_new_turn()
 
@@ -260,7 +263,7 @@ def test_check_building_exist(test_pass, x_coord, y_coord):
     assert test_game.check_building_exist(x_coord,y_coord) == test_pass 
 
 @pytest.mark.parametrize("building_name",
-                         [("FAC"),("SHP"),("BCH"),("HWY"),("HSE")])
+                         [("FAC"), ("SHP"), ("BCH"), ("HWY"), ("HSE")])
 def test_remove_building(building_name):
     """
     test if building can be removed from the building pool
@@ -270,6 +273,7 @@ def test_remove_building(building_name):
     test_game = Game()
     test_game.remove_building(building_name)
     assert test_game.building_pool[building_name] == 7
+
 
 def test_display_building(mocker):
     """
@@ -338,3 +342,44 @@ def test_display_all_scores(game_board, match):
     output = get_display_output()
     assert output[0] == match
 
+    assert match == output[0]
+
+
+def test_randomize_two_buildings_from_pool_when_no_building_for_type():
+    """
+    tests get_two_buildings_from_pool() function if the it returns buildings with 0 buildings left in pool
+
+    Zheng Jiongjie T01 16th January
+    """
+    test_game = Game()
+
+    # remove all beaches from building pool
+    test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 0}
+
+    # loop through 10 times, BCH must never be the value returned from get_two_buildings_from_pool()
+    for i in range(0, 10):
+        # get randomized building
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
+        # check each item in randomized building
+        for item in test_game.randomized_building_history[str(test_game.turn_num)]:
+            # BCH must never appear from randomized building, since there is 0 of it left in the pool
+            assert item != "BCH"
+
+
+def test_randomize_two_buildings_from_pool_when_no_building():
+    """
+    tests get_two_buildings_from_pool() function if building pool is empty
+
+    Zheng Jiongjie T01 16th January
+    """
+    test_game = Game()
+
+    # remove all beaches from building pool
+    test_game.building_pool = {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}
+
+    # get randomized building
+    test_game.get_two_buildings_from_pool(test_game.building_pool)
+    # check each item in randomized building
+    for item in test_game.randomized_building_history[str(test_game.turn_num)]:
+        # nothing must never appear from randomized building, since there is no building in pool
+        assert item == ""
