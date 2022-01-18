@@ -32,7 +32,7 @@ class Building:
         """
 
         temp_y_higher = self.y_coord + 1
-        if (0 <= temp_y_higher <= game.width):
+        if (0 <= temp_y_higher <= game.height):
             return game.board[temp_y_higher][self.x_coord]
         else:
             return None
