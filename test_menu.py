@@ -109,3 +109,28 @@ def test_main_menu_exit_program():
         exit_game()
     assert e.type == SystemExit
     assert e.value.code == 1
+
+@pytest.mark.parametrize("option_list, expected",
+                         [
+                             (["4", "1"], "--------- CURRENT BUILDING POOL ---------\n[BCH]"),
+                             (["4", "2"], "--------- CURRENT BUILDING POOL ---------\n[FAC]"),
+                             (["4", "3"], "--------- CURRENT BUILDING POOL ---------\n[HSE]"),
+                             (["4", "4"], "--------- CURRENT BUILDING POOL ---------\n[HWY]"),
+                             (["4", "5"], "--------- CURRENT BUILDING POOL ---------\n[MON]"),
+                             (["4", "6"], "--------- CURRENT BUILDING POOL ---------\n[PRK]"),
+                             (["4", "7"], "--------- CURRENT BUILDING POOL ---------\n[SHP]"),
+                             (["4", "1", "2", "3", "4", "5", "6", "7"], 
+                             "--------- CURRENT BUILDING POOL ---------\n[BCH, FAC, HSE, HWY, MON, PRK, SHP]"),
+                         ])
+def test_choose_building_pool(option_list,expected):
+    """
+    test choose building pool allows user to choose building pool
+
+    Swah Jian Oon T01 19th January
+    """
+    choose_building_pool()
+    set_keyboard_input(option_list)
+    out = get_display_output()
+    assert out[-1] == expected
+
+
