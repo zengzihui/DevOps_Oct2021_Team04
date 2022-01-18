@@ -52,22 +52,28 @@ def test_print_board():
 
     # check if print_board() displays game board correctly
     out = get_display_output()
-    assert out[0] == '    A     B     C     D  \n +-----+-----+-----+-----+\n1|     |     |     |     |\n +-----+-----+-----+-----+\n2|     |     |     |     |\n +-----+-----+-----+-----+\n3|     |     |     |     |\n +-----+-----+-----+-----+\n4|     |     |     |     |\n +-----+-----+-----+-----+'
+    assert out == [
+        "     A     B     C     D  ",
+        "  +-----+-----+-----+-----+",
+        " 1|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        " 2|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        " 3|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        " 4|     |     |     |     |",
+        "  +-----+-----+-----+-----+"]
 
 
-@pytest.mark.parametrize("option_list",
-                         [(["0"])])
-def test_game_menu_display(mocker, option_list):
+def test_game_menu_display():
     """
     test if game menu options are printed correctly
 
     Zheng Jiongjie T01 9th December
     """
-    set_keyboard_input(None)
 
     # set input for menu options
-    mocker.patch('builtins.input', side_effect=option_list)
-
+    set_keyboard_input(["0", "0", "0"])
     # create testing game object
     test_game = Game()
 
@@ -76,7 +82,8 @@ def test_game_menu_display(mocker, option_list):
     # check if game menu displays correct output
     out = get_display_output()
 
-    assert out[0] == '1. Build a SHP\n2. Build a SHP\n3. See remaining buildings\n4. See current score\n\n5. Save game\n0. Exit to main menu'
+    assert out == ['1. Build a SHP', '2. Build a SHP', '3. See remaining buildings',
+                   '4. See current score', '', '5. Save game', '0. Exit to main menu', 'Your choice? ']
 
 
 @pytest.mark.parametrize("option_list, expected",
@@ -118,27 +125,49 @@ def test_start_new_turn():
     # create testing game object
     test_game = Game()
 
+    # fill game object with fake randomized building history
+    test_game.randomized_building_history = {"1": ["SHP", "SHP"]}
+
     # check if game menu displays correct output
     test_game.start_new_turn()
 
     # check if output is expected
     out = get_display_output()
-    assert out == ['', 'Turn 1', '    A     B     C     D  \n +-----+-----+-----+-----+\n1|     |     |     |     |\n +-----+-----+-----+-----+\n2|     |     |     |     |\n +-----+-----+-----+-----+\n3|     |     |     |     |\n +-----+-----+-----+-----+\n4|     |     |     |     |\n +-----+-----+-----+-----+',
-                   '1. Build a SHP\n2. Build a SHP\n3. See remaining buildings\n4. See current score\n\n5. Save game\n0. Exit to main menu', 'Your choice? ']
+    assert out == [
+        "",
+        "Turn 1",
+        "     A     B     C     D  ",
+        "  +-----+-----+-----+-----+",
+        " 1|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        " 2|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        " 3|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        " 4|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        "1. Build a SHP",
+        "2. Build a SHP",
+        "3. See remaining buildings",
+        "4. See current score",
+        "",
+        "5. Save game",
+        "0. Exit to main menu",
+        'Your choice? ']
 
 
 @pytest.mark.parametrize("option, expected",
-                         [(["1"], 1), (["2"], 1), (["100", "2"],1), (["3"],2)])
+                         [(["1"], 1), (["2"], 1), (["100", "2"], 1), (["3"], 2)])
 def test_start_new_turn_options(option, expected, mocker):
     """
     run start_new_turn input options
 
     Zheng Jiongjie T01 9th December
     """
+    set_keyboard_input(option)
     mocker.patch('classes.game.Game.add_building', return_value=1)
     mocker.patch('classes.game.Game.display_building', return_value=2)
     test_game = Game()
-    set_keyboard_input(option)
     assert test_game.start_new_turn() == expected
 
 
@@ -256,11 +285,12 @@ def test_check_building_exist(test_pass, x_coord, y_coord):
     """
     test_game = Game()
     test_game.board[0][1] = Shop()
-    
-    assert test_game.check_building_exist(x_coord,y_coord) == test_pass 
+
+    assert test_game.check_building_exist(x_coord, y_coord) == test_pass
+
 
 @pytest.mark.parametrize("building_name",
-                         [("FAC"),("SHP"),("BCH"),("HWY"),("HSE")])
+                         [("FAC"), ("SHP"), ("BCH"), ("HWY"), ("HSE")])
 def test_remove_building(building_name):
     """
     test if building can be removed from the building pool
@@ -270,6 +300,7 @@ def test_remove_building(building_name):
     test_game = Game()
     test_game.remove_building(building_name)
     assert test_game.building_pool[building_name] == 7
+
 
 def test_display_building(mocker):
     """
@@ -290,4 +321,4 @@ BCH              8\n'''
 
     test_game.display_building()
     output = get_display_output()
-    assert match==output[0]
+    assert match == output[0]
