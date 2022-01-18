@@ -15,13 +15,13 @@ from classes.park import *
                                  [Building(),Building(),Building(),Building()],
                                  [Building(),Building(),Building(),Building()],
                                  [Monument(0,3),Building(),Building(),Monument(3,3)]
-                                 ],16,0,0), 
+                                 ],4,0,0), 
                              ([
                                  [Monument(0,0), Building(), Building() , Monument(3,0)],
                                  [Building(),Building(),Building(),Building()],
                                  [Building(),Building(),Building(),Building()],
                                  [Building(),Building(),Building(),Monument(3,3)]
-                                 ],12,0,0), 
+                                 ],4,0,0), 
                              (
                                  [
                                     [Monument(0,0), Building(), Building() , Building()],
@@ -35,14 +35,14 @@ from classes.park import *
                                     [Monument(0,1),Building(),Building(),Building()],
                                     [Building(),Building(),Building(),Building()],
                                     [Building(),Building(),Building(),Building()]
-                                 ],2,0,0), 
+                                 ],1,0,1), 
                              (
                                  [
                                     [Monument(0,0), Building(), Building() , Monument(3,0)],
                                     [Monument(0,1),Building(),Building(),Building()],
                                     [Building(),Building(),Building(),Building()],
                                     [Monument(0,3),Building(),Building(),Monument(3,3)]
-                                    ],20,0,0)
+                                    ],4,0,1)
                          
                          ])
 def test_calculate_score(game_board, total_score, x_coord, y_coord):
