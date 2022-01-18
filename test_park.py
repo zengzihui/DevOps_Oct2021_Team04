@@ -11,25 +11,53 @@ from classes.park import *
 @pytest.mark.parametrize("game_board, total_score, x_coord, y_coord",
                          [
                              ([
-                                 [Beach(0,0), Building(), Building() , Beach(3,0)],
-                                 [Building(),Building(),Building(),Building()],
-                                 [Building(),Beach(1,2),Building(),Building()],
-                                 [Building(),Building(),Building(),Building()]
-                                 ],3,0,0), 
-                             ([
-                                 [Beach(0,0), Building(), Building() , Beach(3,0)],
-                                 [Building(),Building(),Building(),Building()],
-                                 [Building(),Beach(1,2),Building(),Building()],
-                                 [Building(),Building(),Building(),Building()]
-                                 ],3,3,0), 
-                             (
-                                 [
-                                    [Beach(0,0), Building(), Building() , Beach(3,0)],
-                                    [Building(),Building(),Building(),Building()],
-                                    [Building(),Beach(1,2),Building(),Building()],
-                                    [Building(),Building(),Building(),Building()]
-                                 ],1,1,2)
-                         
+                                 [Park(), Park(), Park() , Park(),Park()],
+                                 [Park(),Building(),Building(),Building(),Building()],
+                                 [Park(),Building(),Building(),Building(),Building()],
+                                 [Park(),Building(),Building(),Building(),Building()]
+                                 ],25,0,0),
+                            ([
+                                 [Park(), Park(), Park() , Park(),Building()],
+                                 [Park(),Building(),Building(),Building(),Building()],
+                                 [Park(),Building(),Building(),Building(),Building()],
+                                 [Park(),Building(),Building(),Building(),Building()]
+                                 ],24,0,0),
+                            ([
+                                 [Park(), Park(), Park() , Park(),Building()],
+                                 [Park(),Building(),Building(),Building(),Building()],
+                                 [Park(),Building(),Building(),Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()]
+                                 ],23,0,0),
+                            ([
+                                 [Park(), Park(), Park() , Park(),Building()],
+                                 [Park(),Building(),Building(),Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()]
+                                 ],22,0,0),
+                            ([
+                                 [Park(), Park(), Park() , Park(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()]
+                                 ],16,0,0),
+                            ([
+                                 [Park(), Park(), Park() , Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()]
+                                 ],8,0,0),
+                            ([
+                                 [Park(), Park(), Building() , Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()]
+                                 ],3,0,0),
+                            ([
+                                 [Park(), Building(), Building() , Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()],
+                                 [Building(),Building(),Building(),Building(),Building()]
+                                 ],1,0,0)
                          ])
 def test_calculate_score(game_board, total_score, x_coord, y_coord):
     """
