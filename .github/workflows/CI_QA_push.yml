@@ -43,7 +43,7 @@ jobs:
     # start running test scripts
     - name: Begin Pytest
       run: |
-        pytest --cov -v --junitxml=reportTestScript.xml --html=report.html
+        pytest --cov -v --junitxml=reportTestScript.xml --html=report.html --md=report.md
     # if test scripts passed, send email notifying test scripts passed to QA lead and Tech lead
     - name: Send mail
       if: ${{success()}}
