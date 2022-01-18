@@ -1,5 +1,3 @@
-from msilib.schema import Class
-from tkinter.messagebox import NO
 from .game import Game
 
 

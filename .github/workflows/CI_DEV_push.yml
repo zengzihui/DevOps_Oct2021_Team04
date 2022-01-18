@@ -47,7 +47,7 @@ jobs:
       # pytest
       - name: Run tests with pytest
         run: |
-          python -m pytest --cov -v --junitxml=report.xml
+          pytest --cov -v --junitxml=report.xml
 
       # send message to developer when unit test fails
       - if: ${{failure()}}
