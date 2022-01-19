@@ -337,12 +337,13 @@ Total score: 43'''
                                  )
 
                             ])
-def test_display_all_scores(game_board, match):
+def test_display_all_scores(game_board, match, mocker):
     """
     test if all scores are displayed
 
     Swah Jianoon T01 17th Janunary
     """
+    mocker.patch('classes.game.Game.start_new_turn', return_value=0)
     test_string =""
     set_keyboard_input(None)
     test_game = Game()
