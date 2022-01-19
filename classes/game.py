@@ -297,6 +297,7 @@ class Game:
  
         Swah Jianoon T01 17th Janunary
         """
+        print("")
         total_dict = {"": 0}
         display_dict = {"":""}
         total_score = 0
@@ -316,7 +317,10 @@ class Game:
                         display_dict[self.board[h][w].name] = str(score)
 
         for building in display_dict:
-            if building != "" and total_dict[building] != 0:
-                print("{0}: {1} = {2}".format(building,display_dict[building],str(total_dict[building])))
+            if building != "":
+                if total_dict[building] == 0:
+                    print("{0}: 0".format(building))
+                else:
+                    print("{0}: {1} = {2}".format(building,display_dict[building],str(total_dict[building])))
         print("Total score: {0}".format(total_score))
         self.start_new_turn()

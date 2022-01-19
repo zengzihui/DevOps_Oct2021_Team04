@@ -305,7 +305,8 @@ BCH              8\n'''
                                  [Highway(0,3),Highway(1,3),Highway(2,3),Highway(3,3)]
 
                                  ],
-                                 '''HSE: 1 + 5 + 5 + 3 + 3 = 17
+                                 '''
+HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
 SHP: 2 + 2 + 3 = 7
 HWY: 4 + 4 + 4 + 4 = 16
@@ -319,7 +320,8 @@ Total score: 50'''
                                  [Highway(0,3),Highway(1,3),Highway(2,3),Building()]
 
                                  ],
-                                 '''HSE: 1 + 5 + 5 + 3 + 3 = 17
+                                 '''
+HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
 SHP: 2 + 2 + 3 = 7
 HWY: 3 + 3 + 3 = 9
@@ -333,7 +335,13 @@ Total score: 43'''
                                  [Building(), Building(), Building() , Building()]
 
                                  ],
-                                 '''Total score: 0'''
+                                 '''
+HSE: 0
+FAC: 0
+SHP: 0
+HWY: 0
+BCH: 0
+Total score: 0'''
                                  )
 
                             ])

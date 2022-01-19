@@ -50,7 +50,6 @@ class House(Building):
             elif building in score_dict:
                 total_score += score_dict[building]
         
-        
         return total_score
 
     
