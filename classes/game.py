@@ -138,6 +138,8 @@ class Game:
             return self.add_building(randomized_building_names[1])
         elif chosen_option == "3":
             return self.display_building()
+        elif chosen_option =="4":
+            return self.display_all_scores()
         elif chosen_option == "0":
             return 0
 
@@ -185,8 +187,6 @@ class Game:
         Swah Jianoon T01 9th December
         """
         building = Building()
-        if building_string == "SHP":
-            building = Shop()
 
         location_string = input("Build where? ")
         coords = self.input_to_coordinates(location_string)
@@ -197,6 +197,16 @@ class Game:
                     print("You cannot build on a location that has already had a building")
                 else:
                     if self.check_surrounding_buildings_exist(x_coord, y_coord) or self.turn_num == 1:
+                        if building_string == "SHP":
+                            building = Shop(x_coord,y_coord)
+                        elif building_string == "HSE":
+                            building = House(x_coord,y_coord)
+                        elif building_string == "FAC":
+                            building = Factory(x_coord,y_coord)
+                        elif building_string == "HWY":
+                            building = Highway(x_coord,y_coord)
+                        elif building_string == "BCH":
+                            building = Beach(x_coord,y_coord)
                         self.board[y_coord][x_coord] = building
                         self.remove_building(building_string)
                         building.x_coord = x_coord
@@ -275,4 +285,47 @@ class Game:
 
         Swah Jianoon T01 9th December
         """
-        self.building_pool[building_name] -= 1
+        self.building_pool[building_name] -=1
+    
+    def display_all_scores(self):
+        """
+        Display the current score of the game
+
+        Eg .
+
+        HSE: 1 + 5 + 5 + 3 + 3 = 17
+        FAC: 1 = 1
+        SHP: 2 + 2 + 3 = 7
+        HWY: 4 + 4 + 4 + 4 = 16
+        BCH: 3 + 3 + 3 = 9
+        Total score: 50
+ 
+        Swah Jianoon T01 17th Janunary
+        """
+        print("")
+        total_dict = {"": 0}
+        display_dict = {"":""}
+        total_score = 0
+        for key in self.building_pool:
+            total_dict[key] = 0
+            display_dict[key] = ""
+
+        for h in range(0, self.height + 1):
+            for w in range(0, self.width + 1):
+                if self.board[h][w].name != "":
+                    score = self.board[h][w].calculate_score(self)
+                    total_score += score
+                    total_dict[self.board[h][w].name] += int(score)
+                    if display_dict[self.board[h][w].name] != "":
+                        display_dict[self.board[h][w].name] += " + {0}".format(str(score))
+                    else:
+                        display_dict[self.board[h][w].name] = str(score)
+
+        for building in display_dict:
+            if building != "":
+                if total_dict[building] == 0:
+                    print("{0}: 0".format(building))
+                else:
+                    print("{0}: {1} = {2}".format(building,display_dict[building],str(total_dict[building])))
+        print("Total score: {0}".format(total_score))
+        self.start_new_turn()
