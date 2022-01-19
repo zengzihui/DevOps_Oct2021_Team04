@@ -135,7 +135,7 @@ class Game:
 
         location_string = input("Build where? ")
         x_coord, y_coord = self.input_to_coordinates(location_string)
-        if 0 <= x_coord < 4 and 0 <= y_coord < 4:
+        if 0 <= x_coord < self.width and 0 <= y_coord < self.height:
             if self.check_building_exist(x_coord, y_coord):
                 print("You cannot build on a location that has already had a building")
             else:
@@ -186,13 +186,13 @@ class Game:
         temp_x_higher = x_coord + 1
         temp_y_lower = y_coord - 1
         temp_y_higher = y_coord + 1
-        if (0 <= temp_x_lower < 4) and self.board[y_coord][temp_x_lower].name != "":
+        if (0 <= temp_x_lower < self.width) and self.board[y_coord][temp_x_lower].name != "":
             return True
-        elif (0 <= temp_x_higher < 4) and self.board[y_coord][temp_x_higher].name != "":
+        elif (0 <= temp_x_higher < self.width) and self.board[y_coord][temp_x_higher].name != "":
             return True
-        elif (0 <= temp_y_lower < 4) and self.board[temp_y_lower][x_coord].name != "":
+        elif (0 <= temp_y_lower < self.height) and self.board[temp_y_lower][x_coord].name != "":
             return True
-        elif (0 <= temp_y_higher < 4) and self.board[temp_y_higher][x_coord].name != "":
+        elif (0 <= temp_y_higher < self.height) and self.board[temp_y_higher][x_coord].name != "":
             return True
         return False
 
