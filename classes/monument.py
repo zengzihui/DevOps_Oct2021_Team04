@@ -23,7 +23,7 @@ class Monument(Building):
         corner_count = 0
         similar_building = 0
         corner = False
-        for h in range(0, game.width + 1):
+        for h in range(0, game.height + 1):
             for w in range(0, game.width + 1):
                 if game.board[h][w].name == self.name:
                     similar_building += 1
