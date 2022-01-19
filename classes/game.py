@@ -1,5 +1,8 @@
 from random import randrange
 
+from classes.monument import Monument
+from classes.park import Park
+
 from .building import Building
 from .shop import Shop
 from .factory import Factory
@@ -206,6 +209,10 @@ class Game:
                             building = Highway(x_coord,y_coord)
                         elif building_string == "BCH":
                             building = Beach(x_coord,y_coord)
+                        elif building_string == "MON":
+                            building = Monument(x_coord,y_coord)
+                        elif building_string == "PRK":
+                            building = Park(x_coord,y_coord)
                         self.board[y_coord][x_coord] = building
                         self.remove_building(building_string)
                         building.x_coord = x_coord

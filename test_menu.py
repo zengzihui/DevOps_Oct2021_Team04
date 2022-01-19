@@ -97,7 +97,8 @@ def test_start_new_game(mocker):
     Zheng Jiongjie T01 9th December
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value="new turn started")
-    assert start_new_game() == "new turn started"
+    building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
+    assert start_new_game(building_pool) == "new turn started"
 
 
 def test_main_menu_exit_program():
@@ -113,7 +114,7 @@ def test_main_menu_exit_program():
 
 @pytest.mark.parametrize("option_list, expected",
                          [
-                             (["1", "1", "1", "1", "1"], ["BCH","FAC","HSE","HWY","MON"]),
+                             (["1", "1", "1", "1", "1"], {"BCH":8, "FAC":8, "HSE": 8, "HWY":8, "MON":8}),
                              
                          ])
 def test_success_choose_building_pool(option_list,expected):

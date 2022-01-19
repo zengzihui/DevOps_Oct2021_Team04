@@ -58,4 +58,5 @@ def test_calculate_score(game_board, score, x_coord, y_coord):
     test_building = Shop(x_coord, y_coord)
     test_game = Game()
     test_game.board = game_board
+    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
     assert test_building.calculate_score(test_game) == score
