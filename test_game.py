@@ -157,7 +157,7 @@ def test_start_new_turn():
 
 
 @pytest.mark.parametrize("option, expected",
-                         [(["1"], 1), (["2"], 1), (["100", "2"], 1), (["3"], 2)])
+                         [(["1"], 1), (["2"], 1), (["100", "2"], 1), (["3"], 2), (["4"], 3)])
 def test_start_new_turn_options(option, expected, mocker):
     """
     run start_new_turn input options
@@ -167,12 +167,13 @@ def test_start_new_turn_options(option, expected, mocker):
     set_keyboard_input(option)
     mocker.patch('classes.game.Game.add_building', return_value=1)
     mocker.patch('classes.game.Game.display_building', return_value=2)
+    mocker.patch('classes.game.Game.display_all_scores', return_value=3)
     test_game = Game()
     assert test_game.start_new_turn() == expected
 
 
 @pytest.mark.parametrize("building, expected",
-                         [(Beach(), "BCH"), (Factory(), "FAC"), (Shop(), "SHP"), (Highway(), "HWY"), (House(), "HSE")])
+                         [(Beach(0, 0), "BCH"), (Factory(0, 0), "FAC"), (Shop(0, 0), "SHP"), (Highway(0, 0), "HWY"), (House(0, 0), "HSE")])
 def test_sub_classes(building, expected):
     """
     test if the different buildings can be initialized
@@ -182,24 +183,23 @@ def test_sub_classes(building, expected):
     assert building.name == expected
 
 
-@pytest.mark.parametrize("location,x,y",
-                         [("a1", 0, 0), ("a2", 0, 1)])
-def test_add_building(location, x, y, mocker):
+@pytest.mark.parametrize("location,x,y,building_name,building_type",
+                         [("a1", 0, 0, "SHP", Shop), ("a2", 0, 1, "FAC", Factory), ("a1", 0, 0, "BCH", Beach), ("a1", 0, 0, "HSE", House), ("a1", 0, 0, "HWY", Highway)])
+def test_add_building(location, x, y, building_name, building_type, mocker):
     """
     success cases for adding_building function
 
     Swah Jianoon T01 9th December
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
-    test_shop = "SHP"
     test_game = Game()
     set_keyboard_input([location])
-    test_game.add_building(test_shop)
-    assert isinstance(test_game.board[y][x], Shop)
+    test_game.add_building(building_name)
+    assert isinstance(test_game.board[y][x], building_type)
 
 
 @pytest.mark.parametrize("location",
-                         [("a6"), ("z2")])
+                         [("a6"), ("z2"), ("2"), ("z"), ("")])
 def test_add_building_failure_random_input(location, mocker):
     """
     failing cases for adding_building function for random input
@@ -224,7 +224,7 @@ def test_add_building_failure_existing_building(location, mocker):
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
-    test_game.board[0][1] = Shop()
+    test_game.board[0][1] = Shop(0, 1)
     set_keyboard_input([location])
     test_game.add_building("SHP")
     output = get_display_output()
@@ -242,7 +242,7 @@ def test_add_building_failure_adjacent_building(location, mocker):
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
     test_game.turn_num = 2
-    test_game.board[0][1] = Shop()
+    test_game.board[0][1] = Shop(0, 1)
     set_keyboard_input([location])
     test_game.add_building("SHP")
     output = get_display_output()
@@ -271,7 +271,7 @@ def test_check_surrounding_buildings_exist(test_pass, x_coord, y_coord):
     Swah Jianoon T01 9th December
     """
     test_game = Game()
-    test_game.board[1][1] = Shop()
+    test_game.board[1][1] = Shop(1, 1)
     assert test_game.check_surrounding_buildings_exist(x_coord, y_coord) == test_pass
 
 
@@ -284,7 +284,7 @@ def test_check_building_exist(test_pass, x_coord, y_coord):
     Swah Jianoon T01 9th December
     """
     test_game = Game()
-    test_game.board[0][1] = Shop()
+    test_game.board[0][1] = Shop(0, 1)
 
     assert test_game.check_building_exist(x_coord, y_coord) == test_pass
 
@@ -322,3 +322,170 @@ BCH              8\n'''
     test_game.display_building()
     output = get_display_output()
     assert match == output[0]
+
+
+@pytest.mark.parametrize("game_board, match",
+                         [
+                             ([
+                                 [Shop(0, 0), Shop(1, 0), House(2, 0), Factory(3, 0)],
+                                 [Beach(0, 1), House(1, 1), House(2, 1), Beach(3, 1)],
+                                 [Beach(0, 2), Shop(1, 2), House(2, 2), House(3, 2)],
+                                 [Highway(0, 3), Highway(1, 3), Highway(2, 3), Highway(3, 3)]
+
+                             ],
+                                 '''
+HSE: 1 + 5 + 5 + 3 + 3 = 17
+FAC: 1 = 1
+SHP: 2 + 2 + 3 = 7
+HWY: 4 + 4 + 4 + 4 = 16
+BCH: 3 + 3 + 3 = 9
+Total score: 50'''
+                             ),
+                             ([
+                                 [Shop(0, 0), Shop(1, 0), House(2, 0), Factory(3, 0)],
+                                 [Beach(0, 1), House(1, 1), House(2, 1), Beach(3, 1)],
+                                 [Beach(0, 2), Shop(1, 2), House(2, 2), House(3, 2)],
+                                 [Highway(0, 3), Highway(1, 3), Highway(2, 3), Building()]
+
+                             ],
+                                 '''
+HSE: 1 + 5 + 5 + 3 + 3 = 17
+FAC: 1 = 1
+SHP: 2 + 2 + 3 = 7
+HWY: 3 + 3 + 3 = 9
+BCH: 3 + 3 + 3 = 9
+Total score: 43'''
+                             ),
+                             ([
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()]
+
+                             ],
+                                 '''
+HSE: 0
+FAC: 0
+SHP: 0
+HWY: 0
+BCH: 0
+Total score: 0'''
+                             )
+
+                         ])
+def test_display_all_scores(game_board, match, mocker):
+    """
+    test if all scores are displayed
+
+    Swah Jianoon T01 17th Janunary
+    """
+    mocker.patch('classes.game.Game.start_new_turn', return_value=0)
+    test_string = ""
+    set_keyboard_input(None)
+    test_game = Game()
+    test_game.board = game_board
+
+    test_game.display_all_scores()
+    output = get_display_output()
+    for out in output:
+        test_string += out
+        if out != output[-1]:
+            test_string += "\n"
+    assert test_string == match
+
+
+def test_randomize_two_buildings_from_pool_random():
+    """
+    tests get_two_buildings_from_pool() function if the results are properly randomized
+
+    Zheng Jiongjie T01 16th January
+    """
+    # run randomze buildings for 10 turns 10 times
+    for i in range(0, 10):
+        test_game = Game()
+
+        # generate randomized buildings for turn 1
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
+
+        # generate randomized buildings for turn 2
+        test_game.turn_num = 2
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
+
+        # generate randomized buildings for turn 3
+        test_game.turn_num = 3
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
+
+        # generate randomized buildings for turn 4
+        test_game.turn_num = 4
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
+
+        # generate randomized buildings for turn 5
+        test_game.turn_num = 5
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
+
+        # generate randomized buildings for turn 6
+        test_game.turn_num = 6
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
+
+        # generate randomized buildings for turn 7
+        test_game.turn_num = 7
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
+
+        # generate randomized buildings for turn 8
+        test_game.turn_num = 8
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
+
+        # generate randomized buildings for turn 9
+        test_game.turn_num = 9
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
+
+        # generate randomized buildings for turn 10
+        test_game.turn_num = 10
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
+
+        # assert randomly generated buildings across all 10 turns are not the same
+        assert not (test_game.randomized_building_history["1"] == test_game.randomized_building_history["2"] ==
+                    test_game.randomized_building_history["3"] == test_game.randomized_building_history["4"] ==
+                    test_game.randomized_building_history["5"] == test_game.randomized_building_history["6"] ==
+                    test_game.randomized_building_history["7"] == test_game.randomized_building_history["8"] ==
+                    test_game.randomized_building_history["9"] == test_game.randomized_building_history["10"])
+
+
+def test_randomize_two_buildings_from_pool_when_no_building_for_type():
+    """
+    tests get_two_buildings_from_pool() function if the it returns buildings with 0 buildings left in pool
+
+    Zheng Jiongjie T01 16th January
+    """
+    test_game = Game()
+
+    # remove all beaches from building pool
+    test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 0}
+
+    # loop through 10 times, BCH must never be the value returned from get_two_buildings_from_pool()
+    for i in range(0, 10):
+        # get randomized building
+        test_game.get_two_buildings_from_pool(test_game.building_pool)
+        # check each item in randomized building
+        for item in test_game.randomized_building_history[str(test_game.turn_num)]:
+            # BCH must never appear from randomized building, since there is 0 of it left in the pool
+            assert item != "BCH"
+
+
+def test_randomize_two_buildings_from_pool_when_no_building():
+    """
+    tests get_two_buildings_from_pool() function if building pool is empty
+
+    Zheng Jiongjie T01 16th January
+    """
+    test_game = Game()
+
+    # remove all beaches from building pool
+    test_game.building_pool = {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}
+
+    # get randomized building
+    test_game.get_two_buildings_from_pool(test_game.building_pool)
+    # check each item in randomized building
+    for item in test_game.randomized_building_history[str(test_game.turn_num)]:
+        # nothing must never appear from randomized building, since there is no building in pool
+        assert item == ""

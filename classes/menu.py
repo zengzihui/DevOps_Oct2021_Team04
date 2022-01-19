@@ -100,7 +100,7 @@ def prompt_city_size(current_size):
                 try:
                     temp_city_size[key] = int(temp_city_size[key])
                     # check if int is 1 or more
-                    if temp_city_size[key] <= 0:
+                    if temp_city_size[key] <= 0 or temp_city_size[key] > 26:
                         print("")
                         print("Invalid input has been entered. Please enter an integer.")
                         print("")
