@@ -1,3 +1,4 @@
+from ast import While
 from .game import Game
 
 
@@ -63,57 +64,78 @@ def prompt_city_size(current_size):
     """
     print("")
     print("--------- CURRENT CITY SIZE ---------")
-    print("x-axis: {}".format(current_size[0]))
-    print("y-axis: {}".format(current_size[1]))
+    print("Width: {}".format(current_size[0]))
+    print("Height: {}".format(current_size[1]))
     print("-------------------------------------")
 
-    temp_city_size = {"x-axis": None, "y-axis": None}
+    temp_city_size = {"width": None, "height": None}
     print("")
-    print("Choose your city size below. Please take note that the multiplication of x and y cannot be more than 40.")
+    print("Choose your city size below. Please take note that the multiplication of width and height cannot be more than 40.")
+    print("Enter 0 to exit this configuration.")
     print("")
 
     city_size_to_be_updated = True
+    while True:
+        # flag
+        exit_loop = False
 
-    # get new x and y values for city size
-    for key in temp_city_size:
-        temp_city_size[key] = input("enter value for {}: ".format(key))
-        # check if input is int
-        try:
-            temp_city_size[key] = int(temp_city_size[key])
-
-            if temp_city_size[key] <= 0:
-                city_size_to_be_updated = False
-                print("")
-                print("Invalid input has been entered. Please enter an integer.")
+        # get new height and width values for city size
+        for key in temp_city_size:
+            # exit function if user enter 0 when prompted for new city size
+            if exit_loop:
                 break
-        except Exception as e:
-            city_size_to_be_updated = False
-            print("")
-            print("Invalid input has been entered. Please enter an integer.")
-            break
 
-    # check if area of new city size is more than 40
-    if city_size_to_be_updated is True and temp_city_size["x-axis"] * temp_city_size["y-axis"] > 40:
-        city_size_to_be_updated = False
-        # city size does not change
-        print("")
-        print("The multiplication of x and y exceeds the limit of 40. City Size remains the same.")
+            while True:
+                temp_city_size[key] = input("Enter value for {}: ".format(key.lower()))
+
+                # exit and dont update values if user enters 0
+                if temp_city_size[key] == "0":
+                    print("")
+                    print("City size will not be updated.")
+                    city_size_to_be_updated = False
+                    exit_loop = True
+                    break
+
+                # check if input is int
+                try:
+                    temp_city_size[key] = int(temp_city_size[key])
+                    # check if int is 1 or more
+                    if temp_city_size[key] <= 0:
+                        print("")
+                        print("Invalid input has been entered. Please enter an integer.")
+                        print("")
+                        continue
+                    break
+                except Exception as e:
+                    print("")
+                    print("Invalid input has been entered. Please enter an integer.")
+                    print("")
+                    continue
+
+        # check if area of new city size is more than 40
+        if city_size_to_be_updated is True and temp_city_size["width"] * temp_city_size["height"] > 40:
+            # city size does not change
+            print("")
+            print("The multiplication of x and y exceeds the limit of 40. Please re-enter your input.")
+            print("")
+        else:
+            break
 
     if city_size_to_be_updated:
         # display new city size to updated
         print("")
         print("--------- CHOSEN CITY SIZE ---------")
-        print("x-axis: {}".format(temp_city_size["x-axis"]))
-        print("y-axis: {}".format(temp_city_size["y-axis"]))
+        print("Width: {}".format(temp_city_size["width"]))
+        print("Height: {}".format(temp_city_size["height"]))
         print("-------------------------------------")
-        return [temp_city_size["x-axis"], temp_city_size["y-axis"]]
+        return [temp_city_size["width"], temp_city_size["height"]]
 
     else:
         # display old city size since new city size is invalid
         print("")
         print("--------- CURRENT CITY SIZE ---------")
-        print("x-axis: {}".format(current_size[0]))
-        print("y-axis: {}".format(current_size[1]))
+        print("Width: {}".format(current_size[0]))
+        print("Height: {}".format(current_size[1]))
         print("-------------------------------------")
         return current_size
 
