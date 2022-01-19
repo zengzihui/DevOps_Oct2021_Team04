@@ -325,6 +325,15 @@ SHP: 2 + 2 + 3 = 7
 HWY: 3 + 3 + 3 = 9
 BCH: 3 + 3 + 3 = 9
 Total score: 43'''
+                                 ),
+                                 ([
+                                 [Building(), Building(), Building() , Building()],
+                                 [Building(), Building(), Building() , Building()],
+                                 [Building(), Building(), Building() , Building()],
+                                 [Building(), Building(), Building() , Building()]
+
+                                 ],
+                                 '''Total score: 0'''
                                  )
 
                             ])
@@ -334,15 +343,18 @@ def test_display_all_scores(game_board, match):
 
     Swah Jianoon T01 17th Janunary
     """
+    test_string =""
     set_keyboard_input(None)
     test_game = Game()
     test_game.board = game_board
 
     test_game.display_all_scores()
     output = get_display_output()
-    assert output[0] == match
-
-    assert match == output[0]
+    for out in output:
+        test_string += out
+        if out != output[-1]:
+            test_string+= "\n"
+    assert test_string == match
 
 
 def test_randomize_two_buildings_from_pool_random():
