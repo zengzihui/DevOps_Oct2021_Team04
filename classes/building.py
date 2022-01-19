@@ -22,7 +22,6 @@ class Building:
         else:
             return None
 
-
     def get_bot_building(self,game):
         """
         Return name of bottom building if exist
@@ -35,7 +34,6 @@ class Building:
             return game.board[temp_y_higher][self.x_coord]
         else:
             return None
-
     def get_left_building(self,game):
         """
         Return name of left building if exist
@@ -49,7 +47,6 @@ class Building:
         else:
             return None
 
-
     def get_right_building(self,game):
         """
         Return name of left building if exist
@@ -62,7 +59,6 @@ class Building:
             return game.board[self.y_coord][temp_x_higher]
         else:
             return None
-
 
     def calculate_score(self):
         """
