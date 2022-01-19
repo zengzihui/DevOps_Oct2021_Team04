@@ -122,7 +122,9 @@ def test_main_menu_exit_program():
 
 @pytest.mark.parametrize("option_list, expected",
                          [(["5", "5"], [5, 5]), (["5", "6"], [5, 6]), (["5", "5"], [5, 5]), (["1", "40"], [1, 40]),
-                          (["40", "40"], [4, 4]), (["a", "b"], [4, 4]), (["-4", "40"], [4, 4])])
+                          (["40", "40", "6", "6"], [6, 6]), (["a", "b", "6", "6"], [6, 6]),
+                          (["a", "3", "3"], [3, 3]), (["a", "3", "0"], [4, 4]), (["0"], [4, 4]),
+                          (["-1", "5", "5"], [5, 5]), (["", "5", "5"], [5, 5])])
 def test_choose_city_size(mocker, option_list, expected):
     """
     test if prompt_city_size() returns back valid city sizes
