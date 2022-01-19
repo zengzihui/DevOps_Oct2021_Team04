@@ -126,6 +126,7 @@ class Game:
 
         # return back to main menu if game ends
         if self.game_ended:
+            # break recursive start_new_turn
             return 0
 
         print("")
