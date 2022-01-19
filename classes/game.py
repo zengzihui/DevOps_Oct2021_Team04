@@ -189,22 +189,26 @@ class Game:
             building = Shop()
 
         location_string = input("Build where? ")
-        x_coord, y_coord = self.input_to_coordinates(location_string)
-        if 0 <= x_coord < 4 and 0 <= y_coord < 4:
-            if self.check_building_exist(x_coord, y_coord):
-                print("You cannot build on a location that has already had a building")
-            else:
-                if self.check_surrounding_buildings_exist(x_coord, y_coord) or self.turn_num == 1:
-                    self.board[y_coord][x_coord] = building
-                    self.remove_building(building_string)
-                    building.x_coord = x_coord
-                    building.y_coord = y_coord
-                    self.turn_num += 1
+        coords = self.input_to_coordinates(location_string)
+        if coords != None:
+            x_coord, y_coord = coords
+            if 0 <= x_coord < 4 and 0 <= y_coord < 4:
+                if self.check_building_exist(x_coord, y_coord):
+                    print("You cannot build on a location that has already had a building")
                 else:
-                    print("You must build next to an existing building.")
+                    if self.check_surrounding_buildings_exist(x_coord, y_coord) or self.turn_num == 1:
+                        self.board[y_coord][x_coord] = building
+                        self.remove_building(building_string)
+                        building.x_coord = x_coord
+                        building.y_coord = y_coord
+                        self.turn_num += 1
+                    else:
+                        print("You must build next to an existing building.")
 
+            else:
+                print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
         else:
-            print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
+                print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
         self.start_new_turn()
 
     def input_to_coordinates(self, location_string):
@@ -215,10 +219,11 @@ class Game:
         """
         ASCII_string_value = 97
         ASCII_int_value = 49
-        x = ord(location_string[0]) - ASCII_string_value
-        y = ord(location_string[1]) - ASCII_int_value
-
-        return x, y
+        if len(location_string) >= 2:
+            x = ord(location_string[0]) - ASCII_string_value
+            y = ord(location_string[1]) - ASCII_int_value
+            return (x,y)
+        return None
 
     def check_building_exist(self, x_coord, y_coord):
         """

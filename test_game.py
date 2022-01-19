@@ -173,7 +173,7 @@ def test_add_building(location, x, y, mocker):
 
 
 @pytest.mark.parametrize("location",
-                         [("a6"), ("z2")])
+                         [("a6"), ("z2"), ("2"), ("z"), ("")])
 def test_add_building_failure_random_input(location, mocker):
     """
     failing cases for adding_building function for random input
