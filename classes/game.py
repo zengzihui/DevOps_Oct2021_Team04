@@ -8,15 +8,14 @@ from .beach import Beach
 
 class Game:
 
-    def __init__(self, height=3, width=3):
+    def __init__(self, height=3, width=3,building_pool={}):
         """
         init function for game class
         default turn number is 1
 
         Zheng Jiongjie T01 9th December
         """
-        
-        self.building_pool ={"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
+        self.building_pool = building_pool
         self.height = height
         self.width = width
         self.board = []

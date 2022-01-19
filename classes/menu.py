@@ -43,13 +43,13 @@ def main_menu(from_game_menu=None):
     return chosen_option
 
 
-def start_new_game():
+def start_new_game(building_pool):
     """
     intializes new game object and start the turn
 
     Zheng Jiongjie T01 9th December
     """
-    current_game = Game()
+    current_game = Game(building_pool=building_pool)
     return current_game.start_new_turn()
 
 
@@ -93,7 +93,7 @@ def choose_building_pool():
     """
     building_list = ["BCH","FAC","HSE","HWY","MON","PRK","SHP"]
     display_list = ["Beach (BCH)","Factory (FAC)","House (HSE)","Highway (HWY)", "Monument (MON)","Park (PRK)","Shop (SHP)"]
-    output_list =[]
+    output_list ={}
     while(True):
         temp_count =1
         if len(output_list) <= 4:
@@ -108,7 +108,7 @@ def choose_building_pool():
             try:
                 chosen = int(chosen)-1
                 if 0 <= chosen <= temp_count-2 :
-                    output_list.append(building_list[chosen])
+                    output_list[building_list[chosen]] = 8
                     del building_list[chosen]
                     del display_list[chosen]
                 elif chosen == -1:
