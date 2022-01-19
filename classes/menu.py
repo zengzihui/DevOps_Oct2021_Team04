@@ -18,7 +18,7 @@ def main_menu(from_game_menu=None):
     Zheng Jiongjie T01 9th December
     """
 
-    options = {"1": "Start new game", "2": "Load saved game", "": "", "0": "Exit"}
+    options = {"1": "Start new game", "2": "Load saved game", "4": "Choose building pool", "": "", "0": "Exit"}
 
     menu_string = ""
     if not from_game_menu:
@@ -80,6 +80,7 @@ def building_display(buildings_list):
 
 def print_building_display(buildings_list):
     buildings = building_display(buildings_list)
+    print("")
     print("--------- CURRENT BUILDING POOL ---------")
     print("[{0}]".format(buildings))
     print("-----------------------------------------")
@@ -97,6 +98,7 @@ def choose_building_pool():
         temp_count =1
         if len(output_list) <= 4:
             print_building_display(output_list)
+            print("")
             for display in display_list:
                 print("{0}.{1}".format(temp_count, display))
                 temp_count +=1

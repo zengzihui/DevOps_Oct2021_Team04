@@ -12,12 +12,12 @@ def main():
             first_time_display_menu = True
             start_new_game()
         elif chosen_option == "4":
+            first_time_display_menu = True
             temp_pool = choose_building_pool()
             if temp_pool != None:
                 building_pool = temp_pool
             else:
                 print_building_display(building_pool)
-
 
 if __name__ == "__main__":
     main()

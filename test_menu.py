@@ -1,3 +1,4 @@
+from cmath import exp
 import sys
 from unittest import mock
 import pytest
@@ -23,7 +24,7 @@ def test_main_menu_display(mocker, option_list):
 
     # check if main_menu function displays correct output
     out = get_display_output()
-    assert out[0] == 'Welcome, mayor of Simp City!\n----------------------------\n1. Start new game\n2. Load saved game\n\n0. Exit'
+    assert out[0] == 'Welcome, mayor of Simp City!\n----------------------------\n1. Start new game\n2. Load saved game\n4. Choose building pool\n\n0. Exit'
 
 
 @pytest.mark.parametrize("option_list",
@@ -44,11 +45,11 @@ def test_main_menu_display_without_welcome(mocker, option_list):
 
     # check if main_menu function displays correct output
     out = get_display_output()
-    assert out[0] == '\n1. Start new game\n2. Load saved game\n\n0. Exit'
+    assert out[0] == '\n1. Start new game\n2. Load saved game\n4. Choose building pool\n\n0. Exit'
 
 
 @pytest.mark.parametrize("option_list, expected",
-                         [(["2"], "2"), (["1"], "1"), (["0"], "0")])
+                         [(["2"], "2"), (["1"], "1"), (["0"], "0"),(["4"], "4")])
 def test_main_menu_input_success(mocker, option_list, expected):
     """
     test if main_menu() returns the value entered by user
@@ -66,7 +67,7 @@ def test_main_menu_input_success(mocker, option_list, expected):
 
 
 @pytest.mark.parametrize("option_list, expected",
-                         [(["", "2"], 2), (["a", "1"], 1), (["!", "0"], 0), (["7", "4", "2", "0"], 2), (["a", "!", "0", "2"], 0)])
+                         [(["", "2"], 2), (["a", "1"], 1), (["!", "0"], 0), (["7", "2", "0"], 2), (["a", "!", "0", "2"], 0)])
 def test_main_menu_input_invalid_inputs(mocker, option_list, expected):
     """
     test if main menu accepts another input after invalid input is entered
@@ -141,7 +142,7 @@ def test_failure_choose_building_pool(option_list,expected):
     set_keyboard_input(option_list)
     choose_building_pool()
     out = get_display_output()
-    result = "\n" + out[14] + "\n" + out[15]
+    result = "\n" + out[16] + "\n" + out[17]
     assert result == expected
 
 @pytest.mark.parametrize("option_list, expected",
@@ -164,19 +165,25 @@ def test_exit_choose_building_pool(option_list,expected):
 
 @pytest.mark.parametrize("building_list, expected",
                          [
-                             (["BCH","FAC","HSE","HWY","MON"],'''--------- CURRENT BUILDING POOL ---------
+                             (["BCH","FAC","HSE","HWY","MON"],'''
+--------- CURRENT BUILDING POOL ---------
 [BCH, FAC, HSE, HWY, MON]
 -----------------------------------------''')
                              
                          ])
-def print_building_display(building_list,expected):
+def test_print_building_display(building_list,expected):
     """
     test choose display current building pool
 
     Swah Jian Oon T01 19th January
     """
+    combined_output =""
     set_keyboard_input(None)
     print_building_display(building_list)
     out = get_display_output()
-    assert out[0] == expected
+    for result in out:
+        combined_output+=result
+        if result != out[-1]:
+            combined_output += "\n"
+    assert combined_output == expected
 
