@@ -91,6 +91,7 @@ def choose_building_pool():
 
     Swah Jian Oon T01 19th December
     """
+    first_time = True
     building_list = ["BCH","FAC","HSE","HWY","MON","PRK","SHP"]
     display_list = ["Beach (BCH)","Factory (FAC)","House (HSE)","Highway (HWY)", "Monument (MON)","Park (PRK)","Shop (SHP)"]
     output_list ={}
@@ -99,6 +100,10 @@ def choose_building_pool():
         if len(output_list) <= 4:
             print_building_display(output_list)
             print("")
+            if first_time:
+                print("Choose your new building pool below.")
+                print("")
+                first_time = False
             for display in display_list:
                 print("{0}.{1}".format(temp_count, display))
                 temp_count +=1

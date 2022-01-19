@@ -1,4 +1,3 @@
-from cmath import exp
 import sys
 from unittest import mock
 import pytest
@@ -129,9 +128,9 @@ def test_success_choose_building_pool(option_list,expected):
 
 @pytest.mark.parametrize("option_list, expected",
                          [
-                             (["z","1","1","1","1","1"], "\nInvalid input has been entered.\nPlease enter integer for the option (e.g. 1) and it needs to be withing the range."),
-                             (["z41231","1","1","1","1","1"], "\nInvalid input has been entered.\nPlease enter integer for the option (e.g. 1) and it needs to be withing the range."),
-                             (["12","1","1","1","1","1"], "\nInvalid input has been entered.\nPlease enter integer for the option (e.g. 1) and it needs to be withing the range."),
+                             (["z","0"], "\nInvalid input has been entered.\nPlease enter integer for the option (e.g. 1) and it needs to be withing the range."),
+                             (["z41231","0"], "\nInvalid input has been entered.\nPlease enter integer for the option (e.g. 1) and it needs to be withing the range."),
+                             (["12","0"], "\nInvalid input has been entered.\nPlease enter integer for the option (e.g. 1) and it needs to be withing the range."),
                              
                          ])
 def test_failure_choose_building_pool(option_list,expected):
@@ -143,7 +142,7 @@ def test_failure_choose_building_pool(option_list,expected):
     set_keyboard_input(option_list)
     choose_building_pool()
     out = get_display_output()
-    result = "\n" + out[16] + "\n" + out[17]
+    result = "\n" + out[18] + "\n" + out[19]
     assert result == expected
 
 @pytest.mark.parametrize("option_list, expected",
@@ -188,3 +187,80 @@ def test_print_building_display(building_list,expected):
             combined_output += "\n"
     assert combined_output == expected
 
+@pytest.mark.parametrize("option_list, expected",
+                         [
+                             (["0"], '''
+--------- CURRENT BUILDING POOL ---------
+[]
+-----------------------------------------
+
+Choose your new building pool below.
+
+1.Beach (BCH)
+2.Factory (FAC)
+3.House (HSE)
+4.Highway (HWY)
+5.Monument (MON)
+6.Park (PRK)
+7.Shop (SHP)
+
+0. Exit
+'''),
+                             
+                         ])
+def test_first_time_choose_building_pool_message(option_list,expected):
+    """
+    test to display first time choose building pool message
+    """
+    set_keyboard_input(option_list)
+    choose_building_pool()
+    out = get_display_output()
+    output_len = len(out) - 1
+    temp_count =0
+    combined_output = ""
+    for result in out:
+        if temp_count <= (output_len - 4):
+            combined_output += result
+            if result!= out[-1]:
+                combined_output += "\n"
+        temp_count += 1
+
+    assert combined_output == expected
+
+@pytest.mark.parametrize("option_list, expected",
+                         [
+                             (["1","0"], '''
+--------- CURRENT BUILDING POOL ---------
+[BCH]
+-----------------------------------------
+
+1.Factory (FAC)
+2.House (HSE)
+3.Highway (HWY)
+4.Monument (MON)
+5.Park (PRK)
+6.Shop (SHP)
+
+0. Exit
+'''),
+                             
+                         ])
+def test_no_show_time_choose_building_pool_message(option_list,expected):
+    """
+    test to display first time choose building pool message
+    """
+    set_keyboard_input(option_list)
+    choose_building_pool()
+    out = get_display_output()
+    output_len = len(out) - 1
+    temp_count =0
+    combined_output = ""
+    for result in out:
+        if 17 <= temp_count <= (output_len - 4):
+            combined_output += result
+            if result!= out[-1]:
+                combined_output += "\n"
+        temp_count += 1
+
+    assert combined_output == expected
+    
