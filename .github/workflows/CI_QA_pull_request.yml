@@ -2,7 +2,8 @@ name: CI for pull requests
 
 on: 
   pull_request:
-    types: [ labeled ]
+    types: 
+      - labeled
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -10,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     # only if pull request is labeled 'Dev Team Approved', run Actions. 
-    if: contains(github.event.pull_request.labels.*.name, 'Dev Team Approved')
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'Dev Team Approved') }}
     steps:
     - uses: actions/setup-python@v2
       with:
