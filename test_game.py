@@ -131,7 +131,7 @@ def test_start_new_turn():
 
 
 @pytest.mark.parametrize("option, expected",
-                         [(["1"], 1), (["2"], 1), (["100", "2"],1), (["3"],2), (["4"],3)])
+                         [(["1"], 1), (["2"], 1), (["100", "2"], 1), (["3"], 2), (["4"], 3)])
 def test_start_new_turn_options(option, expected, mocker):
     """
     run start_new_turn input options
@@ -147,7 +147,7 @@ def test_start_new_turn_options(option, expected, mocker):
 
 
 @pytest.mark.parametrize("building, expected",
-                         [(Beach(0,0), "BCH"), (Factory(0,0), "FAC"), (Shop(0,0), "SHP"), (Highway(0,0), "HWY"), (House(0,0), "HSE")])
+                         [(Beach(0, 0), "BCH"), (Factory(0, 0), "FAC"), (Shop(0, 0), "SHP"), (Highway(0, 0), "HWY"), (House(0, 0), "HSE")])
 def test_sub_classes(building, expected):
     """
     test if the different buildings can be initialized
@@ -158,7 +158,7 @@ def test_sub_classes(building, expected):
 
 
 @pytest.mark.parametrize("location,x,y,building_name,building_type",
-                         [("a1", 0, 0, "SHP",Shop), ("a2", 0, 1,"FAC", Factory),("a1", 0, 0,"BCH", Beach),("a1", 0, 0,"HSE", House),("a1", 0, 0,"HWY",Highway)])
+                         [("a1", 0, 0, "SHP", Shop), ("a2", 0, 1, "FAC", Factory), ("a1", 0, 0, "BCH", Beach), ("a1", 0, 0, "HSE", House), ("a1", 0, 0, "HWY", Highway)])
 def test_add_building(location, x, y, building_name, building_type, mocker):
     """
     success cases for adding_building function
@@ -198,7 +198,7 @@ def test_add_building_failure_existing_building(location, mocker):
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
-    test_game.board[0][1] = Shop(0,1)
+    test_game.board[0][1] = Shop(0, 1)
     set_keyboard_input([location])
     test_game.add_building("SHP")
     output = get_display_output()
@@ -216,7 +216,7 @@ def test_add_building_failure_adjacent_building(location, mocker):
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
     test_game.turn_num = 2
-    test_game.board[0][1] = Shop(0,1)
+    test_game.board[0][1] = Shop(0, 1)
     set_keyboard_input([location])
     test_game.add_building("SHP")
     output = get_display_output()
@@ -245,7 +245,7 @@ def test_check_surrounding_buildings_exist(test_pass, x_coord, y_coord):
     Swah Jianoon T01 9th December
     """
     test_game = Game()
-    test_game.board[1][1] = Shop(1,1)
+    test_game.board[1][1] = Shop(1, 1)
     assert test_game.check_surrounding_buildings_exist(x_coord, y_coord) == test_pass
 
 
@@ -258,9 +258,10 @@ def test_check_building_exist(test_pass, x_coord, y_coord):
     Swah Jianoon T01 9th December
     """
     test_game = Game()
-    test_game.board[0][1] = Shop(0,1)
-    
-    assert test_game.check_building_exist(x_coord,y_coord) == test_pass 
+    test_game.board[0][1] = Shop(0, 1)
+
+    assert test_game.check_building_exist(x_coord, y_coord) == test_pass
+
 
 @pytest.mark.parametrize("building_name",
                          [("FAC"), ("SHP"), ("BCH"), ("HWY"), ("HSE")])
@@ -294,17 +295,18 @@ BCH              8\n'''
 
     test_game.display_building()
     output = get_display_output()
-    assert match==output[0]
+    assert match == output[0]
+
 
 @pytest.mark.parametrize("game_board, match",
                          [
                              ([
-                                 [Shop(0,0), Shop(1,0), House(2,0) , Factory(3,0)],
-                                 [Beach(0,1),House(1,1),House(2,1),Beach(3,1)],
-                                 [Beach(0,2),Shop(1,2),House(2,2),House(3,2)],
-                                 [Highway(0,3),Highway(1,3),Highway(2,3),Highway(3,3)]
+                                 [Shop(0, 0), Shop(1, 0), House(2, 0), Factory(3, 0)],
+                                 [Beach(0, 1), House(1, 1), House(2, 1), Beach(3, 1)],
+                                 [Beach(0, 2), Shop(1, 2), House(2, 2), House(3, 2)],
+                                 [Highway(0, 3), Highway(1, 3), Highway(2, 3), Highway(3, 3)]
 
-                                 ],
+                             ],
                                  '''
 HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
@@ -312,14 +314,13 @@ SHP: 2 + 2 + 3 = 7
 HWY: 4 + 4 + 4 + 4 = 16
 BCH: 3 + 3 + 3 = 9
 Total score: 50'''
-                                 ),
-                                 ([
-                                 [Shop(0,0), Shop(1,0), House(2,0) , Factory(3,0)],
-                                 [Beach(0,1),House(1,1),House(2,1),Beach(3,1)],
-                                 [Beach(0,2),Shop(1,2),House(2,2),House(3,2)],
-                                 [Highway(0,3),Highway(1,3),Highway(2,3),Building()]
-
-                                 ],
+                             ),
+                             ([
+                                 [Shop(0, 0), Shop(1, 0), House(2, 0), Factory(3, 0)],
+                                 [Beach(0, 1), House(1, 1), House(2, 1), Beach(3, 1)],
+                                 [Beach(0, 2), Shop(1, 2), House(2, 2), House(3, 2)],
+                                 [Highway(0, 3), Highway(1, 3), Highway(2, 3), Building()]
+                             ],
                                  '''
 HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
@@ -327,14 +328,14 @@ SHP: 2 + 2 + 3 = 7
 HWY: 3 + 3 + 3 = 9
 BCH: 3 + 3 + 3 = 9
 Total score: 43'''
-                                 ),
-                                 ([
-                                 [Building(), Building(), Building() , Building()],
-                                 [Building(), Building(), Building() , Building()],
-                                 [Building(), Building(), Building() , Building()],
-                                 [Building(), Building(), Building() , Building()]
+                             ),
+                             ([
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()]
 
-                                 ],
+                             ],
                                  '''
 HSE: 0
 FAC: 0
@@ -342,9 +343,9 @@ SHP: 0
 HWY: 0
 BCH: 0
 Total score: 0'''
-                                 )
+                             )
 
-                            ])
+                         ])
 def test_display_all_scores(game_board, match, mocker):
     """
     test if all scores are displayed
@@ -352,7 +353,7 @@ def test_display_all_scores(game_board, match, mocker):
     Swah Jianoon T01 17th Janunary
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value=0)
-    test_string =""
+    test_string = ""
     set_keyboard_input(None)
     test_game = Game()
     test_game.board = game_board
@@ -362,7 +363,7 @@ def test_display_all_scores(game_board, match, mocker):
     for out in output:
         test_string += out
         if out != output[-1]:
-            test_string+= "\n"
+            test_string += "\n"
     assert test_string == match
 
 
@@ -461,3 +462,38 @@ def test_randomize_two_buildings_from_pool_when_no_building():
     for item in test_game.randomized_building_history[str(test_game.turn_num)]:
         # nothing must never appear from randomized building, since there is no building in pool
         assert item == ""
+
+
+@pytest.mark.parametrize("game_board, match",
+                         [
+                             ([
+                                 [Shop(0, 0), Shop(1, 0), House(2, 0), Factory(3, 0)],
+                                 [Beach(0, 1), House(1, 1), House(2, 1), Beach(3, 1)],
+                                 [Beach(0, 2), Shop(1, 2), House(2, 2), House(3, 2)],
+                                 [Highway(0, 3), Highway(1, 3), Highway(2, 3), Highway(3, 3)]
+
+                             ],
+                                 {"board": {"0,0": "SHP", "1,0": "SHP", "2,0": "HSE", "3,0": "FAC",
+                                            "0,1": "BCH", "1,1": "HSE", "2,1": "HSE", "3,1": "BCH",
+                                            "0,2": "BCH", "1,2": "SHP", "2,2": "HSE", "3,2": "HSE",
+                                            "0,3": "HWY", "1,3": "HWY", "2,3": "HWY", "3,3": "HWY"},
+                                  "turn_num": 1, "width": 3, "height": 3,
+                                  "randomized_history": {},
+                                  "building_pool": {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}}
+                             )])
+def test_save_game(game_board, match):
+    """
+    test if game details are saved to save file in save_game() function
+
+    Zheng Jiongjie T01 23 January
+    """
+    # initialize dummy game to save to save file
+    test_game = Game()
+    test_game.board = game_board
+    test_game.building_pool = {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}
+    test_game.save_game()
+
+    # check if game save has correct values
+    with open("game_save.json", "r") as save_file:
+        save_data = json.load(save_file)
+        assert(save_data == match)
