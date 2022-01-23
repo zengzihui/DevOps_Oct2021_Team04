@@ -132,7 +132,7 @@ def test_start_new_turn():
 
 
 @pytest.mark.parametrize("option, expected",
-                         [(["1"], 1), (["2"], 1), (["100", "2"], 1), (["3"], 2), (["4"], 3)])
+                         [(["1"], 1), (["2"], 1), (["100", "2"], 1), (["3"], 2), (["4"], 3), (["5"], 4)])
 def test_start_new_turn_options(option, expected, mocker):
     """
     run start_new_turn input options
@@ -142,6 +142,7 @@ def test_start_new_turn_options(option, expected, mocker):
     mocker.patch('classes.game.Game.add_building', return_value=1)
     mocker.patch('classes.game.Game.display_building', return_value=2)
     mocker.patch('classes.game.Game.display_all_scores', return_value=3)
+    mocker.patch('classes.game.Game.save_game', return_value=4)
     test_game = Game()
     set_keyboard_input(option)
     assert test_game.start_new_turn() == expected
