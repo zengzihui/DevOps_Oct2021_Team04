@@ -498,6 +498,3 @@ def test_save_game(game_board, match):
     with open("game_save.json", "r") as save_file:
         save_data = json.load(save_file)
         assert(save_data == match)
-
-
-def test_load_game():
