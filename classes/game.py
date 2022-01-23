@@ -1,4 +1,5 @@
 from random import randrange
+import json
 
 from .building import Building
 from .shop import Shop
@@ -138,8 +139,10 @@ class Game:
             return self.add_building(randomized_building_names[1])
         elif chosen_option == "3":
             return self.display_building()
-        elif chosen_option =="4":
+        elif chosen_option == "4":
             return self.display_all_scores()
+        elif chosen_option == "5":
+            return self.save_game()
         elif chosen_option == "0":
             return 0
 
@@ -198,15 +201,15 @@ class Game:
                 else:
                     if self.check_surrounding_buildings_exist(x_coord, y_coord) or self.turn_num == 1:
                         if building_string == "SHP":
-                            building = Shop(x_coord,y_coord)
+                            building = Shop(x_coord, y_coord)
                         elif building_string == "HSE":
-                            building = House(x_coord,y_coord)
+                            building = House(x_coord, y_coord)
                         elif building_string == "FAC":
-                            building = Factory(x_coord,y_coord)
+                            building = Factory(x_coord, y_coord)
                         elif building_string == "HWY":
-                            building = Highway(x_coord,y_coord)
+                            building = Highway(x_coord, y_coord)
                         elif building_string == "BCH":
-                            building = Beach(x_coord,y_coord)
+                            building = Beach(x_coord, y_coord)
                         self.board[y_coord][x_coord] = building
                         self.remove_building(building_string)
                         building.x_coord = x_coord
@@ -218,7 +221,7 @@ class Game:
             else:
                 print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
         else:
-                print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
+            print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
         self.start_new_turn()
 
     def input_to_coordinates(self, location_string):
@@ -232,7 +235,7 @@ class Game:
         if len(location_string) >= 2:
             x = ord(location_string[0]) - ASCII_string_value
             y = ord(location_string[1]) - ASCII_int_value
-            return (x,y)
+            return (x, y)
         return None
 
     def check_building_exist(self, x_coord, y_coord):
@@ -285,8 +288,8 @@ class Game:
 
         Swah Jianoon T01 9th December
         """
-        self.building_pool[building_name] -=1
-    
+        self.building_pool[building_name] -= 1
+
     def display_all_scores(self):
         """
         Display the current score of the game
@@ -299,12 +302,12 @@ class Game:
         HWY: 4 + 4 + 4 + 4 = 16
         BCH: 3 + 3 + 3 = 9
         Total score: 50
- 
+
         Swah Jianoon T01 17th Janunary
         """
         print("")
         total_dict = {"": 0}
-        display_dict = {"":""}
+        display_dict = {"": ""}
         total_score = 0
         for key in self.building_pool:
             total_dict[key] = 0
@@ -326,6 +329,25 @@ class Game:
                 if total_dict[building] == 0:
                     print("{0}: 0".format(building))
                 else:
-                    print("{0}: {1} = {2}".format(building,display_dict[building],str(total_dict[building])))
+                    print("{0}: {1} = {2}".format(building, display_dict[building], str(total_dict[building])))
         print("Total score: {0}".format(total_score))
         self.start_new_turn()
+
+    def save_game(self):
+        """
+        save game details to json file
+
+        Zheng Jiongjie T01 21st January
+        """
+        with open("game_save.json", "w+") as save_file:
+            # generate save file based on current game
+            save_data = {"board": {}, "turn_num": self.turn_num, "width": self.width,
+                         "height": self.height, "randomized_history": self.randomized_building_history,
+                         "building_pool": self.building_pool}
+            # add buildings in current game to save file
+            for row in self.board:
+                for building in row:
+                    if building.x_coord is not None and building.y_coord is not None:
+                        save_data["board"][str(building.x_coord) + "," + str(building.y_coord)] = building.name
+            # save the game
+            json.dump(save_data, save_file)
