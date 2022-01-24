@@ -1,0 +1,42 @@
+============================= test session starts =============================
+platform win32 -- Python 3.10.0, pytest-6.2.5, py-1.11.0, pluggy-1.0.0
+rootdir: C:\Users\zheng\Downloads\test\DevOps_Oct2021_Team04
+plugins: cov-3.0.0, mock-3.6.1
+collected 110 items
+
+test_beach.py ....                                                       [  3%]
+test_building.py .........                                               [ 11%]
+test_factory.py .......                                                  [ 18%]
+test_game.py ........................................................... [ 71%]
+                                                                         [ 71%]
+test_highway.py .....                                                    [ 76%]
+test_house.py .........                                                  [ 84%]
+test_menu.py ............                                                [ 95%]
+test_shop.py .....                                                       [100%]
+
+---------- coverage: platform win32, python 3.10.0-final-0 -----------
+Name                   Stmts   Miss  Cover
+------------------------------------------
+classes\__init__.py        0      0   100%
+classes\beach.py          10      0   100%
+classes\building.py       28      0   100%
+classes\factory.py        27      0   100%
+classes\game.py          195      0   100%
+classes\highway.py        26      0   100%
+classes\house.py          35      0   100%
+classes\menu.py           23      0   100%
+classes\shop.py           32      0   100%
+test_beach.py             18      0   100%
+test_building.py          77      0   100%
+test_factory.py           23      0   100%
+test_game.py             189      0   100%
+test_highway.py           16      0   100%
+test_house.py             16      0   100%
+test_menu.py              43      0   100%
+test_shop.py              16      0   100%
+testing_functions.py      16      0   100%
+------------------------------------------
+TOTAL                    790      0   100%
+
+
+============================= 110 passed in 0.58s =============================
