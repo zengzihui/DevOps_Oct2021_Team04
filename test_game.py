@@ -483,18 +483,19 @@ def test_randomize_two_buildings_from_pool_when_no_building():
                                   "randomized_history": {},
                                   "building_pool": {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}}
                              )])
-def test_save_game(game_board, match):
+def test_save_game(game_board, match, mocker):
     """
     test if game details are saved to save file in save_game() function
 
     Zheng Jiongjie T01 23 January
     """
+    mocker.patch('classes.game.Game.start_new_turn', return_value=0)
+
     # initialize dummy game to save to save file
     test_game = Game()
     test_game.board = game_board
     test_game.building_pool = {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}
     test_game.save_game()
-
     # check if game save has correct values
     with open("game_save.json", "r") as save_file:
         save_data = json.load(save_file)

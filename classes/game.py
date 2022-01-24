@@ -351,3 +351,7 @@ class Game:
                         save_data["board"][str(building.x_coord) + "," + str(building.y_coord)] = building.name
             # save the game
             json.dump(save_data, save_file)
+
+        print("")
+        print("Game saved!")
+        self.start_new_turn()
