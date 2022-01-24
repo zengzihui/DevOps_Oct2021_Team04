@@ -47,7 +47,7 @@ jobs:
       # pytest
       - name: Run tests with pytest
         run: |
-          pytest --cov -v --junitxml=report.xml --cov-report=term-missing:skip-covered --cov=app tests/ | tee pytest-coverage.txt
+          pytest --cov -v --junitxml=report.xml
 
       # send message to developer when unit test fails
       - if: ${{failure()}}
@@ -85,8 +85,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: report.xml
 
-      - name: Pytest coverage comment
-        uses: MishaKav/pytest-coverage-comment@main
-        with:
-          pytest-coverage-path: ./pytest-coverage.txt
-          junitxml-path: ./report.xml
+      # coverage comment
+      - name: Build coverage file
+        run: |
+          pytest --cache-clear --cov=app test/ > pytest-coverage.txt
+      - name: Comment coverage
+        uses: coroo/pytest-coverage-commentator@v1.0.2
