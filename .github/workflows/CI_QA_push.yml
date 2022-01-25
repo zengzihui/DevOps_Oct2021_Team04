@@ -139,8 +139,9 @@ jobs:
         labels: |
           Failed Test Script
           automated issue
-        assignees:
+        assignees: |
           JianOon 
+          rlry72
 
     # if test scripts fail, comment on the issue above tagging tech lead
     - name: Notify Tech Lead on Issue In-Review
