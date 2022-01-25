@@ -1,18 +1,25 @@
 name: CI for pull requests
 
+# run when PR is labeled, or PR is approved
 on: 
   pull_request:
-    types: 
-      - labeled
+    types: [labeled]
+  pull_request_review:
+    types: [submitted]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  
+permissions:
+  checks: write
+  contents: read
+  issues: read
+  pull-requests: write
 
 jobs:
-  build:
+  run-ci:
     runs-on: ubuntu-latest
-    # only if pull request is labeled 'Dev Team Approved', run Actions. 
-    if: ${{ contains(github.event.pull_request.labels.*.name, 'Dev Team Approved') }}
-    steps:
+    # run only if PR is approved and does not have 'Dev Team Approved ' label (when tech lead approves PR) OR QA adds 'QA CI trigger' label
+    if: ${{ ((github.event.review.state == 'approved') && (!contains(github.event.pull_request.labels.*.name, 'Dev Team Approved'))) || (contains(github.event.pull_request.labels.*.name, 'QA CI trigger')) }}    steps:
     - uses: actions/setup-python@v2
       with:
         python-version: 3.8
@@ -23,8 +30,7 @@ jobs:
     # checkout dev repo to retrieve source code
     - name: Checkout Own Repo
       uses: actions/checkout@v2
-      with: 
-        repository:  zengzihui/DevOps_Oct2021_Team04 
+
     # checkout QA repo to retrieve QA test scripts
     - name: Checkout Test Script
       uses: actions/checkout@v2
@@ -40,10 +46,29 @@ jobs:
     - name: Begin Pytest
       run: |
         mv ./tests/*.* ./
-        pytest --cov -v --junitxml=reportTestScript.xml > pytest-coverage.txt --html=report.html --md=report.md
-    # create a comment in pull request with the coverage of test scripts
-    - name: Comment coverage
-      uses: coroo/pytest-coverage-commentator@v1.0.2
+        pytest --ignore=test -v --cov --cov-report=xml --junitxml=reportTestScript.xml --html=report.html --md=report.md
+
+    # comment QA test scripts results in PR
+    - name: Publish QA Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: reportTestScript.xml
+        check_name: QA Test results
+        comment_title: QA Test results
+    
+    # comment QA test scripts coverage in PR
+    - name: Comment QA test scripts Coverage
+      if: always()
+      uses: 5monkeys/cobertura-action@master
+      with:
+        path: coverage.xml
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        pull_request_number: ${{ github.event.pull_request.number }}
+        report_name: QA Test Coverage
+        minimum_coverage: 0
+        show_missing: 'true'
+
     # send email saying test scripts passed with test report if test scripts have passed
     - name: Send mail
       if: ${{success()}}
@@ -112,6 +137,7 @@ jobs:
         name: Test Scripts            # Name of the check run which will be created
         path: reportTestScript.xml    # Path to test results
         reporter: java-junit        # Format of test results
+
     # tag tech lead and QA lead in the pull request if the test scripts failed
     - name: Notify Tech Lead on Pull Request In-Review
       uses: peter-evans/create-or-update-comment@v1.4.5
@@ -120,6 +146,7 @@ jobs:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
           @JianOon Please review with @rlry72
+          
     # if test scripts pass, send discord notification in devops channel notifying that test scripts from pull request have passed
     - if: ${{success()}}
       name: Discord notification
