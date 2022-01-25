@@ -3,6 +3,14 @@ from unittest import mock
 import pytest
 from classes.menu import *
 from testing_functions import *
+import json
+from classes.game import Game
+from classes.beach import *
+from classes.factory import *
+from classes.building import *
+from classes.highway import *
+from classes.house import *
+from classes.shop import *
 
 
 @pytest.mark.parametrize("option_list",
@@ -109,3 +117,70 @@ def test_main_menu_exit_program():
         exit_game()
     assert e.type == SystemExit
     assert e.value.code == 1
+
+
+def test_load_game_success():
+    """
+    check if loaded game matches the game save file
+
+    Zheng Jiongjie T01 25th January
+    """
+
+    # saves dummy save file
+    with open("game_save.json", "w+") as save_file:
+        dummy_data = {"board": {"0,0": "SHP", "1,0": "SHP", "2,0": "HSE", "3,0": "FAC",
+                                "0,1": "BCH", "1,1": "HSE", "2,1": "HSE", "3,1": "BCH",
+                                "0,2": "BCH", "1,2": "SHP", "2,2": "HSE", "3,2": "HSE",
+                                "0,3": "HWY", "1,3": "HWY", "2,3": "HWY", "3,3": "HWY"},
+                      "turn_num": 1, "width": 3, "height": 3,
+                      "randomized_history": {},
+                      "building_pool": {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}}
+        json.dump(dummy_data, save_file)
+
+    loaded_game = load_game()
+
+    # check if all game data is loaded correctly
+    assert type(loaded_game.board[0][0]) is Shop
+    assert type(loaded_game.board[0][1]) is Shop
+    assert type(loaded_game.board[0][2]) is House
+    assert type(loaded_game.board[0][3]) is Factory
+    assert type(loaded_game.board[1][0]) is Beach
+    assert type(loaded_game.board[1][1]) is House
+    assert type(loaded_game.board[1][2]) is House
+    assert type(loaded_game.board[1][3]) is Beach
+    assert type(loaded_game.board[2][0]) is Beach
+    assert type(loaded_game.board[2][1]) is Shop
+    assert type(loaded_game.board[2][2]) is House
+    assert type(loaded_game.board[2][3]) is House
+    assert type(loaded_game.board[3][0]) is Highway
+    assert type(loaded_game.board[3][1]) is Highway
+    assert type(loaded_game.board[3][2]) is Highway
+    assert type(loaded_game.board[3][3]) is Highway
+    assert loaded_game.height == 3
+    assert loaded_game.width == 3
+    assert loaded_game.turn_num == 1
+    assert loaded_game.building_pool == {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}
+    assert loaded_game.randomized_building_history == {}
+
+
+def test_load_game_fail():
+    """
+    check if game loads on corrupted save file
+
+    Zheng Jiongjie T01 25th January
+    """
+
+    # saves wrong save file (randomized_history is randoized_history)
+    with open("game_save.json", "w+") as save_file:
+        dummy_data = {"board": {"0,0": "SHP", "1,0": "SHP", "2,0": "HSE", "3,0": "FAC",
+                                "0,1": "BCH", "1,1": "HSE", "2,1": "HSE", "3,1": "BCH",
+                                "0,2": "BCH", "1,2": "SHP", "2,2": "HSE", "3,2": "HSE",
+                                "0,3": "HWY", "1,3": "HWY", "2,3": "HWY", "3,3": "HWY"},
+                      "turn_num": 1, "width": 3, "height": 3,
+                      "randoized_history": {},
+                      "building_pool": {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}}
+        json.dump(dummy_data, save_file)
+
+    loaded_game = load_game()
+
+    assert loaded_game is False

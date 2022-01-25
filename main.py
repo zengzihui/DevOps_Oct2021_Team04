@@ -10,6 +10,11 @@ def main():
         elif chosen_option == "1":
             first_time_display_menu = True
             start_new_game()
+        elif chosen_option == "2":
+            first_time_display_menu = True
+            loaded_game = load_game()
+            if loaded_game is not False:
+                loaded_game.start_new_turn()
 
 
 if __name__ == "__main__":
