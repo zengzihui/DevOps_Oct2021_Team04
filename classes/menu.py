@@ -102,8 +102,6 @@ def load_game():
                             loaded_game.board[row].append(Highway(col, row))
                         elif building_str == "BCH":
                             loaded_game.board[row].append(Beach(col, row))
-                        else:
-                            loaded_game.board[row].append(Building())
                     else:
                         loaded_game.board[row].append(Building())
             return loaded_game

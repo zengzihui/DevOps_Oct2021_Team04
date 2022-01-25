@@ -131,7 +131,7 @@ def test_load_game_success():
         dummy_data = {"board": {"0,0": "SHP", "1,0": "SHP", "2,0": "HSE", "3,0": "FAC",
                                 "0,1": "BCH", "1,1": "HSE", "2,1": "HSE", "3,1": "BCH",
                                 "0,2": "BCH", "1,2": "SHP", "2,2": "HSE", "3,2": "HSE",
-                                "0,3": "HWY", "1,3": "HWY", "2,3": "HWY", "3,3": "HWY"},
+                                "0,3": "HWY", "1,3": "HWY", "2,3": "HWY"},
                       "turn_num": 1, "width": 3, "height": 3,
                       "randomized_history": {},
                       "building_pool": {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}}
@@ -155,7 +155,7 @@ def test_load_game_success():
     assert type(loaded_game.board[3][0]) is Highway
     assert type(loaded_game.board[3][1]) is Highway
     assert type(loaded_game.board[3][2]) is Highway
-    assert type(loaded_game.board[3][3]) is Highway
+    assert type(loaded_game.board[3][3]) is Building
     assert loaded_game.height == 3
     assert loaded_game.width == 3
     assert loaded_game.turn_num == 1
