@@ -14,11 +14,11 @@ jobs:
         with:
           message: '@rlry72 User story in this pull request is ready for testing'
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Send telegram message to QA lead for testing
-        uses: appleboy/telegram-action@master
+          
+      - name: Discord notification
+        if: ${{ contains(github.event.pull_request.labels, 'Dev Team Approved' }}
+        env:
+          DISCORD_WEBHOOK: https://discord.com/api/webhooks/918820417467199498/9bnSpC3afr6euVolvsCDuNXwM6hUcElqeN5Vl2LDUObNbXEEhWiYV1tlddCHURgHBphV
+        uses: Ilshidur/action-discord@master
         with:
-          to: ${{ secrets.DEV_TEAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            ${{ github.actor }} requested for QA Lead review for pull request linked to issue: ${{ github.event.issue.title }}
+          args: 'User Story in pull request {{ github.event.pull_request.html_url  }} is ready to be reviewed.'
