@@ -586,6 +586,11 @@ def test_update_high_score_name_out_of_bounds(current_json, name, score, match, 
 
                             ])
 def test_calculate_total_score(game_board, score):
+    """
+    tests calculate total score for game board variation is right
+
+    Swah Jian Oon 26th January
+    """
     test_game = Game()
     test_game.board = game_board 
     assert test_game.calculate_total_score() == score
