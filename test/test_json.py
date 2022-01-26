@@ -15,9 +15,9 @@ def test_update_json():
     file.close()
     assert output == data
 
-def test_retrieve_json():
+def test_load_json():
     """
-    test if retrieve json works
+    test if load json works
 
     Swah Jianoon T01 26th January
     """

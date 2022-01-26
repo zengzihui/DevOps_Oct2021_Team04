@@ -11,6 +11,8 @@ from classes.highway import *
 from classes.house import *
 from classes.shop import *
 from classes.json import *
+import json
+import os
 
 
 @pytest.mark.parametrize("testing_turn_number, expected",
@@ -463,48 +465,45 @@ def test_randomize_two_buildings_from_pool_when_no_building():
         # nothing must never appear from randomized building, since there is no building in pool
         assert item == ""
     
-@pytest.mark.parametrize("json_output", "display_output",
+@pytest.mark.parametrize("json_output, display_output",
                          [(
-                           {'board_size': 4, 'high_scores:': [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}, {'name': 'john3', 'score': 3}]},
-                           """Congratulations! You made the high score board at position 3!
-Please enter your name (max 20 chars):
+                           {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}, {'name': 'john3', 'score': 3}]},
+                           """
 ---------- HIGH SCORES ----------
 Pos Player                  Score
 --- ------                  -----
- 1. john                        6 
+ 1. john                        6
  2. john2                       5
  3. john3                       3
-                           """),
+---------------------------------"""),
 
                          (
-                           {'board_size': 4, 'high_scores:': 
-                           [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}, {'name': 'john6', 'score': 3},
+                           {'board_size': 4, 'high_scores': 
+                           [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}, {'name': 'john6', 'score': 5},
                            {'name': 'john3', 'score': 3}, {'name': 'john4', 'score': 3}, {'name': 'john5', 'score': 2}]},
-                           """Congratulations! You made the high score board at position 3!
-Please enter your name (max 20 chars):
+                           """
 ---------- HIGH SCORES ----------
 Pos Player                  Score
 --- ------                  -----
- 1. john                        6 
+ 1. john                        6
  2. john2                       5
  3. john6                       5
  4. john3                       3
  5. john4                       3
  6. john5                       2
-                           """),
+---------------------------------"""),
 
                            (
-                           {'board_size': 4, 'high_scores:': [{'name': 'john', 'score': 6}]},
-                           """Congratulations! You made the high score board at position 1!
-Please enter your name (max 20 chars):
+                           {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}]},
+                           """
 ---------- HIGH SCORES ----------
 Pos Player                  Score
 --- ------                  -----
- 1. john                        6 
-                           """),
+ 1. john                        6
+---------------------------------"""),
 
                            (
-                           {'board_size': 4, 'high_scores:': [{'name': 'john', 'score': 15},
+                           {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 15},
                             {'name': 'john1', 'score': 14}, {'name': 'john2', 'score': 13},
                             {'name': 'john3', 'score': 12}, {'name': 'john4', 'score': 11}, 
                             {'name': 'john5', 'score': 10}, {'name': 'john6', 'score': 9},
@@ -523,21 +522,28 @@ Pos Player                  Score
  7. john6                       9
  8. john7                       8
  9. john8                       7
-10. john9                       6 
-                           """),
+10. john9                       6
+---------------------------------"""),
 
 
                          ])
-def test_display_high_score_list(json_output,display_output, mocker):
+def test_display_high_score(json_output,display_output):
     """
     tests if high score list can be displayed
 
     Swah Jian Oon 20th January
     """
+    set_keyboard_input(None)
+    test_string =""
     test_game = Game()
-    test_game.turn_num = 4
-    test_game.start_new_turn()
-    mocker.patch('classes.json.load_json', return_value=json_output)
-    test_game.display_high_score_list()
+    filename = "high_score_{0}.json".format((test_game.width+1)*(test_game.height+1))
+    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"save_files",filename)
+    with open(file_path, "w") as jsonFile:
+        json.dump(json_output, jsonFile)
+    test_game.display_high_score()
     output_print = get_display_output()
-    assert output_print == display_output
+    for out in output_print:
+        test_string += out
+        if out != output_print[-1]:
+            test_string+= "\n"
+    assert test_string == display_output
