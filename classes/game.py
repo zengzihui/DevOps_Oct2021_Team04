@@ -90,6 +90,8 @@ class Game:
     def generate_remaining_building_string(self):
         """
         generate the list of strings to print out for the remaining buildings
+
+        Zheng Jiongjie T01 26th January
         """
         remaining_building_string = []
         remaining_building_string.append("Building   Remaining")
