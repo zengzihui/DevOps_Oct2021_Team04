@@ -2,7 +2,6 @@ import sys
 from unittest import mock
 import pytest
 from classes.menu import *
-from testing_functions import *
 import json
 from classes.game import Game
 from classes.beach import *
@@ -11,6 +10,7 @@ from classes.building import *
 from classes.highway import *
 from classes.house import *
 from classes.shop import *
+from test.testing_functions import *
 
 
 @pytest.mark.parametrize("option_list",

@@ -3,7 +3,7 @@ import sys
 from unittest import mock
 import pytest
 from classes.menu import *
-from testing_functions import *
+from test.testing_functions import *
 from classes.game import Game
 from classes.beach import *
 from classes.factory import *
