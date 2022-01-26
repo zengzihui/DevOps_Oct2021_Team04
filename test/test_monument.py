@@ -1,5 +1,4 @@
 import pytest
-from testing_functions import *
 from classes.shop import *
 from classes.highway import *
 from classes.house import *
