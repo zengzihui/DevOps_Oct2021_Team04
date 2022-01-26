@@ -56,4 +56,4 @@ jobs:
           DISCORD_WEBHOOK: https://discord.com/api/webhooks/918820417467199498/9bnSpC3afr6euVolvsCDuNXwM6hUcElqeN5Vl2LDUObNbXEEhWiYV1tlddCHURgHBphV
         uses: Ilshidur/action-discord@master
         with:
-          args: 'QA Lead, user story in pull request ${{ github.event.pull_request.url }} is ready to be reviewed and tested.'
+          args: 'QA Lead, user story in pull request ${{ github.event.pull_request.html_url }} is ready to be reviewed and tested.
