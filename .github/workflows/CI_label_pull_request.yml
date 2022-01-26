@@ -1,0 +1,43 @@
+# Workflow for approving pull requests
+name: Approve_Pull_Requests
+
+# Control
+on:
+  # Trigger
+  pull_request_review:
+     types: [submitted]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  # label pull request as "Dev Team Approved"
+  label_pr:
+    # type of runner that the job will run on
+      runs-on: ubuntu-latest
+      
+      # Task to run
+      steps:
+  
+            
+        # labelling pull-request with 'Dev Team Approved' once tech lead approves of code review.
+        - name: Add label to pull request
+          if: ${{ github.event.review.state == 'approved' }}
+          
+        # labelling issue with 'Dev Team Approved' once tech lead approves of code review.
+          uses: buildsville/add-remove-label@v1
+          with:
+            token: ${{secrets.GITHUB_TOKEN}}
+            label: Dev Team Approved
+            type: add
+            
+        - name: Remove label to pull request
+          if: ${{ github.event.review.state != 'approved' }}
+          
+        # labelling issue with 'Dev Team Approved' once tech lead approves of code review.
+          uses: buildsville/add-remove-label@v1
+          with:
+            token: ${{secrets.GITHUB_TOKEN}}
+            label: Dev Team Approved
+            type: remove
+          
