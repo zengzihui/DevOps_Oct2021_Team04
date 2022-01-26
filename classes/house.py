@@ -3,7 +3,7 @@ from .building import Building
 
 
 class House(Building):
-    def __init__(self,x_coord,y_coord):
+    def __init__(self, x_coord, y_coord):
         """
         init function for House class
 
@@ -13,10 +13,10 @@ class House(Building):
         self.x_coord = x_coord
         self.y_coord = y_coord
 
-    def calculate_score(self,game):
+    def calculate_score(self, game):
         """
         This function calculates the score for a house object on the game board
-                            
+
         Swah Jianoon T01 17th Janunary
         """
         total_score = 0
@@ -28,7 +28,7 @@ class House(Building):
                 return score_dict[building]
             elif building in score_dict:
                 total_score += score_dict[building]
-        
+
         if self.get_bot_building(game) != None:
             building = self.get_bot_building(game).name
             if building == "FAC":
@@ -49,7 +49,5 @@ class House(Building):
                 return score_dict[building]
             elif building in score_dict:
                 total_score += score_dict[building]
-        
-        return total_score
 
-    
+        return total_score
