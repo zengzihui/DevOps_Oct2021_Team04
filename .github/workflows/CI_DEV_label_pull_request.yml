@@ -34,10 +34,26 @@ jobs:
         - name: Remove label to pull request
           if: ${{ github.event.review.state != 'approved' }}
           
-        # labelling issue with 'Dev Team Approved' once tech lead approves of code review.
+        # remove labelling when not approved
           uses: buildsville/add-remove-label@v1
           with:
             token: ${{secrets.GITHUB_TOKEN}}
             label: Dev Team Approved
             type: remove
-          
+        
+        # ping QA Lead for testing when code review is approved
+        - name: ping QA Lead for testing
+        if: ${{ github.event.review.state == 'approved' }}
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: '@rlry72 User story in this pull request is ready for testing'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+        # Send notification to group discord to notify QA lead for testing
+        - name: Discord notification
+        if: ${{ github.event.review.state == 'approved' }}
+        env:
+          DISCORD_WEBHOOK: https://discord.com/api/webhooks/918820417467199498/9bnSpC3afr6euVolvsCDuNXwM6hUcElqeN5Vl2LDUObNbXEEhWiYV1tlddCHURgHBphV
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'QA Lead, user story in pull request ${{ github.event.pull_request.html_url }} is ready to be reviewed and tested.

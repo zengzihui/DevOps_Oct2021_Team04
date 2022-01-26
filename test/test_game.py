@@ -4,7 +4,7 @@ import pytest
 from classes.menu import *
 from classes.monument import Monument
 from classes.park import Park
-from testing_functions import *
+from test.testing_functions import *
 from classes.game import Game
 from classes.beach import *
 from classes.factory import *

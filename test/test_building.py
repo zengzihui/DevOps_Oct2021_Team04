@@ -1,7 +1,7 @@
 import sys
 from unittest import mock
 import pytest
-from testing_functions import *
+from test.testing_functions import *
 from classes.shop import *
 from classes.highway import *
 from classes.house import *
