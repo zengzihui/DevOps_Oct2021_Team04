@@ -1,5 +1,4 @@
 from random import randrange
-from re import T
 
 from .building import Building
 from .shop import Shop

@@ -4,3 +4,4 @@ __pycache__/
 .coverage
 report.xml
 game_save.json
+reportTestScript.xml
