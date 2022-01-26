@@ -14,6 +14,8 @@ def main():
             exit_game()
         elif chosen_option == "1":
             start_new_game(width=city_size[0], height=city_size[1])
+        elif chosen_option == "3":
+            Game(city_size[0],city_size[1]).display_high_score()
         elif chosen_option == "5":
             city_size = prompt_city_size(city_size)
 
