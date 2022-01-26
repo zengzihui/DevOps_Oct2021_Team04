@@ -65,6 +65,30 @@ def test_print_board():
         "  +-----+-----+-----+-----+"]
 
 
+def test_print_board_for_small_board():
+    """
+    test if game board is printed correctly
+
+    Zheng Jiongjie T01 9th December
+    """
+    set_keyboard_input(None)
+
+    # create testing game object
+    test_game = Game(height=1, width=1)
+    test_game.print_board()
+
+    # check if print_board() displays game board correctly
+    out = get_display_output()
+    assert out == [
+        '     A           Building   Remaining',
+        '  +-----+        --------------------',
+        ' 1|     |        HSE      | 8',
+        '  +-----+        FAC      | 8',
+        '                 SHP      | 8',
+        '                 HWY      | 8',
+        '                 BCH      | 8']
+
+
 def test_game_menu_display():
     """
     test if game menu options are printed correctly
