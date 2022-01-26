@@ -10,6 +10,7 @@ from classes.building import *
 from classes.highway import *
 from classes.house import *
 from classes.shop import *
+from classes.json import *
 
 
 @pytest.mark.parametrize("testing_turn_number, expected",
