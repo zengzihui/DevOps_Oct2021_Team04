@@ -516,7 +516,7 @@ def test_update_high_score(current_json, updated_json, name, score, mocker):
     test_game.height = 1
     mocker.patch('classes.game.Game.calculate_total_score', return_value=score)
     filename = "high_score_{0}.json".format((test_game.width+1)*(test_game.height+1))
-    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"save_files",filename)
+    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),filename)
     with open(file_path, "w") as jsonFile:
         json.dump(current_json, jsonFile)
     set_keyboard_input([name])
@@ -550,7 +550,7 @@ def test_update_high_score_name_out_of_bounds(current_json, name, score, match, 
     test_game = Game()
     mocker.patch('classes.game.Game.calculate_total_score', return_value=score)
     filename = "high_score_{0}.json".format((test_game.width+1)*(test_game.height+1))
-    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"save_files",filename)
+    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),filename)
     with open(file_path, "w") as jsonFile:
         json.dump(current_json, jsonFile)
     set_keyboard_input(["123456789123456789123",name])
@@ -669,7 +669,7 @@ def test_display_high_score(json_output,display_output):
     test_string =""
     test_game = Game()
     filename = "high_score_{0}.json".format((test_game.width+1)*(test_game.height+1))
-    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"save_files",filename)
+    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),filename)
     with open(file_path, "w") as jsonFile:
         json.dump(json_output, jsonFile)
     test_game.display_high_score()
@@ -710,7 +710,7 @@ def test_end_of_game_high_score_display(game_board, match, name):
     test_game.board = game_board
     test_game.turn_num = 17
     filename = "high_score_{0}.json".format((test_game.width+1)*(test_game.height+1))
-    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"save_files",filename)
+    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),filename)
     data = {"board_size": 4, "high_scores": []}
     with open(file_path, "w") as jsonFile:
         json.dump(data, jsonFile)
