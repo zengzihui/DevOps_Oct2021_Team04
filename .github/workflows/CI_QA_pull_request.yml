@@ -46,7 +46,7 @@ jobs:
     # run test scripts and get coverage and test reports
     - name: Begin Pytest
       run: |
-        mv ./tests/*.* ./
+        mv ./tests/test-scripts/*.* ./
         pytest --ignore=test -v --cov --cov-report=xml --junitxml=reportTestScript.xml --html=report.html --md=report.md
 
     # comment QA test scripts results in PR
