@@ -367,6 +367,7 @@ class Game:
         filename = "high_score_{0}.json".format((self.width+1)*(self.height+1))
         file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"save_files",filename)
         save_data = load_json(file_path)
+        save_data["board_size"] = (self.width+1)*(self.height+1)
         high_score_list = save_data["high_scores"]
         position = 0
         total_score = self.calculate_total_score()

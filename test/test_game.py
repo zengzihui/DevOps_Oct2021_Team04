@@ -512,6 +512,8 @@ def test_update_high_score(current_json, updated_json, name, score, mocker):
     Swah Jian Oon 26th January
     """
     test_game = Game()
+    test_game.width = 1
+    test_game.height = 1
     mocker.patch('classes.game.Game.calculate_total_score', return_value=score)
     filename = "high_score_{0}.json".format((test_game.width+1)*(test_game.height+1))
     file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"save_files",filename)
@@ -545,7 +547,6 @@ def test_update_high_score_name_out_of_bounds(current_json, name, score, match, 
 
     Swah Jian Oon 26th January
     """
-    test_string = ""
     test_game = Game()
     mocker.patch('classes.game.Game.calculate_total_score', return_value=score)
     filename = "high_score_{0}.json".format((test_game.width+1)*(test_game.height+1))
