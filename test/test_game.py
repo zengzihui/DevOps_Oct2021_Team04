@@ -1,3 +1,4 @@
+from re import T
 import sys
 from unittest import mock
 import pytest
@@ -148,6 +149,19 @@ def test_start_new_turn_options(option, expected, mocker):
     set_keyboard_input(option)
     assert test_game.start_new_turn() == expected
 
+def test_start_new_turn_game_ended(mocker):
+    """
+    test start new turn when game has ended
+
+    Swah Jian Oon 27th January 
+    """
+    mocker.patch('classes.game.Game.update_high_score', return_value=True)
+    test_game = Game()
+    test_game.turn_num = 17
+
+    mocker.patch('classes.game.Game.start_new_turn', return_value=True)
+    assert test_game.start_new_turn() == True
+    
 
 @pytest.mark.parametrize("building, expected",
                          [(Beach(0,0), "BCH"), (Factory(0,0), "FAC"), (Shop(0,0), "SHP"), (Highway(0,0), "HWY"), (House(0,0), "HSE")])
@@ -464,7 +478,119 @@ def test_randomize_two_buildings_from_pool_when_no_building():
     for item in test_game.randomized_building_history[str(test_game.turn_num)]:
         # nothing must never appear from randomized building, since there is no building in pool
         assert item == ""
-    
+
+@pytest.mark.parametrize("current_json, updated_json, name, score",
+                         [(
+                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}]},
+                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}, {'name': 'john3', 'score': 3}]},
+                            "john3",3
+
+                         ),
+                         (
+                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5},{'name': 'john3', 'score': 3}, {'name': 'john4', 'score': 3}, {'name': 'john5', 'score': 2}]},
+                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}, {'name': 'john6', 'score': 5},{'name': 'john3', 'score': 3}, {'name': 'john4', 'score': 3}, {'name': 'john5', 'score': 2}]},
+                            "john6",5
+
+                         ),
+                         (
+                            {'board_size': 4, 'high_scores': []},
+                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}]},
+                            "john",6
+
+                         ),
+                         (
+                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 15},{'name': 'john1', 'score': 14}, {'name': 'john2', 'score': 13},{'name': 'john3', 'score': 12}, {'name': 'john4', 'score': 11}, {'name': 'john5', 'score': 10}, {'name': 'john6', 'score': 9},{'name': 'john7', 'score': 8}, {'name': 'john8', 'score': 7},{'name': 'john9', 'score': 6}]},
+                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 15},{'name': 'john1', 'score': 14}, {'name': 'john2', 'score': 13},{'name': 'john3', 'score': 12}, {'name': 'john4', 'score': 11}, {'name': 'john5', 'score': 10}, {'name': 'john6', 'score': 9},{'name': 'john7', 'score': 8}, {'name': 'john8', 'score': 7},{'name': 'john9', 'score': 6}]},
+                            None,0
+
+                         )
+                         ])
+def test_update_high_score(current_json, updated_json, name, score, mocker):
+    """
+    tests if high score list is updated
+
+    Swah Jian Oon 26th January
+    """
+    test_game = Game()
+    mocker.patch('classes.game.Game.calculate_total_score', return_value=score)
+    filename = "high_score_{0}.json".format((test_game.width+1)*(test_game.height+1))
+    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"save_files",filename)
+    with open(file_path, "w") as jsonFile:
+        json.dump(current_json, jsonFile)
+    set_keyboard_input([name])
+    test_game.update_high_score()
+    f = open (file_path, "r")
+    data = json.loads(f.read())
+    f.close()
+    assert data == updated_json
+
+@pytest.mark.parametrize("current_json, name, score, match",
+                         [(
+                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}]},
+                            "john3",3,
+                            ["Congratulations! You made the high score board at position 3!",
+                             "Please enter your name (max 20 chars): ",
+                             "",
+                             "Invalid input for the name has been entered.",
+                             "Please remember only a max of 20 characters are allowed for the name.",
+                             "",
+                             "Please enter your name (max 20 chars): "
+                            ]
+
+                         )
+                         ])
+def test_update_high_score_name_out_of_bounds(current_json, name, score, match, mocker):
+    """
+    tests if high score list is updated
+
+    Swah Jian Oon 26th January
+    """
+    test_string = ""
+    test_game = Game()
+    mocker.patch('classes.game.Game.calculate_total_score', return_value=score)
+    filename = "high_score_{0}.json".format((test_game.width+1)*(test_game.height+1))
+    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"save_files",filename)
+    with open(file_path, "w") as jsonFile:
+        json.dump(current_json, jsonFile)
+    set_keyboard_input(["123456789123456789123",name])
+    test_game.update_high_score()
+    output_print = get_display_output()
+    assert output_print == match
+
+@pytest.mark.parametrize("game_board, score",
+                         [
+                             ([
+                                 [Shop(0,0), Shop(1,0), House(2,0) , Factory(3,0)],
+                                 [Beach(0,1),House(1,1),House(2,1),Beach(3,1)],
+                                 [Beach(0,2),Shop(1,2),House(2,2),House(3,2)],
+                                 [Highway(0,3),Highway(1,3),Highway(2,3),Highway(3,3)]
+
+                                 ],50
+                                 ),
+                                 ([
+                                 [Shop(0,0), Shop(1,0), House(2,0) , Factory(3,0)],
+                                 [Beach(0,1),House(1,1),House(2,1),Beach(3,1)],
+                                 [Beach(0,2),Shop(1,2),House(2,2),House(3,2)],
+                                 [Highway(0,3),Highway(1,3),Highway(2,3),Building()]
+
+                                 ],43
+                                 ),
+                                 ([
+                                 [Building(), Building(), Building() , Building()],
+                                 [Building(), Building(), Building() , Building()],
+                                 [Building(), Building(), Building() , Building()],
+                                 [Building(), Building(), Building() , Building()]
+
+                                 ],0
+                                 )
+
+                            ])
+def test_calculate_total_score(game_board, score):
+    test_game = Game()
+    test_game.board = game_board 
+    assert test_game.calculate_total_score() == score
+
+
 @pytest.mark.parametrize("json_output, display_output",
                          [(
                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}, {'name': 'john3', 'score': 3}]},
@@ -531,7 +657,7 @@ def test_display_high_score(json_output,display_output):
     """
     tests if high score list can be displayed
 
-    Swah Jian Oon 20th January
+    Swah Jian Oon 26th January
     """
     set_keyboard_input(None)
     test_string =""
@@ -547,3 +673,50 @@ def test_display_high_score(json_output,display_output):
         if out != output_print[-1]:
             test_string+= "\n"
     assert test_string == display_output
+
+@pytest.mark.parametrize("game_board, match, name",
+                         [
+                             ([
+                                 [Shop(0, 0), Shop(1, 0), House(2, 0), Factory(3, 0)],
+                                 [Beach(0, 1), House(1, 1), House(2, 1), Beach(3, 1)],
+                                 [Beach(0, 2), Shop(1, 2), House(2, 2), House(3, 2)],
+                                 [Highway(0, 3), Highway(1, 3), Highway(2, 3), Highway(3, 3)]
+                             ],
+                             """Congratulations! You made the high score board at position 1!
+Please enter your name (max 20 chars): 
+
+---------- HIGH SCORES ----------
+Pos Player                  Score
+--- ------                  -----
+ 1. john                       50
+---------------------------------""",
+"john"
+                             )
+                         ])
+def test_end_of_game_high_score_display(game_board, match, name):
+    """
+    check if game ends if high score display
+
+    Swah Jian Oon T01 27th January
+    """
+    test_string = ""
+    test_game = Game()
+    test_game.board = game_board
+    test_game.turn_num = 17
+    filename = "high_score_{0}.json".format((test_game.width+1)*(test_game.height+1))
+    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),"save_files",filename)
+    data = {"board_size": 4, "high_scores": []}
+    with open(file_path, "w") as jsonFile:
+        json.dump(data, jsonFile)
+
+    set_keyboard_input([name])
+
+    test_game.start_new_turn()
+
+    output = get_display_output()
+    for out in output:
+        test_string += out
+        if out != output[-1]:
+            test_string+= "\n"
+
+    assert test_string == match
