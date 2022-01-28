@@ -23,7 +23,7 @@ def test_main_menu_display(mocker, option_list):
 
     # check if main_menu function displays correct output
     out = get_display_output()
-    assert out[0] == 'Welcome, mayor of Simp City!\n----------------------------\n1. Start new game\n2. Load saved game\n4. Choose building pool\n\n0. Exit'
+    assert out[0] == 'Welcome, mayor of Simp City!\n----------------------------\n1. Start new game\n2. Load saved game\n3. Show high scores\n4. Choose building pool\n5. Choose city size\n\n0. Exit'
 
 
 @pytest.mark.parametrize("option_list",
@@ -44,7 +44,7 @@ def test_main_menu_display_without_welcome(mocker, option_list):
 
     # check if main_menu function displays correct output
     out = get_display_output()
-    assert out[0] == '\n1. Start new game\n2. Load saved game\n4. Choose building pool\n\n0. Exit'
+    assert out[0] == '\n1. Start new game\n2. Load saved game\n3. Show high scores\n4. Choose building pool\n5. Choose city size\n\n0. Exit'
 
 
 @pytest.mark.parametrize("option_list, expected",
@@ -123,14 +123,14 @@ def test_success_choose_building_pool(option_list,expected):
     Swah Jian Oon T01 19th January
     """
     set_keyboard_input(option_list)
-    output_list =choose_building_pool()
+    output_list =choose_building_pool({"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
     assert output_list == expected
 
 @pytest.mark.parametrize("option_list, expected",
                          [
-                             (["z","0"], "\nInvalid input has been entered.\nPlease enter integer for the option (e.g. 1) and it needs to be withing the range."),
-                             (["z41231","0"], "\nInvalid input has been entered.\nPlease enter integer for the option (e.g. 1) and it needs to be withing the range."),
-                             (["12","0"], "\nInvalid input has been entered.\nPlease enter integer for the option (e.g. 1) and it needs to be withing the range."),
+                             (["z","0"], "\nInvalid input has been entered.\nPlease enter number for the option (e.g. 1) and it needs to be within the range."),
+                             (["z41231","0"], "\nInvalid input has been entered.\nPlease enter number for the option (e.g. 1) and it needs to be within the range."),
+                             (["12","0"], "\nInvalid input has been entered.\nPlease enter number for the option (e.g. 1) and it needs to be within the range."),
                              
                          ])
 def test_failure_choose_building_pool(option_list,expected):
@@ -140,9 +140,9 @@ def test_failure_choose_building_pool(option_list,expected):
     Swah Jian Oon T01 19th January
     """
     set_keyboard_input(option_list)
-    choose_building_pool()
+    choose_building_pool({"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
     out = get_display_output()
-    result = "\n" + out[18] + "\n" + out[19]
+    result = "\n" + out[-16] + "\n" + out[-15]
     assert result == expected
 
 @pytest.mark.parametrize("option_list, expected",
@@ -158,7 +158,7 @@ def test_exit_choose_building_pool(option_list,expected):
     Swah Jian Oon T01 19th January
     """
     set_keyboard_input(option_list)
-    output_value =choose_building_pool()
+    output_value =choose_building_pool({"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
     out = get_display_output()
     result = out[-2] + "\n" + out[-1]
     assert result == expected and output_value ==None
@@ -191,20 +191,20 @@ def test_print_building_display(building_list,expected):
                          [
                              (["0"], '''
 --------- CURRENT BUILDING POOL ---------
-[]
+[HSE, FAC, SHP, HWY, BCH]
 -----------------------------------------
 
 Choose your new building pool below.
 
-1.Beach (BCH)
-2.Factory (FAC)
-3.House (HSE)
-4.Highway (HWY)
-5.Monument (MON)
-6.Park (PRK)
-7.Shop (SHP)
+1. Beach (BCH)
+2. Factory (FAC)
+3. House (HSE)
+4. Highway (HWY)
+5. Monument (MON)
+6. Park (PRK)
+7. Shop (SHP)
 
-0. Exit
+0. Exit to main menu
 '''),
                              
                          ])
@@ -213,7 +213,7 @@ def test_first_time_choose_building_pool_message(option_list,expected):
     test to display first time choose building pool message
     """
     set_keyboard_input(option_list)
-    choose_building_pool()
+    choose_building_pool({"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
     out = get_display_output()
     output_len = len(out) - 1
     temp_count =0
@@ -234,14 +234,14 @@ def test_first_time_choose_building_pool_message(option_list,expected):
 [BCH]
 -----------------------------------------
 
-1.Factory (FAC)
-2.House (HSE)
-3.Highway (HWY)
-4.Monument (MON)
-5.Park (PRK)
-6.Shop (SHP)
+1. Factory (FAC)
+2. House (HSE)
+3. Highway (HWY)
+4. Monument (MON)
+5. Park (PRK)
+6. Shop (SHP)
 
-0. Exit
+0. Exit to main menu
 '''),
                              
                          ])
@@ -250,7 +250,7 @@ def test_no_show_time_choose_building_pool_message(option_list,expected):
     test to display first time choose building pool message
     """
     set_keyboard_input(option_list)
-    choose_building_pool()
+    choose_building_pool({"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
     out = get_display_output()
     output_len = len(out) - 1
     temp_count =0

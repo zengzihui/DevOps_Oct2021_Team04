@@ -18,7 +18,7 @@ def main_menu(from_game_menu=None):
     Zheng Jiongjie T01 9th December
     """
 
-    options = {"1": "Start new game", "2": "Load saved game", "4": "Choose building pool", "": "", "0": "Exit"}
+    options = {"1": "Start new game", "2": "Load saved game", "3": "Show high scores", "4": "Choose building pool", "5": "Choose city size", "": "", "0": "Exit"}
 
     menu_string = ""
     if not from_game_menu:
@@ -85,30 +85,42 @@ def print_building_display(buildings_list):
     print("[{0}]".format(buildings))
     print("-----------------------------------------")
 
-def choose_building_pool():
+def print_chosen_display(buidling_list):
+    buildings = building_display(buidling_list)
+    print("")
+    print("--------- CHOSEN BUILDING POOL ---------")
+    print("[{0}]".format(buildings))
+    print("----------------------------------------")
+
+def choose_building_pool(building_pool):
     """
     intiate choose building pool menu 
 
     Swah Jian Oon T01 19th December
     """
+    print_building_display(building_pool)
+    print("")
     first_time = True
+    display_current_building = True
     building_list = ["BCH","FAC","HSE","HWY","MON","PRK","SHP"]
     display_list = ["Beach (BCH)","Factory (FAC)","House (HSE)","Highway (HWY)", "Monument (MON)","Park (PRK)","Shop (SHP)"]
     output_list ={}
     while(True):
         temp_count =1
         if len(output_list) <= 4:
-            print_building_display(output_list)
-            print("")
             if first_time:
                 print("Choose your new building pool below.")
                 print("")
                 first_time = False
+            else:
+                if display_current_building == True:
+                    print_building_display(output_list)
+                    print("")
             for display in display_list:
-                print("{0}.{1}".format(temp_count, display))
+                print("{0}. {1}".format(temp_count, display))
                 temp_count +=1
             print("")
-            print("0. Exit")
+            print("0. Exit to main menu")
             chosen = input("Enter input: ")
             try:
                 chosen = int(chosen)-1
@@ -116,6 +128,7 @@ def choose_building_pool():
                     output_list[building_list[chosen]] = 8
                     del building_list[chosen]
                     del display_list[chosen]
+                    display_current_building = True
                 elif chosen == -1:
                     print("")
                     print("Configuring building pool is unsuccessful.")
@@ -124,12 +137,16 @@ def choose_building_pool():
                 else:
                     print("")
                     print("Invalid input has been entered.")
-                    print("Please enter integer for the option (e.g. 1) and it needs to be withing the range.")
+                    print("Please enter number for the option (e.g. 1) and it needs to be within the range.")
+                    print("")
+                    display_current_building = False
             except:
                 print("")
                 print("Invalid input has been entered.")
-                print("Please enter integer for the option (e.g. 1) and it needs to be withing the range.")
+                print("Please enter number for the option (e.g. 1) and it needs to be within the range.")
+                print("")
+                display_current_building = False
         else:
-            print_building_display(output_list)
+            print_chosen_display(output_list)
             return output_list
             
