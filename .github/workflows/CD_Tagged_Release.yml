@@ -79,11 +79,20 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: assetDocuments   
+      
+
+      - name: Delete unneeded files
+        run: |
+          rm -r test
+          rm -r __pycache__
 
       - name: Archive site content
         uses: thedoctor0/zip-release@master
         with:
           filename: content.zip
+          exclusions: '*.git* *.vscode* /*downloads/* /*test/* /*__pycache__/*'  
+
+          
 
       # Build changelog for prerelease when the tag name contains "beta"    
       # The PRs will be retrieved from the previous tag to current tag
