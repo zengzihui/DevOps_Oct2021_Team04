@@ -66,8 +66,8 @@ def test_calculate_score(game_board, total_score, x_coord, y_coord, counted_fact
     test_game.board = game_board
 
     # test score if there are >4 existing factory
-    for h in range(0,test_game.height + 1):
-        for w in range(0,test_game.width + 1):
+    for h in range(0,test_game.height):
+        for w in range(0,test_game.width):
             if test_game.board[h][w].name == "FAC" and counted_factory != 0:
                 test_game.board[h][w].counted = True
                 counted_factory -= 1
