@@ -102,18 +102,18 @@ def prompt_city_size(current_size):
                     # check if int is 1 or more
                     if temp_city_size[key] <= 0:
                         print("")
-                        print("Invalid input has been entered. Please enter an integer.")
+                        print("Invalid input has been entered. Please enter a number.")
                         print("")
                         continue
                     if key == "width" and temp_city_size[key] > 26:
                         print("")
-                        print("Invalid input has been entered. Please enter an integer.")
+                        print("Invalid input has been entered. Please enter a number.")
                         print("")
                         continue
                     break
                 except Exception as e:
                     print("")
-                    print("Invalid input has been entered. Please enter an integer.")
+                    print("Invalid input has been entered. Please enter a number.")
                     print("")
                     continue
 
@@ -121,7 +121,7 @@ def prompt_city_size(current_size):
         if city_size_to_be_updated is True and temp_city_size["width"] * temp_city_size["height"] > 40:
             # city size does not change
             print("")
-            print("The multiplication of x and y exceeds the limit of 40. Please re-enter your input.")
+            print("The multiplication of width and height exceeds the limit of 40. Please re-enter your input.")
             print("")
         else:
             break
@@ -132,7 +132,7 @@ def prompt_city_size(current_size):
         print("--------- CHOSEN CITY SIZE ---------")
         print("Width: {}".format(temp_city_size["width"]))
         print("Height: {}".format(temp_city_size["height"]))
-        print("-------------------------------------")
+        print("------------------------------------")
         return [temp_city_size["width"], temp_city_size["height"]]
 
     else:

@@ -16,7 +16,6 @@ def main():
         elif chosen_option == "1":
             start_new_game(width=city_size[0], height=city_size[1],building_pool =building_pool)
         elif chosen_option == "4":
-            first_time_display_menu = True
             temp_pool = choose_building_pool(building_pool)
             if temp_pool != None:
                 building_pool = temp_pool
