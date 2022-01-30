@@ -68,8 +68,8 @@ def test_calculate_score(game_board, total_score, x_coord, y_coord, counted):
     test_game = Game(3,4)
     test_game.board = game_board
 
-    for h in range(0,test_game.height + 1):
-        for w in range(0,test_game.width + 1):
+    for h in range(0,test_game.height):
+        for w in range(0,test_game.width):
             if test_game.board[h][w].name == "PRK" and counted != 0:
                 test_game.board[h][w].counted = True
                 counted -= 1

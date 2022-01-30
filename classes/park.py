@@ -22,8 +22,8 @@ class Park(Building):
         """
         temp_park = []
         temp_count = 0
-        for h in range(0,game.height + 1):
-            for w in range(0,game.width + 1):
+        for h in range(0,game.height):
+            for w in range(0,game.width):
                 all_park = []
                 if game.board[h][w].name == "PRK":
                     all_park = game.board[h][w].check_left(game,all_park)

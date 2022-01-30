@@ -13,7 +13,7 @@ from .beach import Beach
 
 class Game:
 
-    def __init__(self, height=3, width=3,building_pool={}):
+    def __init__(self, height=4, width=4,building_pool={}):
         """
         init function for game class
         default turn number is 1
@@ -27,16 +27,10 @@ class Game:
         self.turn_num = 1
         self.randomized_building_history = {}
 
-        width_counter = 0
-        while (width_counter <= width):
-            height_counter = 0
+        for row in range(0, self.height):
             self.board.append([])
-
-            while (height_counter <= height):
-                self.board[width_counter].append(Building())
-                height_counter += 1
-
-            width_counter += 1
+            for col in range(0, self.width):
+                self.board[row].append(Building())
 
     def print_turn_num(self):
         """
@@ -52,24 +46,24 @@ class Game:
 
         Zheng Jiongjie T01 9th December
         """
-        game_board_string = " "
-        row_count = 0
-        for header in range(0, self.width + 1):
-            game_board_string += '   {:1s}  '.format(chr(header + 65))
-        game_board_string += "\n"
-        for row in self.board:
-            game_board_string += "{:26s}".format(" +-----+-----+-----+-----+") + "\n"
-            game_board_string += str(row_count + 1)
-            for building in row:
-                building_short = ""
-                if building:
-                    building_short = building.name
-                game_board_string += '|'
-                game_board_string += ' {:3s} '.format(building_short)
-            game_board_string += "|\n"
-            row_count += 1
-        game_board_string += "{:26s}".format(" +-----+-----+-----+-----+")
-        print(game_board_string)
+
+        column_names = "  "
+        for header in range(0, self.width):
+            column_names += '   {:1s}  '.format(chr(header + 65))
+        print(column_names)
+        row_seperation_string = "  +"
+        for i in range(0, self.width):
+            row_seperation_string += "-----+"
+
+        for i in range(0, self.height):
+            print(row_seperation_string)
+            row_string = "{:>2}".format(i + 1)
+            for building in self.board[i]:
+                row_string += "|"
+                row_string += " {:3} ".format(building.name)
+            row_string += "|"
+            print(row_string)
+        print(row_seperation_string)
 
     def game_menu(self, randomized_building_name=["SHP", "SHP"]):
         """
@@ -96,14 +90,11 @@ class Game:
                    "4": "See current score", "": "", "5": "Save game",
                    "0": "Exit to main menu"}
 
-        game_menu_string = ""
         for key in options:
             if key != "":
-                game_menu_string += "{}. {}".format(key, options[key]) + "\n"
+                print("{}. {}".format(key, options[key]))
             else:
-                game_menu_string += "\n"
-        game_menu_string = game_menu_string.rstrip()
-        print(game_menu_string)
+                print("")
         chosen_option = input("Your choice? ")
 
         while chosen_option not in options.keys() or chosen_option == "":
@@ -140,7 +131,7 @@ class Game:
             return self.add_building(randomized_building_names[1])
         elif chosen_option == "3":
             return self.display_building()
-        elif chosen_option =="4":
+        elif chosen_option == "4":
             return self.display_all_scores()
         elif chosen_option == "0":
             return 0
@@ -192,21 +183,21 @@ class Game:
 
         location_string = input("Build where? ")
         coords = self.input_to_coordinates(location_string)
-        if coords != None:
+        if coords is not None:
             x_coord, y_coord = coords
-            if 0 <= x_coord < 4 and 0 <= y_coord < 4:
+            if 0 <= x_coord < self.width and 0 <= y_coord < self.height:
                 if self.check_building_exist(x_coord, y_coord):
                     print("You cannot build on a location that has already had a building")
                 else:
                     if self.check_surrounding_buildings_exist(x_coord, y_coord) or self.turn_num == 1:
                         if building_string == "SHP":
-                            building = Shop(x_coord,y_coord)
+                            building = Shop(x_coord, y_coord)
                         elif building_string == "HSE":
-                            building = House(x_coord,y_coord)
+                            building = House(x_coord, y_coord)
                         elif building_string == "FAC":
-                            building = Factory(x_coord,y_coord)
+                            building = Factory(x_coord, y_coord)
                         elif building_string == "HWY":
-                            building = Highway(x_coord,y_coord)
+                            building = Highway(x_coord, y_coord)
                         elif building_string == "BCH":
                             building = Beach(x_coord,y_coord)
                         elif building_string == "MON":
@@ -224,7 +215,7 @@ class Game:
             else:
                 print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
         else:
-                print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
+            print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
         self.start_new_turn()
 
     def input_to_coordinates(self, location_string):
@@ -238,7 +229,7 @@ class Game:
         if len(location_string) >= 2:
             x = ord(location_string[0]) - ASCII_string_value
             y = ord(location_string[1]) - ASCII_int_value
-            return (x,y)
+            return (x, y)
         return None
 
     def check_building_exist(self, x_coord, y_coord):
@@ -262,13 +253,13 @@ class Game:
         temp_x_higher = x_coord + 1
         temp_y_lower = y_coord - 1
         temp_y_higher = y_coord + 1
-        if (0 <= temp_x_lower < 4) and self.board[y_coord][temp_x_lower].name != "":
+        if (0 <= temp_x_lower < self.width) and self.board[y_coord][temp_x_lower].name != "":
             return True
-        elif (0 <= temp_x_higher < 4) and self.board[y_coord][temp_x_higher].name != "":
+        elif (0 <= temp_x_higher < self.width) and self.board[y_coord][temp_x_higher].name != "":
             return True
-        elif (0 <= temp_y_lower < 4) and self.board[temp_y_lower][x_coord].name != "":
+        elif (0 <= temp_y_lower < self.height) and self.board[temp_y_lower][x_coord].name != "":
             return True
-        elif (0 <= temp_y_higher < 4) and self.board[temp_y_higher][x_coord].name != "":
+        elif (0 <= temp_y_higher < self.height) and self.board[temp_y_higher][x_coord].name != "":
             return True
         return False
 
@@ -291,8 +282,8 @@ class Game:
 
         Swah Jianoon T01 9th December
         """
-        self.building_pool[building_name] -=1
-    
+        self.building_pool[building_name] -= 1
+
     def display_all_scores(self):
         """
         Display the current score of the game
@@ -305,19 +296,19 @@ class Game:
         HWY: 4 + 4 + 4 + 4 = 16
         BCH: 3 + 3 + 3 = 9
         Total score: 50
- 
+
         Swah Jianoon T01 17th Janunary
         """
         print("")
         total_dict = {"": 0}
-        display_dict = {"":""}
+        display_dict = {"": ""}
         total_score = 0
         for key in self.building_pool:
             total_dict[key] = 0
             display_dict[key] = ""
 
-        for h in range(0, self.height + 1):
-            for w in range(0, self.width + 1):
+        for h in range(0, self.height):
+            for w in range(0, self.width):
                 if self.board[h][w].name != "":
                     score = self.board[h][w].calculate_score(self)
                     total_score += score
@@ -332,6 +323,6 @@ class Game:
                 if total_dict[building] == 0:
                     print("{0}: 0".format(building))
                 else:
-                    print("{0}: {1} = {2}".format(building,display_dict[building],str(total_dict[building])))
+                    print("{0}: {1} = {2}".format(building, display_dict[building], str(total_dict[building])))
         print("Total score: {0}".format(total_score))
         self.start_new_turn()
