@@ -21,7 +21,7 @@ class Factory(Building):
         """
         similar_building = 0
         temp_list = []
-        for h in range(0, game.width + 1):
+        for h in range(0, game.height + 1):
             for w in range(0, game.width + 1):
                 if game.board[h][w].name == self.name:
                     similar_building += 1
