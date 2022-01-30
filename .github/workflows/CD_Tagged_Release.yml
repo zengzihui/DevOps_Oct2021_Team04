@@ -1,0 +1,98 @@
+name: "CD for Tagged Release"
+
+# Create Release with customized changelog when a tag starts with "v" is pushed.
+# Packaging & add documents & perform unit tests, QA tests are not added in yet.
+
+# Release will be triggered when a tag starts with "v" is pushed.
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  tagged-release:
+    name: "Tagged Release"
+    runs-on: "ubuntu-latest"
+
+    steps:
+
+      - name: "Build & test"
+        run: |
+          echo "Build & Test"
+          
+      # Checkout     
+      - name: "Checkout"
+        uses: actions/checkout@v2.4.0
+        with:
+          fetch-depth: 0   # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
+      
+     
+      # Get the version number of the previous tag    
+      - name: 'Get Previous tag'
+        id: previous_tag
+        run: echo "::set-output name=TAGNAME::$(git describe --abbrev=0 --tags $(git rev-list --tags --skip=1 --max-count=1))"
+      
+      # Get the version number of the current tag
+      - name: Set environment variables for version number
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      # Check for the output  
+      - name: Echo Version Tag
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ env.RELEASE_VERSION }}    
+          echo ${{ contains(env.RELEASE_VERSION, 'beta') }}
+          echo ${{ steps.previous_tag.outputs.TAGNAME }}
+
+      # Build changelog for prerelease when the tag name contains "beta"    
+      # The PRs will be retrieved from the previous tag to current tag
+      - name: "Build Changelog for Beta Release"
+        if: ${{  contains(env.RELEASE_VERSION, 'beta')  }}
+        id: build_changelog_for_BetaRelease
+        uses: mikepenz/release-changelog-builder-action@v2.7.2
+        with:
+          configuration: "release_configuration.json"
+          fromTag: ${{ steps.previous_tag.outputs.TAGNAME }}
+          toTag: ${{ env.RELEASE_VERSION }}    
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
+      
+      # Build changelog for major release when the tag name does not contain "beta"        
+      # The PRs will be retrieved from the previous release which is not a prerelease
+      - name: "Build Changelog for Major Release"
+        if: ${{ contains(env.RELEASE_VERSION, 'beta') == false  }}
+        id: build_changelog_for_MajorRelease
+        uses: mikepenz/release-changelog-builder-action@v2.7.2
+        with:
+          configuration: "release_configuration.json"
+          ignorePreReleases: true          
+          toTag: ${{ env.RELEASE_VERSION }}    
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}      
+          
+      # Create Prerelease for Beta versions when the tag name contains "beta" 
+      # The changelog will take from the corresponding output above     
+      - name: "Create Release for Beta Releases"
+        if: ${{  contains(env.RELEASE_VERSION, 'beta')  }}
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}   
+          prerelease: ${{ contains(env.RELEASE_VERSION, 'beta') }}
+          tag: ${{ env.RELEASE_VERSION }}    
+          body: ${{steps.build_changelog_for_BetaRelease.outputs.changelog}}          
+
+      # Create Release for major versions when the tag name does not contain "beta" 
+      # The changelog will take from the corresponding output above
+      - name: "Create Release for Major Releases"
+        if: ${{ contains(env.RELEASE_VERSION, 'beta') == false  }}
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}   
+          prerelease: ${{ contains(env.RELEASE_VERSION, 'beta') }}
+          tag: ${{ env.RELEASE_VERSION }}    
+          body: ${{steps.build_changelog_for_MajorRelease.outputs.changelog}}
+     
+     
+  
+          
+      
