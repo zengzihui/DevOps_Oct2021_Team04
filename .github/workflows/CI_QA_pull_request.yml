@@ -19,7 +19,8 @@ jobs:
   run-ci:
     runs-on: ubuntu-latest
     # run only if PR is approved and does not have 'Dev Team Approved ' label (when tech lead approves PR) OR QA adds 'QA CI trigger' label
-    if: ${{ ((github.event.review.state == 'approved') && (!contains(github.event.pull_request.labels.*.name, 'Dev Team Approved'))) || (contains(github.event.pull_request.labels.*.name, 'QA CI trigger')) }}    steps:
+    if: ${{ ((github.event.review.state == 'approved') && (!contains(github.event.pull_request.labels.*.name, 'Dev Team Approved'))) || (contains(github.event.pull_request.labels.*.name, 'QA CI trigger')) }}    
+    steps:
     - uses: actions/setup-python@v2
       with:
         python-version: 3.8
@@ -45,7 +46,7 @@ jobs:
     # run test scripts and get coverage and test reports
     - name: Begin Pytest
       run: |
-        mv ./tests/*.* ./
+        mv ./tests/test-scripts/*.* ./
         pytest --ignore=test -v --cov --cov-report=xml --junitxml=reportTestScript.xml --html=report.html --md=report.md
 
     # comment QA test scripts results in PR
