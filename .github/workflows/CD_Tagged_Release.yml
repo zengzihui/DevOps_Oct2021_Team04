@@ -201,6 +201,91 @@ jobs:
           asset_name: ${{ env.RELEASE_VERSION }}.zip
           asset_content_type: application/zip
 
-  
+
+
+      # Build the changelog for the email body that is sending to the client for Beta Release
+      - name: "Build Email Body for Beta Release"
+        if: ${{  contains(env.RELEASE_VERSION, 'beta')  }}
+        id: build_emailBody_for_BetaRelease
+        uses: mikepenz/release-changelog-builder-action@v2.7.2
+        with:
+          configuration: "email_body_configuration.json"
+          fromTag: ${{ steps.previous_tag.outputs.release }}
+          toTag: ${{ env.RELEASE_VERSION }}    
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+       # Build the changelog for the email body that is sending to the client for Major Release
+      - name: "Build Email body for Major Release"
+        if: ${{  contains(env.RELEASE_VERSION, 'beta') == false  }}
+        id: build_emailBody_for_MajorRelease
+        uses: mikepenz/release-changelog-builder-action@v2.7.2
+        with:
+          configuration: "email_body_configuration.json"
+          fromTag: ${{ steps.latest_release_tag.outputs.release }}      
+          toTag: ${{ env.RELEASE_VERSION }}    
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+      # Send email to Client to inform him about the Beta Release
+      - name: "Send Email to Client for Beta Release"
+        if:  |
+          success() 
+            && contains(env.RELEASE_VERSION, 'beta') 
+        id: client_email_status_beta
+        uses: cinotify/github-action@main
+        with:
+          to: 'ict.devops.consultants@gmail.com'
+          subject: New Beta Release ${{ env.RELEASE_VERSION }} from ${{github.repository}}
+          body:  ${{steps.build_emailBody_for_BetaRelease.outputs.changelog}}  
+         
+       
+      # Send email to Client to inform him about the Major Release    
+      - name: "Send Email to Client for Major Release"
+        if:  |
+          success() 
+            && !contains(env.RELEASE_VERSION, 'beta') 
+        id: client_email_status_major
+        uses: cinotify/github-action@main
+        with:
+          to: 'ict.devops.consultants@gmail.com'
+          subject: New Major Release ${{ env.RELEASE_VERSION }} from ${{github.repository}}
+          body: ${{steps.build_emailBody_for_MajorRelease.outputs.changelog}}
+
+
+      ## Doing this because this action dont have bcc/cc function, it cannot add more than 1 email for recipient
+      ## Other send email GitHub Actions are not working well
+      # Send email to PM also to ensure the email sent to client is correct
+      - name: "Send Email to PM for Beta Release"
+        if:  |
+          success() 
+            && contains(env.RELEASE_VERSION, 'beta') 
+        id: client_email_status_beta
+        uses: cinotify/github-action@main
+        with:
+          to: 'zihui1288@gmail.com'
+          subject: New Beta Release ${{ env.RELEASE_VERSION }} from ${{github.repository}}
+          body:  ${{steps.build_emailBody_for_BetaRelease.outputs.changelog}}  
+         
+       
+      # Send email to PM also to ensure the email sent to client is correct   
+      - name: "Send Email to PM for Major Release"
+        if:  |
+          success() 
+            && !contains(env.RELEASE_VERSION, 'beta') 
+        id: client_email_status_major
+        uses: cinotify/github-action@main
+        with:
+          to: 'zihui1288@gmail.com'
+          subject: New Major Release ${{ env.RELEASE_VERSION }} from ${{github.repository}}
+          body: ${{steps.build_emailBody_for_MajorRelease.outputs.changelog}}
+          
+    
+          
+    
+          
+          
+          
           
       
