@@ -3,7 +3,11 @@
       {
         "title": "## 🚀 Features",
         "labels": ["feature"]
-      },           
+      },      
+      {
+        "title": "## ⚙️ CICD",
+        "labels": ["CI", "CD"]
+      },      
       {
         "title": "## 🐛 Bug Fixes",
         "labels": ["bug"]
@@ -18,11 +22,11 @@
       }       
     ],
     "ignore_labels": [
-      "CI", "CD"
+      "ignore"
     ],
     "sort": "ASC",
     "template": "${{CHANGELOG}}\n\n",
-    "pr_template": "- ${{TITLE}} by @${{AUTHOR}} in PR #${{NUMBER}}",
+    "pr_template": "- ${{TITLE}} by @${{ASSIGNEES}} in PR #${{NUMBER}}",
     "empty_template": "- no changes",
     "label_extractor": [
       {
@@ -47,9 +51,9 @@
         "target": "- $4\n  - $6"
       }
     ],
-    "max_tags_to_fetch": 200,
-    "max_pull_requests": 200,
-    "max_back_track_time_days": 365,
+    "max_tags_to_fetch": 1000,
+    "max_pull_requests": 1000,
+    "max_back_track_time_days": 1000,
     "exclude_merge_branches": [
       "Owner/qa"
     ],
