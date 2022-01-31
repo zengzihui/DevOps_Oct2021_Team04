@@ -105,7 +105,7 @@ jobs:
         uses: thedoctor0/zip-release@master
         with:
           filename: content.zip
-          exclusions: '*.git* *.vscode* /*downloads/* /*test/* /*__pycache__/* *high_score_3.json* /*dist/* *release_configuration.json* *email_body_configuration.json*'  
+          exclusions: '*.git* *.vscode* /*downloads/* /*test/* /*__pycache__/* *high_score_3.json* /*dist/* *release_configuration.json* *email_body_configuration.json* *high_score_9.json* *high_score_16.json* *requirements.txt*'  
 
           
 
