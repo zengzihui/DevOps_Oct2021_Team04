@@ -95,7 +95,7 @@ jobs:
       
 
       - name: Move exe folder
-        runs: |
+        run: |
           mv ./dist/windows/main ./
           mv main ProgramEXE
 
