@@ -93,12 +93,14 @@ jobs:
         with:
           path: ./
       
+      #Moves EXE file into folder
 
       - name: Move exe folder
         run: |
           mv ./dist/windows/main ./
           mv main ProgramEXE
 
+      #Packages release into zip file. Excludes certain files.
       - name: Archive site content
         uses: thedoctor0/zip-release@master
         with:
@@ -157,6 +159,7 @@ jobs:
           tag: ${{ env.RELEASE_VERSION }}    
           body: ${{steps.build_changelog_for_MajorRelease.outputs.changelog}}
 
+      #Uploads packaged file into release (beta)
 
       - name: Upload release asset
         if: ${{ contains(env.RELEASE_VERSION, 'beta') == false  }}
@@ -169,6 +172,8 @@ jobs:
           asset_name: ${{ env.RELEASE_VERSION }}.zip
           asset_content_type: application/zip
 
+
+      #Uploads packaged file into release
       - name: Upload release asset Beta
         if: ${{  contains(env.RELEASE_VERSION, 'beta')  }}
         uses: actions/upload-release-asset@v1
