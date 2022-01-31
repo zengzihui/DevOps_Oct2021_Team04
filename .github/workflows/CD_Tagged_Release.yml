@@ -64,6 +64,7 @@ jobs:
       #Generate Pydoc document
       - name: Create docs
         run: |
+          rm -r test
           python -m pydoc -w ./
           mv *.html ./downloads/pydoc
         
