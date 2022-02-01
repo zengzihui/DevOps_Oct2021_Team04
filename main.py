@@ -2,19 +2,23 @@ from classes.menu import *
 
 
 def main():
-    building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
+    building_pool = ["HSE","FAC","SHP","HWY","BCH"]
     first_time_display_menu = False
 
     # default city size
     city_size = [4, 4]
 
     while True:
+        all_buildings = {}
         chosen_option = main_menu(first_time_display_menu)
         first_time_display_menu = True
+        for building in building_pool:
+            all_buildings[building] = 8
+
         if chosen_option == "0":
             exit_game()
         elif chosen_option == "1":
-            start_new_game(width=city_size[0], height=city_size[1], building_pool= building_pool)
+            start_new_game(width=city_size[0], height=city_size[1], building_pool= all_buildings)
         elif chosen_option == "4":
             temp_pool = choose_building_pool(building_pool)
             if temp_pool != None:
