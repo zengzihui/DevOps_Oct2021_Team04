@@ -215,6 +215,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+
        # Build the changelog for the email body that is sending to the client for Major Release
       - name: "Build Email body for Major Release"
         if: ${{  contains(env.RELEASE_VERSION, 'beta') == false  }}
