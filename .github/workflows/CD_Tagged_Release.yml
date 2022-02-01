@@ -261,7 +261,7 @@ jobs:
         if:  |
           success() 
             && contains(env.RELEASE_VERSION, 'beta') 
-        id: client_email_status_beta
+        id: client_email_status_beta_pm
         uses: cinotify/github-action@main
         with:
           to: 'zihui1288@gmail.com'
@@ -274,7 +274,7 @@ jobs:
         if:  |
           success() 
             && !contains(env.RELEASE_VERSION, 'beta') 
-        id: client_email_status_major
+        id: client_email_status_major_pm
         uses: cinotify/github-action@main
         with:
           to: 'zihui1288@gmail.com'
