@@ -196,7 +196,7 @@ def choose_building_pool(building_pool):
     display_current_building = True
     building_list = ["BCH","FAC","HSE","HWY","MON","PRK","SHP"]
     display_list = ["Beach (BCH)","Factory (FAC)","House (HSE)","Highway (HWY)", "Monument (MON)","Park (PRK)","Shop (SHP)"]
-    output_list ={}
+    output_list = []
     while(True):
         temp_count =1
         if len(output_list) <= 4:
@@ -217,7 +217,7 @@ def choose_building_pool(building_pool):
             try:
                 chosen = int(chosen)-1
                 if 0 <= chosen <= temp_count-2 :
-                    output_list[building_list[chosen]] = 8
+                    output_list.append(building_list[chosen])
                     del building_list[chosen]
                     del display_list[chosen]
                     display_current_building = True

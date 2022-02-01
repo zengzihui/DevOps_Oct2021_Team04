@@ -144,7 +144,7 @@ def test_choose_city_size(mocker, option_list, expected):
     assert new_city_size == expected
 @pytest.mark.parametrize("option_list, expected",
                          [
-                             (["1", "1", "1", "1", "1"], {"BCH":8, "FAC":8, "HSE": 8, "HWY":8, "MON":8}),
+                             (["1", "1", "1", "1", "1"], ["BCH","FAC","HSE", "HWY" ,"MON"]),
                              
                          ])
 def test_success_choose_building_pool(option_list,expected):
