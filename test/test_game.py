@@ -340,8 +340,7 @@ BCH              8\n'''
                                  [Highway(0, 3), Highway(1, 3), Highway(2, 3), Highway(3, 3)]
 
                              ],
-                                 '''
-HSE: 1 + 5 + 5 + 3 + 3 = 17
+                                 '''HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
 SHP: 2 + 2 + 3 = 7
 HWY: 4 + 4 + 4 + 4 = 16
@@ -354,8 +353,7 @@ Total score: 50'''
                                  [Beach(0, 2), Shop(1, 2), House(2, 2), House(3, 2)],
                                  [Highway(0, 3), Highway(1, 3), Highway(2, 3), Building()]
                              ],
-                                 '''
-HSE: 1 + 5 + 5 + 3 + 3 = 17
+                                 '''HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
 SHP: 2 + 2 + 3 = 7
 HWY: 3 + 3 + 3 = 9
@@ -369,8 +367,7 @@ Total score: 43'''
                                  [Building(), Building(), Building(), Building()]
 
                              ],
-                                 '''
-HSE: 0
+                                 '''HSE: 0
 FAC: 0
 SHP: 0
 HWY: 0
@@ -533,3 +530,75 @@ def test_save_game(game_board, match, mocker):
     with open("game_save.json", "r") as save_file:
         save_data = json.load(save_file)
         assert(save_data == match)
+        
+@pytest.mark.parametrize("game_board, match",
+                         [
+                             ([
+                                 [Shop(0, 0), Shop(1, 0), House(2, 0), Factory(3, 0)],
+                                 [Beach(0, 1), House(1, 1), House(2, 1), Beach(3, 1)],
+                                 [Beach(0, 2), Shop(1, 2), House(2, 2), House(3, 2)],
+                                 [Highway(0, 3), Highway(1, 3), Highway(2, 3), Building()]
+                             ],
+                                 [
+                                 '',
+                                 'Turn 16',
+                                 '     A     B     C     D  ',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 1| SHP | SHP | HSE | FAC |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 2| BCH | HSE | HSE | BCH |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 3| BCH | SHP | HSE | HSE |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 4| HWY | HWY | HWY |     |',
+                                 '  +-----+-----+-----+-----+',
+                                 '1. Build a HWY',
+                                 '2. Build a HWY',
+                                 '3. See remaining buildings',
+                                 '4. See current score',
+                                 '',
+                                 '5. Save game',
+                                 '0. Exit to main menu',
+                                 'Your choice? ',
+                                 'Build where? ',
+                                 '',
+                                 'Final layout of Simp City:',
+                                 '     A     B     C     D  ',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 1| SHP | SHP | HSE | FAC |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 2| BCH | HSE | HSE | BCH |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 3| BCH | SHP | HSE | HSE |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 4| HWY | HWY | HWY | HWY |',
+                                 '  +-----+-----+-----+-----+',
+                                 'HSE: 1 + 5 + 5 + 3 + 3 = 17',
+                                 'FAC: 1 = 1',
+                                 'SHP: 2 + 2 + 3 = 7',
+                                 'HWY: 4 + 4 + 4 + 4 = 16',
+                                 'BCH: 3 + 3 + 3 = 9',
+                                 'Total score: 50'])])
+def test_end_of_game_display(game_board, match):
+    """
+    check if game ends when all spaces on the board is filled
+
+    Zheng Jiongjie T01 20th January
+    """
+
+    test_game = Game()
+
+    # set dummy game board at final turn
+    test_game.board = game_board
+    test_game.turn_num = 16
+    test_game.randomized_building_history = {"16": ["HWY", "HWY"]}
+    test_game.building_pool = {"HSE": 20, "FAC": 0, "SHP": 0, "HWY": 2, "BCH": 0}
+
+    # build final highway building at d4
+    set_keyboard_input(["1", "d4"])
+
+    test_game.start_new_turn()
+
+    output = get_display_output()
+
+    assert output == match

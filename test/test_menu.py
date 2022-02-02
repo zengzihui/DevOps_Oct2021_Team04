@@ -45,11 +45,12 @@ def test_main_menu_display_without_welcome(mocker, option_list):
 
     # check if main_menu function displays correct output
     out = get_display_output()
-    assert out[0] == '\n1. Start new game\n2. Load saved game\n3. Show high scores\n4. Choose building pool\n5. Choose city size\n\n0. Exit'
+    assert (out[0] == '\n1. Start new game\n2. Load saved game\n3. Show high scores\n\
+4. Choose building pool\n5. Choose city size\n\n0. Exit')
 
 
-@pytest.mark.parametrize("option_list, expected",
-                         [(["2"], "2"), (["1"], "1"), (["0"], "0"),(["4"], "4")])
+@ pytest.mark.parametrize("option_list, expected",
+                          [(["2"], "2"), (["1"], "1"), (["0"], "0")])
 def test_main_menu_input_success(mocker, option_list, expected):
     """
     test if main_menu() returns the value entered by user
@@ -105,7 +106,7 @@ def test_start_new_game(mocker):
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value="new turn started")
     building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
-    assert start_new_game(width = 4, height = 4 ,building_pool=building_pool) == "new turn started"
+    assert start_new_game(width = 4, height = 4, building_pool=building_pool) == "new turn started"
 
 
 def test_main_menu_exit_program():
@@ -143,7 +144,7 @@ def test_choose_city_size(mocker, option_list, expected):
     assert new_city_size == expected
 @pytest.mark.parametrize("option_list, expected",
                          [
-                             (["1", "1", "1", "1", "1"], {"BCH":8, "FAC":8, "HSE": 8, "HWY":8, "MON":8}),
+                             (["1", "1", "1", "1", "1"], ["BCH","FAC","HSE", "HWY" ,"MON"]),
                              
                          ])
 def test_success_choose_building_pool(option_list,expected):

@@ -27,6 +27,7 @@ class Game:
         self.board = []
         self.turn_num = 1
         self.randomized_building_history = {}
+        self.game_ended = False
 
         for row in range(0, self.height):
             self.board.append([])
@@ -120,7 +121,18 @@ class Game:
         # retrieve 2 random genrated buildings from randomized building history
         randomized_building_names = self.randomized_building_history[str(self.turn_num)]
 
+        # check if game board is fully filled and end game if it is
+        if self.turn_num > self.height * self.width and self.game_ended is False:
+            self.game_ended = True
+            self.end_of_game()
+
+        # return back to main menu if game ends
+        if self.game_ended:
+            # break recursive start_new_turn
+            return 0
+
         print("")
+
         self.print_turn_num()
         self.print_board()
 
@@ -133,6 +145,7 @@ class Game:
         elif chosen_option == "3":
             return self.display_building()
         elif chosen_option == "4":
+            print("")
             return self.display_all_scores()
         elif chosen_option == "5":
             return self.save_game()
@@ -302,7 +315,6 @@ class Game:
 
         Swah Jianoon T01 17th Janunary
         """
-        print("")
         total_dict = {"": 0}
         display_dict = {"": ""}
         total_score = 0
@@ -352,3 +364,13 @@ class Game:
         print("")
         print("Game saved!")
         self.start_new_turn()
+    def end_of_game(self):
+        """
+        Displays final game board and score
+
+        Zheng Jiongjie T02 20th January
+        """
+        print("")
+        print("Final layout of Simp City:")
+        self.print_board()
+        self.display_all_scores()
