@@ -14,7 +14,7 @@ from .beach import Beach
 
 class Game:
 
-    def __init__(self, height=4, width=4,building_pool={}):
+    def __init__(self, height=4, width=4, building_pool={}):
         """
         init function for game class
         default turn number is 1
@@ -215,11 +215,11 @@ class Game:
                         elif building_string == "HWY":
                             building = Highway(x_coord, y_coord)
                         elif building_string == "BCH":
-                            building = Beach(x_coord,y_coord)
+                            building = Beach(x_coord, y_coord)
                         elif building_string == "MON":
-                            building = Monument(x_coord,y_coord)
+                            building = Monument(x_coord, y_coord)
                         elif building_string == "PRK":
-                            building = Park(x_coord,y_coord)
+                            building = Park(x_coord, y_coord)
                         self.board[y_coord][x_coord] = building
                         self.remove_building(building_string)
                         building.x_coord = x_coord
@@ -364,6 +364,7 @@ class Game:
         print("")
         print("Game saved!")
         self.start_new_turn()
+
     def end_of_game(self):
         """
         Displays final game board and score

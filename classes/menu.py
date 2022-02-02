@@ -6,6 +6,7 @@ from .factory import Factory
 from .highway import Highway
 from .house import House
 from .beach import Beach
+import os.path
 
 
 def main_menu(from_game_menu=None):
@@ -167,6 +168,10 @@ def load_game():
     Zheng Jiongjie T01 25th January
     """
     loaded_game = Game()
+    if os.path.isfile("game_save.json") is False:
+        print("")
+        print("No save game found!")
+        return False
     with open("game_save.json", "r") as save_file:
         save_data = json.load(save_file)
         try:
@@ -177,9 +182,9 @@ def load_game():
             loaded_game.randomized_building_history = save_data["randomized_history"]
 
             loaded_game.board = []
-            for row in range(0, loaded_game.height + 1):
+            for row in range(0, loaded_game.height):
                 loaded_game.board.append([])
-                for col in range(0, loaded_game.width + 1):
+                for col in range(0, loaded_game.width):
                     if str(col) + "," + str(row) in save_data["board"]:
                         building_str = save_data["board"][str(col) + "," + str(row)]
 
@@ -197,8 +202,11 @@ def load_game():
                         loaded_game.board[row].append(Building())
             return loaded_game
         except Exception as e:
-            print("Failed to load game")
+            print("")
+            print("Failed to load game!")
             return False
+
+
 def building_display(buildings_list):
     """
     return chosen buildings displayed string
@@ -209,12 +217,13 @@ def building_display(buildings_list):
     building_display = ""
     if len(buildings_list) != 0:
         for building in buildings_list:
-            if temp_flag== False:
+            if temp_flag == False:
                 building_display = "{0}".format(building)
                 temp_flag = True
             else:
                 building_display += ", {0}".format(building)
     return building_display
+
 
 def print_building_display(buildings_list):
     buildings = building_display(buildings_list)
@@ -223,12 +232,14 @@ def print_building_display(buildings_list):
     print("[{0}]".format(buildings))
     print("-----------------------------------------")
 
+
 def print_chosen_display(buidling_list):
     buildings = building_display(buidling_list)
     print("")
     print("--------- CHOSEN BUILDING POOL ---------")
     print("[{0}]".format(buildings))
     print("----------------------------------------")
+
 
 def choose_building_pool(building_pool):
     """
@@ -240,11 +251,12 @@ def choose_building_pool(building_pool):
     print("")
     first_time = True
     display_current_building = True
-    building_list = ["BCH","FAC","HSE","HWY","MON","PRK","SHP"]
-    display_list = ["Beach (BCH)","Factory (FAC)","House (HSE)","Highway (HWY)", "Monument (MON)","Park (PRK)","Shop (SHP)"]
+    building_list = ["BCH", "FAC", "HSE", "HWY", "MON", "PRK", "SHP"]
+    display_list = ["Beach (BCH)", "Factory (FAC)", "House (HSE)", "Highway (HWY)",
+                    "Monument (MON)", "Park (PRK)", "Shop (SHP)"]
     output_list = []
     while(True):
-        temp_count =1
+        temp_count = 1
         if len(output_list) <= 4:
             if first_time:
                 print("Choose your new building pool below.")
@@ -256,13 +268,13 @@ def choose_building_pool(building_pool):
                     print("")
             for display in display_list:
                 print("{0}. {1}".format(temp_count, display))
-                temp_count +=1
+                temp_count += 1
             print("")
             print("0. Exit to main menu")
             chosen = input("Enter input: ")
             try:
-                chosen = int(chosen)-1
-                if 0 <= chosen <= temp_count-2 :
+                chosen = int(chosen) - 1
+                if 0 <= chosen <= temp_count - 2:
                     output_list.append(building_list[chosen])
                     del building_list[chosen]
                     del display_list[chosen]
@@ -287,4 +299,3 @@ def choose_building_pool(building_pool):
         else:
             print_chosen_display(output_list)
             return output_list
-            

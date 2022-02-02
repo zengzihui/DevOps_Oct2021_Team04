@@ -9,51 +9,52 @@ from classes.factory import *
 from classes.beach import *
 from classes.game import *
 
+
 @pytest.mark.parametrize("game_board, total_score, x_coord, y_coord, counted_factory",
                          [
                              ([
-                                 [Factory(0,0), Factory(1,0), Factory(2,0) , Factory(3,0)],
-                                 [Building(),Building(),Building(),Building()],
-                                 [Building(),Building(),Building(),Building()],
-                                 [Building(),Building(),Building(),Building()]
+                                 [Factory(0, 0), Factory(1, 0), Factory(2, 0), Factory(3, 0)],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()]
 
-                                 ],4,0,0,0), 
+                             ], 4, 0, 0, 0),
                              ([
-                                 [Factory(0,0), Factory(1,0), Factory(2,0) , Building()],
-                                 [Building(),Building(),Building(),Building()],
-                                 [Building(),Building(),Building(),Building()],
-                                 [Building(),Building(),Building(),Building()]
-                                 ],3,0,0,0), 
+                                 [Factory(0, 0), Factory(1, 0), Factory(2, 0), Building()],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()]
+                             ], 3, 0, 0, 0),
                              (
                                  [
-                                     [Factory(0,0), Factory(1,0),Building(), Building()],
-                                     [Building(),Building(),Building(),Building()],
-                                     [Building(),Building(),Building(),Building()],
-                                     [Building(),Building(),Building(),Building()],
-                                 ],2,0,0,0),
+                                     [Factory(0, 0), Factory(1, 0), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                 ], 2, 0, 0, 0),
                              (
                                  [
-                                     [Factory(0,0), Building(),Building(), Building()],
-                                     [Building(),Building(),Building(),Building()],
-                                     [Building(),Building(),Building(),Building()],
-                                     [Building(),Building(),Building(),Building()]
-                                 ],1,0,0,0),
+                                     [Factory(0, 0), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()]
+                                 ], 1, 0, 0, 0),
                              (
                                  [
-                                     [Factory(0,0), Factory(1,0), Factory(2,0) , Factory(3,0)],
-                                     [Factory(0,1),Building(), Building(),Building()],
-                                     [Building(),Building(),Building(),Building()],
-                                     [Building(),Building(),Building(),Building()]
-                                 ],1,0,1,4),
+                                     [Factory(0, 0), Factory(1, 0), Factory(2, 0), Factory(3, 0)],
+                                     [Factory(0, 1), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()]
+                                 ], 1, 0, 1, 4),
                              (
                                  [
-                                     [Factory(0,0), Factory(1,0), Factory(2,0) , Factory(3,0)],
-                                     [Factory(0,1),Building(), Building(),Building()],
-                                     [Building(),Building(),Building(),Building()],
-                                     [Building(),Building(),Building(),Building()]
-                                 ],4,0,0,0)
-   
-                         
+                                     [Factory(0, 0), Factory(1, 0), Factory(2, 0), Factory(3, 0)],
+                                     [Factory(0, 1), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()]
+                                 ], 4, 0, 0, 0)
+
+
                          ])
 def test_calculate_score(game_board, total_score, x_coord, y_coord, counted_factory):
     """
@@ -66,8 +67,8 @@ def test_calculate_score(game_board, total_score, x_coord, y_coord, counted_fact
     test_game.board = game_board
 
     # test score if there are >4 existing factory
-    for h in range(0,test_game.height):
-        for w in range(0,test_game.width):
+    for h in range(0, test_game.height):
+        for w in range(0, test_game.width):
             if test_game.board[h][w].name == "FAC" and counted_factory != 0:
                 test_game.board[h][w].counted = True
                 counted_factory -= 1

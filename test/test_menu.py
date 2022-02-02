@@ -113,8 +113,8 @@ def test_start_new_game(mocker):
     Zheng Jiongjie T01 9th December
     """
     mocker.patch('classes.game.Game.start_new_turn', return_value="new turn started")
-    building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
-    assert start_new_game(width = 4, height = 4, building_pool=building_pool) == "new turn started"
+    building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8}
+    assert start_new_game(width=4, height=4, building_pool=building_pool) == "new turn started"
 
 
 def test_main_menu_exit_program():
@@ -142,7 +142,7 @@ def test_load_game_success():
                                 "0,1": "BCH", "1,1": "HSE", "2,1": "HSE", "3,1": "BCH",
                                 "0,2": "BCH", "1,2": "SHP", "2,2": "HSE", "3,2": "HSE",
                                 "0,3": "HWY", "1,3": "HWY", "2,3": "HWY"},
-                      "turn_num": 1, "width": 3, "height": 3,
+                      "turn_num": 1, "width": 4, "height": 4,
                       "randomized_history": {},
                       "building_pool": {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}}
         json.dump(dummy_data, save_file)
@@ -166,8 +166,8 @@ def test_load_game_success():
     assert type(loaded_game.board[3][1]) is Highway
     assert type(loaded_game.board[3][2]) is Highway
     assert type(loaded_game.board[3][3]) is Building
-    assert loaded_game.height == 3
-    assert loaded_game.width == 3
+    assert loaded_game.height == 4
+    assert loaded_game.width == 4
     assert loaded_game.turn_num == 1
     assert loaded_game.building_pool == {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}
     assert loaded_game.randomized_building_history == {}
@@ -186,7 +186,7 @@ def test_load_game_fail():
                                 "0,1": "BCH", "1,1": "HSE", "2,1": "HSE", "3,1": "BCH",
                                 "0,2": "BCH", "1,2": "SHP", "2,2": "HSE", "3,2": "HSE",
                                 "0,3": "HWY", "1,3": "HWY", "2,3": "HWY", "3,3": "HWY"},
-                      "turn_num": 1, "width": 3, "height": 3,
+                      "turn_num": 1, "width": 4, "height": 4,
                       "randoized_history": {},
                       "building_pool": {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}}
         json.dump(dummy_data, save_file)
@@ -194,6 +194,23 @@ def test_load_game_fail():
     loaded_game = load_game()
 
     assert loaded_game is False
+
+
+def test_load_game_no_save_file():
+    """
+    check if game loads without a save file
+
+    Zheng Jiongjie T01 25th January
+    """
+
+    if os.path.exists("game_save.json"):
+        os.remove("game_save.json")
+
+    loaded_game = load_game()
+
+    assert loaded_game is False
+
+
 @pytest.mark.parametrize("option_list, expected",
                          [(["5", "5"], [5, 5]), (["5", "6"], [5, 6]), (["5", "5"], [5, 5]),
                           (["1", "40"], [1, 40]), (["2", "24", "26", "1"], [26, 1]), (["40", "26", "1"], [26, 1]),
@@ -215,81 +232,87 @@ def test_choose_city_size(mocker, option_list, expected):
     new_city_size = prompt_city_size(default_city_size)
 
     assert new_city_size == expected
+
+
 @pytest.mark.parametrize("option_list, expected",
                          [
-                             (["1", "1", "1", "1", "1"], ["BCH","FAC","HSE", "HWY" ,"MON"]),
-                             
+                             (["1", "1", "1", "1", "1"], ["BCH", "FAC", "HSE", "HWY", "MON"]),
+
                          ])
-def test_success_choose_building_pool(option_list,expected):
+def test_success_choose_building_pool(option_list, expected):
     """
     test choose building pool allows user to choose building pool
 
     Swah Jian Oon T01 19th January
     """
     set_keyboard_input(option_list)
-    output_list =choose_building_pool({"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
+    output_list = choose_building_pool({"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8})
     assert output_list == expected
+
 
 @pytest.mark.parametrize("option_list, expected",
                          [
-                             (["z","0"], "\nInvalid input has been entered.\nPlease enter number for the option (e.g. 1) and it needs to be within the range."),
-                             (["z41231","0"], "\nInvalid input has been entered.\nPlease enter number for the option (e.g. 1) and it needs to be within the range."),
-                             (["12","0"], "\nInvalid input has been entered.\nPlease enter number for the option (e.g. 1) and it needs to be within the range."),
-                             
+                             (["z", "0"], "\nInvalid input has been entered.\nPlease enter number for the option (e.g. 1) and it needs to be within the range."),
+                             (["z41231", "0"], "\nInvalid input has been entered.\nPlease enter number for the option (e.g. 1) and it needs to be within the range."),
+                             (["12", "0"], "\nInvalid input has been entered.\nPlease enter number for the option (e.g. 1) and it needs to be within the range."),
+
                          ])
-def test_failure_choose_building_pool(option_list,expected):
+def test_failure_choose_building_pool(option_list, expected):
     """
     test choose building pool display error message 
 
     Swah Jian Oon T01 19th January
     """
     set_keyboard_input(option_list)
-    choose_building_pool({"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
+    choose_building_pool({"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8})
     out = get_display_output()
     result = "\n" + out[-16] + "\n" + out[-15]
     assert result == expected
+
 
 @pytest.mark.parametrize("option_list, expected",
                          [
                              (["0"], '''Configuring building pool is unsuccessful.
 Building pool remains the same as the current building pool.'''),
-                             
+
                          ])
-def test_exit_choose_building_pool(option_list,expected):
+def test_exit_choose_building_pool(option_list, expected):
     """
     test choose building pool allows user to print message before return to main menu
 
     Swah Jian Oon T01 19th January
     """
     set_keyboard_input(option_list)
-    output_value =choose_building_pool({"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
+    output_value = choose_building_pool({"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8})
     out = get_display_output()
     result = out[-2] + "\n" + out[-1]
-    assert result == expected and output_value ==None
+    assert result == expected and output_value == None
+
 
 @pytest.mark.parametrize("building_list, expected",
                          [
-                             (["BCH","FAC","HSE","HWY","MON"],'''
+                             (["BCH", "FAC", "HSE", "HWY", "MON"], '''
 --------- CURRENT BUILDING POOL ---------
 [BCH, FAC, HSE, HWY, MON]
 -----------------------------------------''')
-                             
+
                          ])
-def test_print_building_display(building_list,expected):
+def test_print_building_display(building_list, expected):
     """
     test choose display current building pool
 
     Swah Jian Oon T01 19th January
     """
-    combined_output =""
+    combined_output = ""
     set_keyboard_input(None)
     print_building_display(building_list)
     out = get_display_output()
     for result in out:
-        combined_output+=result
+        combined_output += result
         if result != out[-1]:
             combined_output += "\n"
     assert combined_output == expected
+
 
 @pytest.mark.parametrize("option_list, expected",
                          [
@@ -310,30 +333,31 @@ Choose your new building pool below.
 
 0. Exit to main menu
 '''),
-                             
+
                          ])
-def test_first_time_choose_building_pool_message(option_list,expected):
+def test_first_time_choose_building_pool_message(option_list, expected):
     """
     test to display first time choose building pool message
     """
     set_keyboard_input(option_list)
-    choose_building_pool({"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
+    choose_building_pool({"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8})
     out = get_display_output()
     output_len = len(out) - 1
-    temp_count =0
+    temp_count = 0
     combined_output = ""
     for result in out:
         if temp_count <= (output_len - 4):
             combined_output += result
-            if result!= out[-1]:
+            if result != out[-1]:
                 combined_output += "\n"
         temp_count += 1
 
     assert combined_output == expected
 
+
 @pytest.mark.parametrize("option_list, expected",
                          [
-                             (["1","0"], '''
+                             (["1", "0"], '''
 --------- CURRENT BUILDING POOL ---------
 [BCH]
 -----------------------------------------
@@ -347,24 +371,23 @@ def test_first_time_choose_building_pool_message(option_list,expected):
 
 0. Exit to main menu
 '''),
-                             
+
                          ])
-def test_no_show_time_choose_building_pool_message(option_list,expected):
+def test_no_show_time_choose_building_pool_message(option_list, expected):
     """
     test to display first time choose building pool message
     """
     set_keyboard_input(option_list)
-    choose_building_pool({"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
+    choose_building_pool({"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8})
     out = get_display_output()
     output_len = len(out) - 1
-    temp_count =0
+    temp_count = 0
     combined_output = ""
     for result in out:
         if 17 <= temp_count <= (output_len - 4):
             combined_output += result
-            if result!= out[-1]:
+            if result != out[-1]:
                 combined_output += "\n"
         temp_count += 1
 
     assert combined_output == expected
-    
