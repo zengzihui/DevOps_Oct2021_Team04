@@ -127,7 +127,6 @@ class Game:
             self.game_ended = True
             self.end_of_game()
             self.update_high_score()
-            self.display_high_score()
 
         # return back to main menu if game ends
         if self.game_ended:
@@ -387,7 +386,10 @@ class Game:
                 user_data = {'name':name,'score':total_score}
                 high_score_list.insert(position,user_data)
                 save_data["high_scores"] = high_score_list
+                if len(save_data["high_scores"]) > 10:
+                    save_data["high_scores"].pop()
                 update_json(file_path, save_data)
+                self.display_high_score()
                 return
 
     def display_high_score(self):
@@ -401,14 +403,14 @@ class Game:
         save_data = load_json(file_path)
         high_score_list = save_data["high_scores"]
         print("")
-        print("---------- HIGH SCORES ----------")
-        print("Pos Player                  Score")
-        print("--- ------                  -----")
+        print("--------- HIGH SCORES ---------")
+        print("Pos Player                Score")
+        print("--- ------                -----")
         count = 1
         for high_score in high_score_list:
-            print("{0:2d}. {1:<23} {2:5d}".format(int(count),high_score["name"],int(high_score["score"])))
+            print("{0:2d}. {1:<21} {2:5d}".format(int(count),high_score["name"],int(high_score["score"])))
             count += 1
-        print("---------------------------------")
+        print("-------------------------------")
 
     def end_of_game(self):
         """

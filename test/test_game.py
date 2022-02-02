@@ -535,6 +535,12 @@ def test_randomize_two_buildings_from_pool_when_no_building():
                             {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 15},{'name': 'john1', 'score': 14}, {'name': 'john2', 'score': 13},{'name': 'john3', 'score': 12}, {'name': 'john4', 'score': 11}, {'name': 'john5', 'score': 10}, {'name': 'john6', 'score': 9},{'name': 'john7', 'score': 8}, {'name': 'john8', 'score': 7},{'name': 'john9', 'score': 6}]},
                             None,0
 
+                         ),
+                         (
+                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 15},{'name': 'john1', 'score': 14}, {'name': 'john2', 'score': 13},{'name': 'john3', 'score': 12}, {'name': 'john4', 'score': 11}, {'name': 'john5', 'score': 10}, {'name': 'john6', 'score': 9},{'name': 'john7', 'score': 8}, {'name': 'john8', 'score': 7},{'name': 'john9', 'score': 6}]},
+                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 15},{'name': 'john1', 'score': 14}, {'name': 'newjohn', 'score': 14}, {'name': 'john2', 'score': 13},{'name': 'john3', 'score': 12}, {'name': 'john4', 'score': 11}, {'name': 'john5', 'score': 10}, {'name': 'john6', 'score': 9},{'name': 'john7', 'score': 8}, {'name': 'john8', 'score': 7}]},
+                            "newjohn",14
+
                          )
                          ])
 def test_update_high_score(current_json, updated_json, name, score, mocker):
@@ -568,7 +574,16 @@ def test_update_high_score(current_json, updated_json, name, score, mocker):
                              "Invalid input for the name has been entered.",
                              "Please remember only a max of 20 characters are allowed for the name.",
                              "",
-                             "Please enter your name (max 20 chars): "
+                             "Please enter your name (max 20 chars): ",
+                             "",
+                             "--------- HIGH SCORES ---------",
+                             "Pos Player                Score",
+                             "--- ------                -----",
+                             " 1. john                      6",
+                             " 2. john2                     5",
+                             " 3. john3                     3",
+                             "-------------------------------"
+
                             ]
 
                          )
@@ -633,38 +648,38 @@ def test_calculate_total_score(game_board, score):
                          [(
                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}, {'name': 'john3', 'score': 3}]},
                            """
----------- HIGH SCORES ----------
-Pos Player                  Score
---- ------                  -----
- 1. john                        6
- 2. john2                       5
- 3. john3                       3
----------------------------------"""),
+--------- HIGH SCORES ---------
+Pos Player                Score
+--- ------                -----
+ 1. john                      6
+ 2. john2                     5
+ 3. john3                     3
+-------------------------------"""),
 
                          (
                            {'board_size': 4, 'high_scores': 
                            [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}, {'name': 'john6', 'score': 5},
                            {'name': 'john3', 'score': 3}, {'name': 'john4', 'score': 3}, {'name': 'john5', 'score': 2}]},
                            """
----------- HIGH SCORES ----------
-Pos Player                  Score
---- ------                  -----
- 1. john                        6
- 2. john2                       5
- 3. john6                       5
- 4. john3                       3
- 5. john4                       3
- 6. john5                       2
----------------------------------"""),
+--------- HIGH SCORES ---------
+Pos Player                Score
+--- ------                -----
+ 1. john                      6
+ 2. john2                     5
+ 3. john6                     5
+ 4. john3                     3
+ 5. john4                     3
+ 6. john5                     2
+-------------------------------"""),
 
                            (
                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}]},
                            """
----------- HIGH SCORES ----------
-Pos Player                  Score
---- ------                  -----
- 1. john                        6
----------------------------------"""),
+--------- HIGH SCORES ---------
+Pos Player                Score
+--- ------                -----
+ 1. john                      6
+-------------------------------"""),
 
                            (
                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 15},
@@ -674,20 +689,20 @@ Pos Player                  Score
                             {'name': 'john7', 'score': 8}, {'name': 'john8', 'score': 7},
                             {'name': 'john9', 'score': 6}]},
                            """
----------- HIGH SCORES ----------
-Pos Player                  Score
---- ------                  -----
- 1. john                       15
- 2. john1                      14
- 3. john2                      13
- 4. john3                      12
- 5. john4                      11
- 6. john5                      10
- 7. john6                       9
- 8. john7                       8
- 9. john8                       7
-10. john9                       6
----------------------------------"""),
+--------- HIGH SCORES ---------
+Pos Player                Score
+--- ------                -----
+ 1. john                     15
+ 2. john1                    14
+ 3. john2                    13
+ 4. john3                    12
+ 5. john4                    11
+ 6. john5                    10
+ 7. john6                     9
+ 8. john7                     8
+ 9. john8                     7
+10. john9                     6
+-------------------------------"""),
 
 
                          ])
@@ -723,11 +738,11 @@ def test_display_high_score(json_output,display_output):
                              """Congratulations! You made the high score board at position 1!
 Please enter your name (max 20 chars): 
 
----------- HIGH SCORES ----------
-Pos Player                  Score
---- ------                  -----
- 1. john                       50
----------------------------------""",
+--------- HIGH SCORES ---------
+Pos Player                Score
+--- ------                -----
+ 1. john                     50
+-------------------------------""",
 "john"
                              )
                          ])
