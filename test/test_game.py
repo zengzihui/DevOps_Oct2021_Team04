@@ -3,6 +3,8 @@ import sys
 from unittest import mock
 import pytest
 from classes.menu import *
+from classes.monument import Monument
+from classes.park import Park
 from test.testing_functions import *
 from classes.game import Game
 from classes.beach import *
@@ -201,7 +203,7 @@ def test_sub_classes(building, expected):
 
 
 @pytest.mark.parametrize("location,x,y,building_name,building_type",
-                         [("a1", 0, 0, "SHP", Shop), ("a2", 0, 1, "FAC", Factory), ("a1", 0, 0, "BCH", Beach), ("a1", 0, 0, "HSE", House), ("a1", 0, 0, "HWY", Highway)])
+                         [("a1", 0, 0, "SHP",Shop), ("a2", 0, 1,"FAC", Factory),("a1", 0, 0,"BCH", Beach),("a1", 0, 0,"HSE", House),("a1", 0, 0,"HWY",Highway),("a1", 0, 0,"MON",Monument),("a1", 0, 0,"PRK",Park)])
 def test_add_building(location, x, y, building_name, building_type, mocker):
     """
     success cases for adding_building function
@@ -211,6 +213,7 @@ def test_add_building(location, x, y, building_name, building_type, mocker):
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
     set_keyboard_input([location])
+    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8, "MON":8, "PRK": 8}
     test_game.add_building(building_name)
     assert isinstance(test_game.board[y][x], building_type)
 
@@ -315,6 +318,7 @@ def test_remove_building(building_name):
     Swah Jianoon T01 9th December
     """
     test_game = Game()
+    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8, "MON":8, "PRK": 8}
     test_game.remove_building(building_name)
     assert test_game.building_pool[building_name] == 7
 
@@ -328,6 +332,7 @@ def test_display_building(mocker):
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     set_keyboard_input(None)
     test_game = Game()
+    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
     match = '''Building         Remaining
 --------         --------
 HSE              8
@@ -350,8 +355,7 @@ BCH              8\n'''
                                  [Highway(0, 3), Highway(1, 3), Highway(2, 3), Highway(3, 3)]
 
                              ],
-                                 '''
-HSE: 1 + 5 + 5 + 3 + 3 = 17
+                                 '''HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
 SHP: 2 + 2 + 3 = 7
 HWY: 4 + 4 + 4 + 4 = 16
@@ -365,8 +369,7 @@ Total score: 50'''
                                  [Highway(0, 3), Highway(1, 3), Highway(2, 3), Building()]
 
                              ],
-                                 '''
-HSE: 1 + 5 + 5 + 3 + 3 = 17
+                                 '''HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
 SHP: 2 + 2 + 3 = 7
 HWY: 3 + 3 + 3 = 9
@@ -380,8 +383,7 @@ Total score: 43'''
                                  [Building(), Building(), Building(), Building()]
 
                              ],
-                                 '''
-HSE: 0
+                                 '''HSE: 0
 FAC: 0
 SHP: 0
 HWY: 0
@@ -400,6 +402,7 @@ def test_display_all_scores(game_board, match, mocker):
     test_string = ""
     set_keyboard_input(None)
     test_game = Game()
+    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
     test_game.board = game_board
 
     test_game.display_all_scores()
@@ -420,6 +423,7 @@ def test_randomize_two_buildings_from_pool_random():
     # run randomze buildings for 10 turns 10 times
     for i in range(0, 10):
         test_game = Game()
+        test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
 
         # generate randomized buildings for turn 1
         test_game.get_two_buildings_from_pool(test_game.building_pool)
@@ -620,7 +624,7 @@ def test_calculate_total_score(game_board, score):
 
     Swah Jian Oon 26th January
     """
-    test_game = Game()
+    test_game = Game(building_pool={"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
     test_game.board = game_board 
     assert test_game.calculate_total_score() == score
 
@@ -734,7 +738,7 @@ def test_end_of_game_high_score_display(game_board, match, name):
     Swah Jian Oon T01 27th January
     """
     test_string = ""
-    test_game = Game()
+    test_game = Game(building_pool={"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
     test_game.board = game_board
     test_game.turn_num = 17
     filename = "high_score_{0}.json".format((test_game.width)*(test_game.height))
@@ -748,9 +752,9 @@ def test_end_of_game_high_score_display(game_board, match, name):
     test_game.start_new_turn()
 
     output = get_display_output()
-    for out in output:
-        test_string += out
-        if out != output[-1]:
-            test_string+= "\n"
+    for i in range(-8,0):
+        test_string += output[i]
+        if i != -1:
+            test_string += "\n"
 
     assert test_string == match

@@ -1,6 +1,9 @@
 from random import randrange
 import os
 
+from classes.monument import Monument
+from classes.park import Park
+
 from .building import Building
 from .shop import Shop
 from .factory import Factory
@@ -12,15 +15,14 @@ from .json import *
 
 class Game:
 
-    def __init__(self, height=4, width=4):
+    def __init__(self, height=4, width=4,building_pool={}):
         """
         init function for game class
         default turn number is 1
 
         Zheng Jiongjie T01 9th December
         """
-
-        self.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8}
+        self.building_pool = building_pool
         self.height = height
         self.width = width
         self.board = []
@@ -121,8 +123,9 @@ class Game:
         randomized_building_names = self.randomized_building_history[str(self.turn_num)]
 
         # check if game board is fully filled and end game if it is
-        if self.turn_num > (self.height) * (self.height) and self.game_ended is False:
+        if self.turn_num > self.height * self.width and self.game_ended is False:
             self.game_ended = True
+            self.end_of_game()
             self.update_high_score()
             self.display_high_score()
 
@@ -132,6 +135,7 @@ class Game:
             return 0
 
         print("")
+
         self.print_turn_num()
         self.print_board()
 
@@ -144,6 +148,7 @@ class Game:
         elif chosen_option == "3":
             return self.display_building()
         elif chosen_option == "4":
+            print("")
             return self.display_all_scores()
         elif chosen_option == "0":
             return 0
@@ -211,7 +216,11 @@ class Game:
                         elif building_string == "HWY":
                             building = Highway(x_coord, y_coord)
                         elif building_string == "BCH":
-                            building = Beach(x_coord, y_coord)
+                            building = Beach(x_coord,y_coord)
+                        elif building_string == "MON":
+                            building = Monument(x_coord,y_coord)
+                        elif building_string == "PRK":
+                            building = Park(x_coord,y_coord)
                         self.board[y_coord][x_coord] = building
                         self.remove_building(building_string)
                         building.x_coord = x_coord
@@ -307,7 +316,6 @@ class Game:
 
         Swah Jianoon T01 17th Janunary
         """
-        print("")
         total_dict = {"": 0}
         display_dict = {"": ""}
         total_score = 0
@@ -401,3 +409,14 @@ class Game:
             print("{0:2d}. {1:<23} {2:5d}".format(int(count),high_score["name"],int(high_score["score"])))
             count += 1
         print("---------------------------------")
+
+    def end_of_game(self):
+        """
+        Displays final game board and score
+
+        Zheng Jiongjie T02 20th January
+        """
+        print("")
+        print("Final layout of Simp City:")
+        self.print_board()
+        self.display_all_scores()

@@ -1,0 +1,70 @@
+{
+    "categories": [
+      {
+        "title": "## 🚀 Features",
+        "labels": ["feature"]
+      },      
+      {
+        "title": "## ⚙️ CICD",
+        "labels": ["CI", "CD"]
+      },      
+      {
+        "title": "## 🐛 Bug Fixes",
+        "labels": ["bug"]
+      }, 
+      {
+        "title": "## 📃 Documentation",
+        "labels": ["documentation"]
+      },     
+      {
+         "title": "## 📦 Uncategorized",
+         "labels": []
+      }       
+    ],
+    "ignore_labels": [
+      "ignore"
+    ],
+    "sort": "ASC",
+    "template": "${{CHANGELOG}}\n\n",
+    "pr_template": "- ${{TITLE}} by @${{ASSIGNEES}} in PR #${{NUMBER}}",
+    "empty_template": "- no changes",
+    "label_extractor": [
+      {
+        "pattern": "(.) (.+)",
+        "target": "$1",
+        "flags": "gu"
+      },
+      {
+        "pattern": "\\[Issue\\]",
+        "on_property": "title",
+        "method": "match"
+      }
+    ],
+    "duplicate_filter": {
+      "pattern": "\\[ABC-....\\]",
+      "on_property": "title",
+      "method": "match"
+    },
+    "transformers": [
+      {
+        "pattern": "[\\-\\*] (\\[(...|TEST|CI|SKIP)\\])( )?(.+?)\n(.+?[\\-\\*] )(.+)",
+        "target": "- $4\n  - $6"
+      }
+    ],
+    "max_tags_to_fetch": 1000,
+    "max_pull_requests": 1000,
+    "max_back_track_time_days": 1000,
+    "exclude_merge_branches": [
+      "Owner/qa"
+    ],
+    "tag_resolver": {
+      "method": "semver",
+      "filter": {
+        "pattern": "api-(.+)",
+        "flags": "gu"
+      }
+    },
+    "base_branches": [
+      "main"
+    ]
+}
