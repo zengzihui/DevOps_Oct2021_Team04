@@ -355,8 +355,7 @@ BCH              8\n'''
                                  [Highway(0, 3), Highway(1, 3), Highway(2, 3), Highway(3, 3)]
 
                              ],
-                                 '''
-HSE: 1 + 5 + 5 + 3 + 3 = 17
+                                 '''HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
 SHP: 2 + 2 + 3 = 7
 HWY: 4 + 4 + 4 + 4 = 16
@@ -370,8 +369,7 @@ Total score: 50'''
                                  [Highway(0, 3), Highway(1, 3), Highway(2, 3), Building()]
 
                              ],
-                                 '''
-HSE: 1 + 5 + 5 + 3 + 3 = 17
+                                 '''HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
 SHP: 2 + 2 + 3 = 7
 HWY: 3 + 3 + 3 = 9
@@ -385,8 +383,7 @@ Total score: 43'''
                                  [Building(), Building(), Building(), Building()]
 
                              ],
-                                 '''
-HSE: 0
+                                 '''HSE: 0
 FAC: 0
 SHP: 0
 HWY: 0
@@ -755,9 +752,9 @@ def test_end_of_game_high_score_display(game_board, match, name):
     test_game.start_new_turn()
 
     output = get_display_output()
-    for out in output:
-        test_string += out
-        if out != output[-1]:
-            test_string+= "\n"
+    for i in range(-8,0):
+        test_string += output[i]
+        if i != -1:
+            test_string += "\n"
 
     assert test_string == match

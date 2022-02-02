@@ -123,8 +123,9 @@ class Game:
         randomized_building_names = self.randomized_building_history[str(self.turn_num)]
 
         # check if game board is fully filled and end game if it is
-        if self.turn_num > (self.width) * (self.height) and self.game_ended is False:
+        if self.turn_num > self.height * self.width and self.game_ended is False:
             self.game_ended = True
+            self.end_of_game()
             self.update_high_score()
             self.display_high_score()
 
@@ -134,6 +135,7 @@ class Game:
             return 0
 
         print("")
+
         self.print_turn_num()
         self.print_board()
 
@@ -146,6 +148,7 @@ class Game:
         elif chosen_option == "3":
             return self.display_building()
         elif chosen_option == "4":
+            print("")
             return self.display_all_scores()
         elif chosen_option == "0":
             return 0
@@ -313,7 +316,6 @@ class Game:
 
         Swah Jianoon T01 17th Janunary
         """
-        print("")
         total_dict = {"": 0}
         display_dict = {"": ""}
         total_score = 0
@@ -407,3 +409,14 @@ class Game:
             print("{0:2d}. {1:<23} {2:5d}".format(int(count),high_score["name"],int(high_score["score"])))
             count += 1
         print("---------------------------------")
+
+    def end_of_game(self):
+        """
+        Displays final game board and score
+
+        Zheng Jiongjie T02 20th January
+        """
+        print("")
+        print("Final layout of Simp City:")
+        self.print_board()
+        self.display_all_scores()
