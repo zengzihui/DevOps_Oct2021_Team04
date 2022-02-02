@@ -28,6 +28,5 @@ def main():
         elif chosen_option == "5":
             city_size = prompt_city_size(city_size)
 
-
 if __name__ == "__main__":
     main()

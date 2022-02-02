@@ -3,3 +3,4 @@ __pycache__/
 .vscode/
 .coverage
 report.xml
+game_save.json
