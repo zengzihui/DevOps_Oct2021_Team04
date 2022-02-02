@@ -1,0 +1,292 @@
+name: "CD for Tagged Release"
+
+# Create Release with customized changelog when a tag starts with "v" is pushed.
+# Packaging & add documents & perform unit tests, QA tests are not added in yet.
+
+# Release will be triggered when a tag starts with "v" is pushed.
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  tagged-release:
+    name: "Tagged Release"
+    runs-on: "ubuntu-latest"
+
+    steps:
+
+      - name: "Build & test"
+        run: |
+          echo "Build & Test"
+          
+      # Checkout     
+      - name: "Checkout"
+        uses: actions/checkout@v2.4.0
+        with:
+          fetch-depth: 0   # Required due to the weg Git works, without it this action won't be able to find any or the correct tags
+      
+     
+      # Get the version number of the current tag
+      - name: Set environment variables for version number
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+          
+      # Get latest release tag with no matter it is stable or prerelease
+      - name: Get latest Release Tag
+        uses: rez0n/actions-github-release@main
+        id: previous_tag
+        env:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: "zengzihui/DevOps_Oct2021_Team04"
+          type: "latest"
+          
+      # Get latest release tag that is not prerelease and its stable
+      - name: Get latest Release Tag
+        uses: rez0n/actions-github-release@main
+        id: latest_release_tag
+        env:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: "zengzihui/DevOps_Oct2021_Team04"
+          type: "stable"
+
+      # Check for the output  
+      - name: Echo Version Tag
+        run: |
+          echo ${{ env.RELEASE_VERSION }}    
+          echo ${{ contains(env.RELEASE_VERSION, 'beta') }}
+          echo ${{ steps.previous_tag.outputs.release }}
+          echo ${{ steps.latest_release_tag.outputs.release }}
+          
+        
+      # Setup Python
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest pytest-cov pyinstaller==3.6
+
+      # Create directory for pydoc and files
+      - name: Create Download Directory
+        run: |
+          mkdir downloads
+          mkdir downloads/pydoc
+
+      # Generate Pydoc document
+      - name: Create docs
+        run: |
+          rm -r test
+          python -m pydoc -w ./
+          mv *.html ./downloads/pydoc
+        
+      # Upload documents generated
+      - name: upload documents
+        uses: actions/upload-artifact@v2
+        with:
+          name: assetDocuments
+          path: downloads      
+        
+      # Download uploaded documents
+      - name: Download Content
+        uses: actions/download-artifact@v2
+        with:
+          name: assetDocuments   
+
+      # Make spec file for pyinstaller
+      - name: Make spec file
+        run: |
+          pyi-makespec ./main.py
+          ls -a
+
+      # Generate windows exe file
+      - name: PyInstaller Windows
+        uses: JackMcKew/pyinstaller-action-windows@main
+        with:
+          path: ./
+      
+      # Moves EXE file into folder
+      - name: Move exe folder
+        run: |
+          mv ./dist/windows/main ./
+          mv main ProgramEXE
+
+      # Packages release into zip file. Excludes certain files.
+      - name: Archive site content
+        uses: thedoctor0/zip-release@master
+        with:
+          filename: content.zip
+          exclusions: '*.git* *.vscode* /*downloads/* /*test/* /*__pycache__/* *high_score_3.json* /*dist/* *release_configuration.json* *email_body_configuration.json* *high_score_9.json* *high_score_16.json* *requirements.txt*'  
+
+         
+
+      # Build changelog for prerelease when the tag name contains "beta"    
+      # The PRs will be retrieved from the previous tag to current tag
+      - name: "Build Changelog for Beta Release"
+        if: ${{  contains(env.RELEASE_VERSION, 'beta')  }}
+        id: build_changelog_for_BetaRelease
+        uses: mikepenz/release-changelog-builder-action@v2.7.2
+        with:
+          configuration: "release_configuration.json"
+          fromTag: ${{ steps.previous_tag.outputs.release }}
+          toTag: ${{ env.RELEASE_VERSION }}    
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      
+      # Build changelog for major release when the tag name does not contain "beta"        
+      # The PRs will be retrieved from the previous release which is not a prerelease
+      - name: "Build Changelog for Major Release"
+        if: ${{ contains(env.RELEASE_VERSION, 'beta') == false  }}
+        id: build_changelog_for_MajorRelease
+        uses: mikepenz/release-changelog-builder-action@v2.7.2
+        with:
+          configuration: "release_configuration.json"                      
+          fromTag: ${{ steps.latest_release_tag.outputs.release }}
+          toTag: ${{ env.RELEASE_VERSION }}    
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}     
+          
+      # Create Prerelease for Beta versions when the tag name contains "beta" 
+      # The changelog will take from the corresponding output above     
+      - name: "Create Release for Beta Releases"
+        id: create-new-release-beta
+        if: |
+          success() 
+            && contains(env.RELEASE_VERSION, 'beta')  
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}   
+          prerelease: ${{ contains(env.RELEASE_VERSION, 'beta') }}
+          tag: ${{ env.RELEASE_VERSION }}    
+          body: ${{steps.build_changelog_for_BetaRelease.outputs.changelog}}          
+
+      # Create Release for major versions when the tag name does not contain "beta" 
+      # The changelog will take from the corresponding output above
+      - name: "Create Release for Major Releases"
+        id: create-new-release
+        if: |
+          success() 
+            && contains(env.RELEASE_VERSION, 'beta') == false  
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}   
+          prerelease: ${{ contains(env.RELEASE_VERSION, 'beta') }}
+          tag: ${{ env.RELEASE_VERSION }}    
+          body: ${{steps.build_changelog_for_MajorRelease.outputs.changelog}}
+
+      
+      # Uploads packaged file into release (beta)
+      - name: Upload release asset Beta
+        if: ${{  contains(env.RELEASE_VERSION, 'beta')  }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-new-release-beta.outputs.upload_url }}
+          asset_path: ./content.zip
+          asset_name: ${{ env.RELEASE_VERSION }}.zip
+          asset_content_type: application/zip
+     
+      # Uploads packaged file into release 
+      - name: Upload release asset
+        if: ${{ contains(env.RELEASE_VERSION, 'beta') == false  }}
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-new-release.outputs.upload_url }}
+          asset_path: ./content.zip
+          asset_name: ${{ env.RELEASE_VERSION }}.zip
+          asset_content_type: application/zip
+
+
+
+      # Build the changelog for the email body that is sending to the client for Beta Release
+      - name: "Build Email Body for Beta Release"
+        if: ${{  contains(env.RELEASE_VERSION, 'beta')  }}
+        id: build_emailBody_for_BetaRelease
+        uses: mikepenz/release-changelog-builder-action@v2.7.2
+        with:
+          configuration: "email_body_configuration.json"
+          fromTag: ${{ steps.previous_tag.outputs.release }}
+          toTag: ${{ env.RELEASE_VERSION }}    
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+       # Build the changelog for the email body that is sending to the client for Major Release
+      - name: "Build Email body for Major Release"
+        if: ${{  contains(env.RELEASE_VERSION, 'beta') == false  }}
+        id: build_emailBody_for_MajorRelease
+        uses: mikepenz/release-changelog-builder-action@v2.7.2
+        with:
+          configuration: "email_body_configuration.json"
+          fromTag: ${{ steps.latest_release_tag.outputs.release }}      
+          toTag: ${{ env.RELEASE_VERSION }}    
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+      # Send email to Client to inform him about the Beta Release
+      - name: "Send Email to Client for Beta Release"
+        if:  |
+          success() 
+            && contains(env.RELEASE_VERSION, 'beta') 
+        id: client_email_status_beta
+        uses: cinotify/github-action@main
+        with:
+          to: 'ict.devops.consultants@gmail.com'
+          subject: New Beta Release ${{ env.RELEASE_VERSION }} from ${{github.repository}}
+          body:  ${{steps.build_emailBody_for_BetaRelease.outputs.changelog}}  
+         
+       
+      # Send email to Client to inform him about the Major Release    
+      - name: "Send Email to Client for Major Release"
+        if:  |
+          success() 
+            && !contains(env.RELEASE_VERSION, 'beta') 
+        id: client_email_status_major
+        uses: cinotify/github-action@main
+        with:
+          to: 'ict.devops.consultants@gmail.com'
+          subject: New Major Release ${{ env.RELEASE_VERSION }} from ${{github.repository}}
+          body: ${{steps.build_emailBody_for_MajorRelease.outputs.changelog}}
+
+
+      ## Doing this because this action dont have bcc/cc function, it cannot add more than 1 email for recipient
+      ## Other send email GitHub Actions are not working well
+      # Send email to PM also to ensure the email sent to client is correct
+      - name: "Send Email to PM for Beta Release"
+        if:  |
+          success() 
+            && contains(env.RELEASE_VERSION, 'beta') 
+        id: client_email_status_beta_pm
+        uses: cinotify/github-action@main
+        with:
+          to: 'zihui1288@gmail.com'
+          subject: New Beta Release ${{ env.RELEASE_VERSION }} from ${{github.repository}}
+          body:  ${{steps.build_emailBody_for_BetaRelease.outputs.changelog}}  
+         
+       
+      # Send email to PM also to ensure the email sent to client is correct   
+      - name: "Send Email to PM for Major Release"
+        if:  |
+          success() 
+            && !contains(env.RELEASE_VERSION, 'beta') 
+        id: client_email_status_major_pm
+        uses: cinotify/github-action@main
+        with:
+          to: 'zihui1288@gmail.com'
+          subject: New Major Release ${{ env.RELEASE_VERSION }} from ${{github.repository}}
+          body: ${{steps.build_emailBody_for_MajorRelease.outputs.changelog}}
+          
+    
+          
+    
+          
+          
+          
+          
+      

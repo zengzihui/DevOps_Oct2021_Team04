@@ -3,6 +3,8 @@ import sys
 from unittest import mock
 import pytest
 from classes.menu import *
+from classes.monument import Monument
+from classes.park import Park
 from test.testing_functions import *
 from classes.game import Game
 from classes.beach import *
@@ -53,22 +55,28 @@ def test_print_board():
 
     # check if print_board() displays game board correctly
     out = get_display_output()
-    assert out[0] == '    A     B     C     D  \n +-----+-----+-----+-----+\n1|     |     |     |     |\n +-----+-----+-----+-----+\n2|     |     |     |     |\n +-----+-----+-----+-----+\n3|     |     |     |     |\n +-----+-----+-----+-----+\n4|     |     |     |     |\n +-----+-----+-----+-----+'
+    assert out == [
+        "     A     B     C     D  ",
+        "  +-----+-----+-----+-----+",
+        " 1|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        " 2|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        " 3|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        " 4|     |     |     |     |",
+        "  +-----+-----+-----+-----+"]
 
 
-@pytest.mark.parametrize("option_list",
-                         [(["0"])])
-def test_game_menu_display(mocker, option_list):
+def test_game_menu_display():
     """
     test if game menu options are printed correctly
 
     Zheng Jiongjie T01 9th December
     """
-    set_keyboard_input(None)
 
     # set input for menu options
-    mocker.patch('builtins.input', side_effect=option_list)
-
+    set_keyboard_input(["0", "0", "0"])
     # create testing game object
     test_game = Game()
 
@@ -77,7 +85,8 @@ def test_game_menu_display(mocker, option_list):
     # check if game menu displays correct output
     out = get_display_output()
 
-    assert out[0] == '1. Build a SHP\n2. Build a SHP\n3. See remaining buildings\n4. See current score\n\n5. Save game\n0. Exit to main menu'
+    assert out == ['1. Build a SHP', '2. Build a SHP', '3. See remaining buildings',
+                   '4. See current score', '', '5. Save game', '0. Exit to main menu', 'Your choice? ']
 
 
 @pytest.mark.parametrize("option_list, expected",
@@ -127,8 +136,27 @@ def test_start_new_turn():
 
     # check if output is expected
     out = get_display_output()
-    assert out == ['', 'Turn 1', '    A     B     C     D  \n +-----+-----+-----+-----+\n1|     |     |     |     |\n +-----+-----+-----+-----+\n2|     |     |     |     |\n +-----+-----+-----+-----+\n3|     |     |     |     |\n +-----+-----+-----+-----+\n4|     |     |     |     |\n +-----+-----+-----+-----+',
-                   '1. Build a SHP\n2. Build a SHP\n3. See remaining buildings\n4. See current score\n\n5. Save game\n0. Exit to main menu', 'Your choice? ']
+    assert out == [
+        "",
+        "Turn 1",
+        "     A     B     C     D  ",
+        "  +-----+-----+-----+-----+",
+        " 1|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        " 2|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        " 3|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        " 4|     |     |     |     |",
+        "  +-----+-----+-----+-----+",
+        "1. Build a SHP",
+        "2. Build a SHP",
+        "3. See remaining buildings",
+        "4. See current score",
+        "",
+        "5. Save game",
+        "0. Exit to main menu",
+        'Your choice? ']
 
 
 @pytest.mark.parametrize("option, expected",
@@ -139,12 +167,12 @@ def test_start_new_turn_options(option, expected, mocker):
 
     Zheng Jiongjie T01 9th December
     """
+    set_keyboard_input(option)
     mocker.patch('classes.game.Game.add_building', return_value=1)
     mocker.patch('classes.game.Game.display_building', return_value=2)
     mocker.patch('classes.game.Game.display_all_scores', return_value=3)
     mocker.patch('classes.game.Game.save_game', return_value=4)
     test_game = Game()
-    set_keyboard_input(option)
     assert test_game.start_new_turn() == expected
 
 
@@ -160,7 +188,7 @@ def test_sub_classes(building, expected):
 
 
 @pytest.mark.parametrize("location,x,y,building_name,building_type",
-                         [("a1", 0, 0, "SHP", Shop), ("a2", 0, 1, "FAC", Factory), ("a1", 0, 0, "BCH", Beach), ("a1", 0, 0, "HSE", House), ("a1", 0, 0, "HWY", Highway)])
+                         [("a1", 0, 0, "SHP",Shop), ("a2", 0, 1,"FAC", Factory),("a1", 0, 0,"BCH", Beach),("a1", 0, 0,"HSE", House),("a1", 0, 0,"HWY",Highway),("a1", 0, 0,"MON",Monument),("a1", 0, 0,"PRK",Park)])
 def test_add_building(location, x, y, building_name, building_type, mocker):
     """
     success cases for adding_building function
@@ -170,6 +198,7 @@ def test_add_building(location, x, y, building_name, building_type, mocker):
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
     set_keyboard_input([location])
+    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8, "MON":8, "PRK": 8}
     test_game.add_building(building_name)
     assert isinstance(test_game.board[y][x], building_type)
 
@@ -274,6 +303,7 @@ def test_remove_building(building_name):
     Swah Jianoon T01 9th December
     """
     test_game = Game()
+    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8, "MON":8, "PRK": 8}
     test_game.remove_building(building_name)
     assert test_game.building_pool[building_name] == 7
 
@@ -287,6 +317,7 @@ def test_display_building(mocker):
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     set_keyboard_input(None)
     test_game = Game()
+    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
     match = '''Building         Remaining
 --------         --------
 HSE              8
@@ -309,8 +340,7 @@ BCH              8\n'''
                                  [Highway(0, 3), Highway(1, 3), Highway(2, 3), Highway(3, 3)]
 
                              ],
-                                 '''
-HSE: 1 + 5 + 5 + 3 + 3 = 17
+                                 '''HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
 SHP: 2 + 2 + 3 = 7
 HWY: 4 + 4 + 4 + 4 = 16
@@ -322,9 +352,9 @@ Total score: 50'''
                                  [Beach(0, 1), House(1, 1), House(2, 1), Beach(3, 1)],
                                  [Beach(0, 2), Shop(1, 2), House(2, 2), House(3, 2)],
                                  [Highway(0, 3), Highway(1, 3), Highway(2, 3), Building()]
+
                              ],
-                                 '''
-HSE: 1 + 5 + 5 + 3 + 3 = 17
+                                 '''HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
 SHP: 2 + 2 + 3 = 7
 HWY: 3 + 3 + 3 = 9
@@ -338,8 +368,7 @@ Total score: 43'''
                                  [Building(), Building(), Building(), Building()]
 
                              ],
-                                 '''
-HSE: 0
+                                 '''HSE: 0
 FAC: 0
 SHP: 0
 HWY: 0
@@ -358,6 +387,7 @@ def test_display_all_scores(game_board, match, mocker):
     test_string = ""
     set_keyboard_input(None)
     test_game = Game()
+    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
     test_game.board = game_board
 
     test_game.display_all_scores()
@@ -378,6 +408,7 @@ def test_randomize_two_buildings_from_pool_random():
     # run randomze buildings for 10 turns 10 times
     for i in range(0, 10):
         test_game = Game()
+        test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
 
         # generate randomized buildings for turn 1
         test_game.get_two_buildings_from_pool(test_game.building_pool)
@@ -479,7 +510,7 @@ def test_randomize_two_buildings_from_pool_when_no_building():
                                             "0,1": "BCH", "1,1": "HSE", "2,1": "HSE", "3,1": "BCH",
                                             "0,2": "BCH", "1,2": "SHP", "2,2": "HSE", "3,2": "HSE",
                                             "0,3": "HWY", "1,3": "HWY", "2,3": "HWY", "3,3": "HWY"},
-                                  "turn_num": 1, "width": 3, "height": 3,
+                                  "turn_num": 1, "width": 4, "height": 4,
                                   "randomized_history": {},
                                   "building_pool": {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}}
                              )])
@@ -500,3 +531,75 @@ def test_save_game(game_board, match, mocker):
     with open("game_save.json", "r") as save_file:
         save_data = json.load(save_file)
         assert(save_data == match)
+
+@pytest.mark.parametrize("game_board, match",
+                         [
+                             ([
+                                 [Shop(0, 0), Shop(1, 0), House(2, 0), Factory(3, 0)],
+                                 [Beach(0, 1), House(1, 1), House(2, 1), Beach(3, 1)],
+                                 [Beach(0, 2), Shop(1, 2), House(2, 2), House(3, 2)],
+                                 [Highway(0, 3), Highway(1, 3), Highway(2, 3), Building()]
+                             ],
+                                 [
+                                 '',
+                                 'Turn 16',
+                                 '     A     B     C     D  ',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 1| SHP | SHP | HSE | FAC |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 2| BCH | HSE | HSE | BCH |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 3| BCH | SHP | HSE | HSE |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 4| HWY | HWY | HWY |     |',
+                                 '  +-----+-----+-----+-----+',
+                                 '1. Build a HWY',
+                                 '2. Build a HWY',
+                                 '3. See remaining buildings',
+                                 '4. See current score',
+                                 '',
+                                 '5. Save game',
+                                 '0. Exit to main menu',
+                                 'Your choice? ',
+                                 'Build where? ',
+                                 '',
+                                 'Final layout of Simp City:',
+                                 '     A     B     C     D  ',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 1| SHP | SHP | HSE | FAC |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 2| BCH | HSE | HSE | BCH |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 3| BCH | SHP | HSE | HSE |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 4| HWY | HWY | HWY | HWY |',
+                                 '  +-----+-----+-----+-----+',
+                                 'HSE: 1 + 5 + 5 + 3 + 3 = 17',
+                                 'FAC: 1 = 1',
+                                 'SHP: 2 + 2 + 3 = 7',
+                                 'HWY: 4 + 4 + 4 + 4 = 16',
+                                 'BCH: 3 + 3 + 3 = 9',
+                                 'Total score: 50'])])
+def test_end_of_game_display(game_board, match):
+    """
+    check if game ends when all spaces on the board is filled
+
+    Zheng Jiongjie T01 20th January
+    """
+
+    test_game = Game()
+
+    # set dummy game board at final turn
+    test_game.board = game_board
+    test_game.turn_num = 16
+    test_game.randomized_building_history = {"16": ["HWY", "HWY"]}
+    test_game.building_pool = {"HSE": 20, "FAC": 0, "SHP": 0, "HWY": 2, "BCH": 0}
+
+    # build final highway building at d4
+    set_keyboard_input(["1", "d4"])
+
+    test_game.start_new_turn()
+
+    output = get_display_output()
+
+    assert output == match
