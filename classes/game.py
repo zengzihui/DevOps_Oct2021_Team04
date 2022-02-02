@@ -1,4 +1,5 @@
 from random import randrange
+from re import T
 
 from classes.monument import Monument
 from classes.park import Park
