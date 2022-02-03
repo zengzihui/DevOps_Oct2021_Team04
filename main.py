@@ -23,6 +23,8 @@ def main():
             loaded_game = load_game()
             if loaded_game is not False:
                 loaded_game.start_new_turn()
+        elif chosen_option == "3":
+            Game(width=city_size[0], height=city_size[1]).display_high_score()
         elif chosen_option == "4":
             temp_pool = choose_building_pool(building_pool)
             if temp_pool != None:
