@@ -1,5 +1,5 @@
 from random import randrange
-from re import T
+import json
 
 from classes.monument import Monument
 from classes.park import Park
@@ -147,6 +147,8 @@ class Game:
         elif chosen_option == "4":
             print("")
             return self.display_all_scores()
+        elif chosen_option == "5":
+            return self.save_game()
         elif chosen_option == "0":
             return 0
 
@@ -340,6 +342,28 @@ class Game:
         print("Total score: {0}".format(total_score))
         self.start_new_turn()
 
+    def save_game(self):
+        """
+        save game details to json file
+
+        Zheng Jiongjie T01 21st January
+        """
+        with open("game_save.json", "w+") as save_file:
+            # generate save file based on current game
+            save_data = {"board": {}, "turn_num": self.turn_num, "width": self.width,
+                         "height": self.height, "randomized_history": self.randomized_building_history,
+                         "building_pool": self.building_pool}
+            # add buildings in current game to save file
+            for row in self.board:
+                for building in row:
+                    if building.x_coord is not None and building.y_coord is not None:
+                        save_data["board"][str(building.x_coord) + "," + str(building.y_coord)] = building.name
+            # save the game
+            json.dump(save_data, save_file)
+
+        print("")
+        print("Game saved!")
+        self.start_new_turn()
     def end_of_game(self):
         """
         Displays final game board and score

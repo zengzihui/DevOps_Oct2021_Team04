@@ -93,6 +93,3 @@ Inside the User Story card, the following components will be there
 | `PM Comment` | PM will close the issue after the merge  |
 
 **Tasks list is used to monitor the individual user story progress*
-
-
-

@@ -84,3 +84,13 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           files: report.xml
+
+      # coverage comment
+      - name: Build coverage file
+        run: |
+          pytest --cache-clear --cov > unit-test-pytest-coverage.txt
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./unit-test-pytest-coverage.txt
+          title: Unit Test Coverage
