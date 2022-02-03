@@ -27,7 +27,7 @@ jobs:
     # install required libraries to run pytest scripts
     - name: Install Libraries
       run: |
-        pip install flake8 pytest pytest-cov classes mocker pytest-mock pytest-html pytest-md
+        pip install flake8 pytest pytest-cov classes mocker pytest-mock pytest-html pytest-md pytest-order
     # checkout dev repo to retrieve source code
     - name: Checkout Own Repo
       uses: actions/checkout@v2
