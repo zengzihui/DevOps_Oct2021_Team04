@@ -9,44 +9,45 @@ from classes.factory import *
 from classes.beach import *
 from classes.game import *
 
+
 @pytest.mark.parametrize("game_board, total_score, x_coord, y_coord",
                          [
                              ([
-                                 [Highway(0,0), Building(), Building() , Building()],
-                                 [Building(),Building(),Building(),Building()],
-                                 [Building(),Building(),Building(),Building()],
-                                 [Building(),Building(),Building(),Building()]
+                                 [Highway(0, 0), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()]
 
-                                 ],1,0,0), 
+                             ], 1, 0, 0),
                              ([
-                                 [Highway(0,0), Highway(1,0),Building(), Building()],
-                                 [Building(),Building(),Building(),Building()],
-                                 [Building(),Building(),Building(),Building()],
-                                 [Building(),Building(),Building(),Building()]
-                                 ],2,0,0), 
+                                 [Highway(0, 0), Highway(1, 0), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()]
+                             ], 2, 0, 0),
                              (
                                  [
-                                     [Highway(0,0), Highway(1,0),Highway(2,0), Building()],
-                                     [Building(),Building(),Building(),Building()],
-                                     [Building(),Building(),Building(),Building()],
-                                     [Building(),Building(),Building(),Building()],
-                                 ],3,0,0),
+                                     [Highway(0, 0), Highway(1, 0), Highway(2, 0), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                 ], 3, 0, 0),
                              (
                                  [
-                                     [Highway(0,0), Highway(1,0),Highway(2,0), Building()],
-                                     [Building(),Building(),Building(),Building()],
-                                     [Building(),Building(),Building(),Building()],
-                                     [Building(),Building(),Building(),Building()]
-                                 ],3,1,0),
+                                     [Highway(0, 0), Highway(1, 0), Highway(2, 0), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()]
+                                 ], 3, 1, 0),
                              (
                                  [
-                                     [Highway(0,0), Highway(1,0),Highway(2,0),Building()],
-                                     [Building(),Building(), Building(),Building()],
-                                     [Building(),Building(),Building(),Building()],
-                                     [Building(),Building(),Building(),Building()]
-                                 ],3,2,0)
-   
-                         
+                                     [Highway(0, 0), Highway(1, 0), Highway(2, 0), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()]
+                                 ], 3, 2, 0)
+
+
                          ])
 def test_calculate_score(game_board, total_score, x_coord, y_coord):
     """

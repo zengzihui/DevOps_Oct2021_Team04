@@ -12,7 +12,7 @@ class Building:
     def get_top_building(self, game):
         """
         Return name of top building if exist
-                    
+
         Swah Jianoon T01 18th Janunary
         """
 
@@ -25,7 +25,7 @@ class Building:
     def get_bot_building(self, game):
         """
         Return name of bottom building if exist
-                    
+
         Swah Jianoon T01 18th Janunary
         """
 
@@ -34,10 +34,11 @@ class Building:
             return game.board[temp_y_higher][self.x_coord]
         else:
             return None
-    def get_left_building(self,game):
+
+    def get_left_building(self, game):
         """
         Return name of left building if exist
-                    
+
         Swah Jianoon T01 18th Janunary
         """
 
@@ -50,7 +51,7 @@ class Building:
     def get_right_building(self, game):
         """
         Return name of left building if exist
-                    
+
         Swah Jianoon T01 18th Janunary
         """
 
@@ -63,8 +64,7 @@ class Building:
     def calculate_score(self):
         """
         Return None when calculating score for default building
-                    
+
         Swah Jianoon T01 18th Janunary
         """
         return None
-

@@ -1,4 +1,4 @@
-from re import T
+import json
 import sys
 from unittest import mock
 import pytest
@@ -163,7 +163,7 @@ def test_start_new_turn():
 
 
 @pytest.mark.parametrize("option, expected",
-                         [(["1"], 1), (["2"], 1), (["100", "2"], 1), (["3"], 2), (["4"], 3)])
+                         [(["1"], 1), (["2"], 1), (["100", "2"], 1), (["3"], 2), (["4"], 3), (["5"], 4)])
 def test_start_new_turn_options(option, expected, mocker):
     """
     run start_new_turn input options
@@ -174,6 +174,7 @@ def test_start_new_turn_options(option, expected, mocker):
     mocker.patch('classes.game.Game.add_building', return_value=1)
     mocker.patch('classes.game.Game.display_building', return_value=2)
     mocker.patch('classes.game.Game.display_all_scores', return_value=3)
+    mocker.patch('classes.game.Game.save_game', return_value=4)
     test_game = Game()
     assert test_game.start_new_turn() == expected
 
@@ -203,7 +204,7 @@ def test_sub_classes(building, expected):
 
 
 @pytest.mark.parametrize("location,x,y,building_name,building_type",
-                         [("a1", 0, 0, "SHP",Shop), ("a2", 0, 1,"FAC", Factory),("a1", 0, 0,"BCH", Beach),("a1", 0, 0,"HSE", House),("a1", 0, 0,"HWY",Highway),("a1", 0, 0,"MON",Monument),("a1", 0, 0,"PRK",Park)])
+                         [("a1", 0, 0, "SHP", Shop), ("a2", 0, 1, "FAC", Factory), ("a1", 0, 0, "BCH", Beach), ("a1", 0, 0, "HSE", House), ("a1", 0, 0, "HWY", Highway), ("a1", 0, 0, "MON", Monument), ("a1", 0, 0, "PRK", Park)])
 def test_add_building(location, x, y, building_name, building_type, mocker):
     """
     success cases for adding_building function
@@ -213,7 +214,7 @@ def test_add_building(location, x, y, building_name, building_type, mocker):
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
     set_keyboard_input([location])
-    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8, "MON":8, "PRK": 8}
+    test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8, "MON": 8, "PRK": 8}
     test_game.add_building(building_name)
     assert isinstance(test_game.board[y][x], building_type)
 
@@ -318,7 +319,7 @@ def test_remove_building(building_name):
     Swah Jianoon T01 9th December
     """
     test_game = Game()
-    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8, "MON":8, "PRK": 8}
+    test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8, "MON": 8, "PRK": 8}
     test_game.remove_building(building_name)
     assert test_game.building_pool[building_name] == 7
 
@@ -332,7 +333,7 @@ def test_display_building(mocker):
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     set_keyboard_input(None)
     test_game = Game()
-    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
+    test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8}
     match = '''Building         Remaining
 --------         --------
 HSE              8
@@ -367,7 +368,6 @@ Total score: 50'''
                                  [Beach(0, 1), House(1, 1), House(2, 1), Beach(3, 1)],
                                  [Beach(0, 2), Shop(1, 2), House(2, 2), House(3, 2)],
                                  [Highway(0, 3), Highway(1, 3), Highway(2, 3), Building()]
-
                              ],
                                  '''HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
@@ -402,7 +402,7 @@ def test_display_all_scores(game_board, match, mocker):
     test_string = ""
     set_keyboard_input(None)
     test_game = Game()
-    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
+    test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8}
     test_game.board = game_board
 
     test_game.display_all_scores()
@@ -423,7 +423,7 @@ def test_randomize_two_buildings_from_pool_random():
     # run randomze buildings for 10 turns 10 times
     for i in range(0, 10):
         test_game = Game()
-        test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
+        test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8}
 
         # generate randomized buildings for turn 1
         test_game.get_two_buildings_from_pool(test_game.building_pool)
@@ -535,6 +535,12 @@ def test_randomize_two_buildings_from_pool_when_no_building():
                             {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 15},{'name': 'john1', 'score': 14}, {'name': 'john2', 'score': 13},{'name': 'john3', 'score': 12}, {'name': 'john4', 'score': 11}, {'name': 'john5', 'score': 10}, {'name': 'john6', 'score': 9},{'name': 'john7', 'score': 8}, {'name': 'john8', 'score': 7},{'name': 'john9', 'score': 6}]},
                             None,0
 
+                         ),
+                         (
+                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 15},{'name': 'john1', 'score': 14}, {'name': 'john2', 'score': 13},{'name': 'john3', 'score': 12}, {'name': 'john4', 'score': 11}, {'name': 'john5', 'score': 10}, {'name': 'john6', 'score': 9},{'name': 'john7', 'score': 8}, {'name': 'john8', 'score': 7},{'name': 'john9', 'score': 6}]},
+                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 15},{'name': 'john1', 'score': 14}, {'name': 'newjohn', 'score': 14}, {'name': 'john2', 'score': 13},{'name': 'john3', 'score': 12}, {'name': 'john4', 'score': 11}, {'name': 'john5', 'score': 10}, {'name': 'john6', 'score': 9},{'name': 'john7', 'score': 8}, {'name': 'john8', 'score': 7}]},
+                            "newjohn",14
+
                          )
                          ])
 def test_update_high_score(current_json, updated_json, name, score, mocker):
@@ -568,7 +574,16 @@ def test_update_high_score(current_json, updated_json, name, score, mocker):
                              "Invalid input for the name has been entered.",
                              "Please remember only a max of 20 characters are allowed for the name.",
                              "",
-                             "Please enter your name (max 20 chars): "
+                             "Please enter your name (max 20 chars): ",
+                             "",
+                             "--------- HIGH SCORES ---------",
+                             "Pos Player                Score",
+                             "--- ------                -----",
+                             " 1. john                      6",
+                             " 2. john2                     5",
+                             " 3. john3                     3",
+                             "-------------------------------"
+
                             ]
 
                          )
@@ -633,38 +648,38 @@ def test_calculate_total_score(game_board, score):
                          [(
                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}, {'name': 'john3', 'score': 3}]},
                            """
----------- HIGH SCORES ----------
-Pos Player                  Score
---- ------                  -----
- 1. john                        6
- 2. john2                       5
- 3. john3                       3
----------------------------------"""),
+--------- HIGH SCORES ---------
+Pos Player                Score
+--- ------                -----
+ 1. john                      6
+ 2. john2                     5
+ 3. john3                     3
+-------------------------------"""),
 
                          (
                            {'board_size': 4, 'high_scores': 
                            [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}, {'name': 'john6', 'score': 5},
                            {'name': 'john3', 'score': 3}, {'name': 'john4', 'score': 3}, {'name': 'john5', 'score': 2}]},
                            """
----------- HIGH SCORES ----------
-Pos Player                  Score
---- ------                  -----
- 1. john                        6
- 2. john2                       5
- 3. john6                       5
- 4. john3                       3
- 5. john4                       3
- 6. john5                       2
----------------------------------"""),
+--------- HIGH SCORES ---------
+Pos Player                Score
+--- ------                -----
+ 1. john                      6
+ 2. john2                     5
+ 3. john6                     5
+ 4. john3                     3
+ 5. john4                     3
+ 6. john5                     2
+-------------------------------"""),
 
                            (
                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}]},
                            """
----------- HIGH SCORES ----------
-Pos Player                  Score
---- ------                  -----
- 1. john                        6
----------------------------------"""),
+--------- HIGH SCORES ---------
+Pos Player                Score
+--- ------                -----
+ 1. john                      6
+-------------------------------"""),
 
                            (
                            {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 15},
@@ -674,20 +689,20 @@ Pos Player                  Score
                             {'name': 'john7', 'score': 8}, {'name': 'john8', 'score': 7},
                             {'name': 'john9', 'score': 6}]},
                            """
----------- HIGH SCORES ----------
-Pos Player                  Score
---- ------                  -----
- 1. john                       15
- 2. john1                      14
- 3. john2                      13
- 4. john3                      12
- 5. john4                      11
- 6. john5                      10
- 7. john6                       9
- 8. john7                       8
- 9. john8                       7
-10. john9                       6
----------------------------------"""),
+--------- HIGH SCORES ---------
+Pos Player                Score
+--- ------                -----
+ 1. john                     15
+ 2. john1                    14
+ 3. john2                    13
+ 4. john3                    12
+ 5. john4                    11
+ 6. john5                    10
+ 7. john6                     9
+ 8. john7                     8
+ 9. john8                     7
+10. john9                     6
+-------------------------------"""),
 
 
                          ])
@@ -723,11 +738,11 @@ def test_display_high_score(json_output,display_output):
                              """Congratulations! You made the high score board at position 1!
 Please enter your name (max 20 chars): 
 
----------- HIGH SCORES ----------
-Pos Player                  Score
---- ------                  -----
- 1. john                       50
----------------------------------""",
+--------- HIGH SCORES ---------
+Pos Player                Score
+--- ------                -----
+ 1. john                     50
+-------------------------------""",
 "john"
                              )
                          ])
@@ -758,6 +773,41 @@ def test_end_of_game_high_score_display(game_board, match, name):
             test_string += "\n"
 
     assert test_string == match
+
+@pytest.mark.parametrize("game_board, match",
+                         [
+                             ([
+                                 [Shop(0, 0), Shop(1, 0), House(2, 0), Factory(3, 0)],
+                                 [Beach(0, 1), House(1, 1), House(2, 1), Beach(3, 1)],
+                                 [Beach(0, 2), Shop(1, 2), House(2, 2), House(3, 2)],
+                                 [Highway(0, 3), Highway(1, 3), Highway(2, 3), Highway(3, 3)]
+
+                             ],
+                                 {"board": {"0,0": "SHP", "1,0": "SHP", "2,0": "HSE", "3,0": "FAC",
+                                            "0,1": "BCH", "1,1": "HSE", "2,1": "HSE", "3,1": "BCH",
+                                            "0,2": "BCH", "1,2": "SHP", "2,2": "HSE", "3,2": "HSE",
+                                            "0,3": "HWY", "1,3": "HWY", "2,3": "HWY", "3,3": "HWY"},
+                                  "turn_num": 1, "width": 4, "height": 4,
+                                  "randomized_history": {},
+                                  "building_pool": {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}}
+                             )])
+def test_save_game(game_board, match, mocker):
+    """
+    test if game details are saved to save file in save_game() function
+
+    Zheng Jiongjie T01 23 January
+    """
+    mocker.patch('classes.game.Game.start_new_turn', return_value=0)
+
+    # initialize dummy game to save to save file
+    test_game = Game()
+    test_game.board = game_board
+    test_game.building_pool = {"HSE": 0, "FAC": 0, "SHP": 0, "HWY": 0, "BCH": 0}
+    test_game.save_game()
+    # check if game save has correct values
+    with open("game_save.json", "r") as save_file:
+        save_data = json.load(save_file)
+        assert(save_data == match)
 
 @pytest.mark.parametrize("game_board, match",
                          [

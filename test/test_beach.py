@@ -9,34 +9,35 @@ from classes.factory import *
 from classes.beach import *
 from classes.game import *
 
+
 @pytest.mark.parametrize("game_board, total_score, x_coord, y_coord",
                          [
                              ([
-                                 [Beach(0,0), Building(), Building() , Beach(3,0)],
-                                 [Building(),Building(),Building(),Building()],
-                                 [Building(),Beach(1,2),Building(),Building()],
-                                 [Building(),Building(),Building(),Building()]
+                                 [Beach(0, 0), Building(), Building(), Beach(3, 0)],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Beach(1, 2), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()]
 
-                                 ],3,0,0), 
+                             ], 3, 0, 0),
                              ([
-                                 [Beach(0,0), Building(), Building() , Beach(3,0)],
-                                 [Building(),Building(),Building(),Building()],
-                                 [Building(),Beach(1,2),Building(),Building()],
-                                 [Building(),Building(),Building(),Building()]
-                                 ],3,3,0), 
+                                 [Beach(0, 0), Building(), Building(), Beach(3, 0)],
+                                 [Building(), Building(), Building(), Building()],
+                                 [Building(), Beach(1, 2), Building(), Building()],
+                                 [Building(), Building(), Building(), Building()]
+                             ], 3, 3, 0),
                              (
                                  [
-                                    [Beach(0,0), Building(), Building() , Beach(3,0)],
-                                    [Building(),Building(),Building(),Building()],
-                                    [Building(),Beach(1,2),Building(),Building()],
-                                    [Building(),Building(),Building(),Building()]
-                                 ],1,1,2)
-                         
+                                     [Beach(0, 0), Building(), Building(), Beach(3, 0)],
+                                     [Building(), Building(), Building(), Building()],
+                                     [Building(), Beach(1, 2), Building(), Building()],
+                                     [Building(), Building(), Building(), Building()]
+                                 ], 1, 1, 2)
+
                          ])
 def test_calculate_score(game_board, total_score, x_coord, y_coord):
     """
     Test calculate score function of beach object
-    
+
     Swah Jianoon T01 17th Janunary
     """
     test_building = Beach(x_coord, y_coord)
