@@ -49,7 +49,7 @@ def test_print_board():
     set_keyboard_input(None)
 
     # create testing game object
-    test_game = Game(building_pool={"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
+    test_game = Game(building_pool={"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8})
     test_game.print_board()
 
     # check if print_board() displays game board correctly
@@ -75,8 +75,8 @@ def test_print_board_for_small_board():
     """
     set_keyboard_input(None)
     # create testing game object
-    test_game = Game(height=1, width=1, building_pool={"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
-    
+    test_game = Game(height=1, width=1, building_pool={"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8})
+
     test_game.print_board()
     # check if print_board() displays game board correctly
     out = get_display_output()
@@ -148,7 +148,7 @@ def test_start_new_turn():
     set_keyboard_input(["0"])
 
     # create testing game object
-    test_game = Game(building_pool={"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8})
+    test_game = Game(building_pool={"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8})
 
     # fill game object with fake randomized building history
     test_game.randomized_building_history = {"1": ["SHP", "SHP"]}
@@ -209,7 +209,7 @@ def test_sub_classes(building, expected):
 
 
 @pytest.mark.parametrize("location,x,y,building_name,building_type",
-                         [("a1", 0, 0, "SHP",Shop), ("a2", 0, 1,"FAC", Factory),("a1", 0, 0,"BCH", Beach),("a1", 0, 0,"HSE", House),("a1", 0, 0,"HWY",Highway),("a1", 0, 0,"MON",Monument),("a1", 0, 0,"PRK",Park)])
+                         [("a1", 0, 0, "SHP", Shop), ("a2", 0, 1, "FAC", Factory), ("a1", 0, 0, "BCH", Beach), ("a1", 0, 0, "HSE", House), ("a1", 0, 0, "HWY", Highway), ("a1", 0, 0, "MON", Monument), ("a1", 0, 0, "PRK", Park)])
 def test_add_building(location, x, y, building_name, building_type, mocker):
     """
     success cases for adding_building function
@@ -219,7 +219,7 @@ def test_add_building(location, x, y, building_name, building_type, mocker):
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     test_game = Game()
     set_keyboard_input([location])
-    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8, "MON":8, "PRK": 8}
+    test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8, "MON": 8, "PRK": 8}
     test_game.add_building(building_name)
     assert isinstance(test_game.board[y][x], building_type)
 
@@ -324,7 +324,7 @@ def test_remove_building(building_name):
     Swah Jianoon T01 9th December
     """
     test_game = Game()
-    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8, "MON":8, "PRK": 8}
+    test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8, "MON": 8, "PRK": 8}
     test_game.remove_building(building_name)
     assert test_game.building_pool[building_name] == 7
 
@@ -338,7 +338,7 @@ def test_display_building(mocker):
     mocker.patch('classes.game.Game.start_new_turn', return_value=True)
     set_keyboard_input(None)
     test_game = Game()
-    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
+    test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8}
     match = '''Building         Remaining
 --------         --------
 HSE              8
@@ -408,7 +408,7 @@ def test_display_all_scores(game_board, match, mocker):
     test_string = ""
     set_keyboard_input(None)
     test_game = Game()
-    test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
+    test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8}
     test_game.board = game_board
 
     test_game.display_all_scores()
@@ -429,7 +429,7 @@ def test_randomize_two_buildings_from_pool_random():
     # run randomze buildings for 10 turns 10 times
     for i in range(0, 10):
         test_game = Game()
-        test_game.building_pool = {"HSE":8, "FAC":8, "SHP": 8, "HWY":8, "BCH":8}
+        test_game.building_pool = {"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8}
 
         # generate randomized buildings for turn 1
         test_game.get_two_buildings_from_pool(test_game.building_pool)
@@ -550,13 +550,13 @@ def test_randomize_two_buildings_from_pool_when_no_building():
                                  'Build where? ',
                                  '',
                                  'Final layout of Simp City:',
-                                 '     A     B     C     D           Building   Remaining',
-                                 '  +-----+-----+-----+-----+        --------------------',
-                                 ' 1| SHP | SHP | HSE | FAC |        HSE      | 20',
-                                 '  +-----+-----+-----+-----+        FAC      | 0',
-                                 ' 2| BCH | HSE | HSE | BCH |        SHP      | 0',
-                                 '  +-----+-----+-----+-----+        HWY      | 1',
-                                 ' 3| BCH | SHP | HSE | HSE |        BCH      | 0',
+                                 '     A     B     C     D  ',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 1| SHP | SHP | HSE | FAC |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 2| BCH | HSE | HSE | BCH |',
+                                 '  +-----+-----+-----+-----+',
+                                 ' 3| BCH | SHP | HSE | HSE |',
                                  '  +-----+-----+-----+-----+',
                                  ' 4| HWY | HWY | HWY | HWY |',
                                  '  +-----+-----+-----+-----+',

@@ -14,7 +14,7 @@ from .beach import Beach
 
 class Game:
 
-    def __init__(self, height=4, width=4,building_pool={}):
+    def __init__(self, height=4, width=4, building_pool={}):
         """
         init function for game class
         default turn number is 1
@@ -42,14 +42,16 @@ class Game:
         """
         print("Turn {}".format(self.turn_num))
 
-    def print_board(self):
+    def print_board(self, final_turn=False):
         """
         Print the map board with the building names
         Also print remaining buildings on the right of the game board
 
         Zheng Jiongjie T01 19th January
         """
-        remaining_building_string_list = self.generate_remaining_building_string()
+        remaining_building_string_list = []
+        if not final_turn:
+            remaining_building_string_list = self.generate_remaining_building_string()
 
         column_names = "  "
         # add column names for map column
@@ -57,7 +59,8 @@ class Game:
             column_names += '   {:1s}  '.format(chr(header + 65))
 
         # add column names for remaning building section
-        column_names += "{:9}{}".format("", remaining_building_string_list.pop(0))
+        if remaining_building_string_list:
+            column_names += "{:9}{}".format("", remaining_building_string_list.pop(0))
 
         print(column_names)
 
@@ -248,11 +251,11 @@ class Game:
                         elif building_string == "HWY":
                             building = Highway(x_coord, y_coord)
                         elif building_string == "BCH":
-                            building = Beach(x_coord,y_coord)
+                            building = Beach(x_coord, y_coord)
                         elif building_string == "MON":
-                            building = Monument(x_coord,y_coord)
+                            building = Monument(x_coord, y_coord)
                         elif building_string == "PRK":
-                            building = Park(x_coord,y_coord)
+                            building = Park(x_coord, y_coord)
                         self.board[y_coord][x_coord] = building
                         self.remove_building(building_string)
                         building.x_coord = x_coord
@@ -383,5 +386,5 @@ class Game:
         """
         print("")
         print("Final layout of Simp City:")
-        self.print_board()
+        self.print_board(final_turn=True)
         self.display_all_scores()
