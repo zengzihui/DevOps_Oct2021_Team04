@@ -43,30 +43,68 @@ class Game:
         """
         print("Turn {}".format(self.turn_num))
 
-    def print_board(self):
+    def print_board(self, final_turn=False):
         """
         Print the map board with the building names
+        Also print remaining buildings on the right of the game board
 
-        Zheng Jiongjie T01 9th December
+        Zheng Jiongjie T01 19th January
         """
+        remaining_building_string_list = []
+        if not final_turn:
+            remaining_building_string_list = self.generate_remaining_building_string()
 
         column_names = "  "
+        # add column names for map column
         for header in range(0, self.width):
             column_names += '   {:1s}  '.format(chr(header + 65))
+
+        # add column names for remaning building section
+        if remaining_building_string_list:
+            column_names += "{:9}{}".format("", remaining_building_string_list.pop(0))
+
         print(column_names)
+
         row_seperation_string = "  +"
         for i in range(0, self.width):
             row_seperation_string += "-----+"
 
         for i in range(0, self.height):
-            print(row_seperation_string)
+            if remaining_building_string_list:
+                print("{}{:8}{}".format(row_seperation_string, "", remaining_building_string_list.pop(0)))
+            else:
+                print(row_seperation_string)
             row_string = "{:>2}".format(i + 1)
             for building in self.board[i]:
                 row_string += "|"
                 row_string += " {:3} ".format(building.name)
             row_string += "|"
+
+            if remaining_building_string_list:
+                row_string += "{:8}{}".format("", remaining_building_string_list.pop(0))
+
             print(row_string)
-        print(row_seperation_string)
+        if remaining_building_string_list:
+            print("{}{:8}{}".format(row_seperation_string, "", remaining_building_string_list.pop(0)))
+        else:
+            print(row_seperation_string)
+        while(len(remaining_building_string_list) != 0):
+            remaining_buildings_string = "{}{:8}{}".format(len(row_seperation_string)
+                                                           * " ", "", remaining_building_string_list.pop(0))
+            print(remaining_buildings_string)
+
+    def generate_remaining_building_string(self):
+        """
+        generate the list of strings to print out for the remaining buildings
+
+        Zheng Jiongjie T01 26th January
+        """
+        remaining_building_string = []
+        remaining_building_string.append("Building   Remaining")
+        remaining_building_string.append("--------------------")
+        for key in self.building_pool:
+            remaining_building_string.append("{:9s}| {}".format(key, self.building_pool[key]))
+        return remaining_building_string
 
     def game_menu(self, randomized_building_name=["SHP", "SHP"]):
         """
@@ -445,5 +483,5 @@ class Game:
         """
         print("")
         print("Final layout of Simp City:")
-        self.print_board()
+        self.print_board(final_turn=True)
         self.display_all_scores()

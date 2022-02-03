@@ -53,22 +53,45 @@ def test_print_board():
     set_keyboard_input(None)
 
     # create testing game object
-    test_game = Game()
+    test_game = Game(building_pool={"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8})
     test_game.print_board()
 
     # check if print_board() displays game board correctly
     out = get_display_output()
     assert out == [
-        "     A     B     C     D  ",
-        "  +-----+-----+-----+-----+",
-        " 1|     |     |     |     |",
-        "  +-----+-----+-----+-----+",
-        " 2|     |     |     |     |",
-        "  +-----+-----+-----+-----+",
-        " 3|     |     |     |     |",
+        "     A     B     C     D           Building   Remaining",
+        "  +-----+-----+-----+-----+        --------------------",
+        " 1|     |     |     |     |        HSE      | 8",
+        "  +-----+-----+-----+-----+        FAC      | 8",
+        " 2|     |     |     |     |        SHP      | 8",
+        "  +-----+-----+-----+-----+        HWY      | 8",
+        " 3|     |     |     |     |        BCH      | 8",
         "  +-----+-----+-----+-----+",
         " 4|     |     |     |     |",
         "  +-----+-----+-----+-----+"]
+
+
+def test_print_board_for_small_board():
+    """
+    test if game board is printed correctly
+
+    Zheng Jiongjie T01 9th December
+    """
+    set_keyboard_input(None)
+    # create testing game object
+    test_game = Game(height=1, width=1, building_pool={"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8})
+
+    test_game.print_board()
+    # check if print_board() displays game board correctly
+    out = get_display_output()
+    assert out == [
+        '     A           Building   Remaining',
+        '  +-----+        --------------------',
+        ' 1|     |        HSE      | 8',
+        '  +-----+        FAC      | 8',
+        '                 SHP      | 8',
+        '                 HWY      | 8',
+        '                 BCH      | 8']
 
 
 def test_game_menu_display():
@@ -129,7 +152,7 @@ def test_start_new_turn():
     set_keyboard_input(["0"])
 
     # create testing game object
-    test_game = Game()
+    test_game = Game(building_pool={"HSE": 8, "FAC": 8, "SHP": 8, "HWY": 8, "BCH": 8})
 
     # fill game object with fake randomized building history
     test_game.randomized_building_history = {"1": ["SHP", "SHP"]}
@@ -142,13 +165,13 @@ def test_start_new_turn():
     assert out == [
         "",
         "Turn 1",
-        "     A     B     C     D  ",
-        "  +-----+-----+-----+-----+",
-        " 1|     |     |     |     |",
-        "  +-----+-----+-----+-----+",
-        " 2|     |     |     |     |",
-        "  +-----+-----+-----+-----+",
-        " 3|     |     |     |     |",
+        "     A     B     C     D           Building   Remaining",
+        "  +-----+-----+-----+-----+        --------------------",
+        " 1|     |     |     |     |        HSE      | 8",
+        "  +-----+-----+-----+-----+        FAC      | 8",
+        " 2|     |     |     |     |        SHP      | 8",
+        "  +-----+-----+-----+-----+        HWY      | 8",
+        " 3|     |     |     |     |        BCH      | 8",
         "  +-----+-----+-----+-----+",
         " 4|     |     |     |     |",
         "  +-----+-----+-----+-----+",
@@ -820,13 +843,13 @@ def test_save_game(game_board, match, mocker):
                                  [
                                  '',
                                  'Turn 16',
-                                 '     A     B     C     D  ',
-                                 '  +-----+-----+-----+-----+',
-                                 ' 1| SHP | SHP | HSE | FAC |',
-                                 '  +-----+-----+-----+-----+',
-                                 ' 2| BCH | HSE | HSE | BCH |',
-                                 '  +-----+-----+-----+-----+',
-                                 ' 3| BCH | SHP | HSE | HSE |',
+                                 '     A     B     C     D           Building   Remaining',
+                                 '  +-----+-----+-----+-----+        --------------------',
+                                 ' 1| SHP | SHP | HSE | FAC |        HSE      | 20',
+                                 '  +-----+-----+-----+-----+        FAC      | 0',
+                                 ' 2| BCH | HSE | HSE | BCH |        SHP      | 0',
+                                 '  +-----+-----+-----+-----+        HWY      | 2',
+                                 ' 3| BCH | SHP | HSE | HSE |        BCH      | 0',
                                  '  +-----+-----+-----+-----+',
                                  ' 4| HWY | HWY | HWY |     |',
                                  '  +-----+-----+-----+-----+',
