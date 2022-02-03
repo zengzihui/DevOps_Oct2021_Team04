@@ -15,7 +15,7 @@ from .json import *
 
 class Game:
 
-    def __init__(self, height=4, width=4,building_pool={}):
+    def __init__(self, height=4, width=4, building_pool={}):
         """
         init function for game class
         default turn number is 1
@@ -149,6 +149,8 @@ class Game:
         elif chosen_option == "4":
             print("")
             return self.display_all_scores()
+        elif chosen_option == "5":
+            return self.save_game()
         elif chosen_option == "0":
             return 0
 
@@ -215,11 +217,11 @@ class Game:
                         elif building_string == "HWY":
                             building = Highway(x_coord, y_coord)
                         elif building_string == "BCH":
-                            building = Beach(x_coord,y_coord)
+                            building = Beach(x_coord, y_coord)
                         elif building_string == "MON":
-                            building = Monument(x_coord,y_coord)
+                            building = Monument(x_coord, y_coord)
                         elif building_string == "PRK":
-                            building = Park(x_coord,y_coord)
+                            building = Park(x_coord, y_coord)
                         self.board[y_coord][x_coord] = building
                         self.remove_building(building_string)
                         building.x_coord = x_coord
@@ -411,6 +413,29 @@ class Game:
             print("{0:2d}. {1:<21} {2:5d}".format(int(count),high_score["name"],int(high_score["score"])))
             count += 1
         print("-------------------------------")
+
+    def save_game(self):
+        """
+        save game details to json file
+
+        Zheng Jiongjie T01 21st January
+        """
+        with open("game_save.json", "w+") as save_file:
+            # generate save file based on current game
+            save_data = {"board": {}, "turn_num": self.turn_num, "width": self.width,
+                         "height": self.height, "randomized_history": self.randomized_building_history,
+                         "building_pool": self.building_pool}
+            # add buildings in current game to save file
+            for row in self.board:
+                for building in row:
+                    if building.x_coord is not None and building.y_coord is not None:
+                        save_data["board"][str(building.x_coord) + "," + str(building.y_coord)] = building.name
+            # save the game
+            json.dump(save_data, save_file)
+
+        print("")
+        print("Game saved!")
+        self.start_new_turn()
 
     def end_of_game(self):
         """
