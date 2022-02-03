@@ -352,7 +352,6 @@ Total score: 50'''
                                  [Beach(0, 1), House(1, 1), House(2, 1), Beach(3, 1)],
                                  [Beach(0, 2), Shop(1, 2), House(2, 2), House(3, 2)],
                                  [Highway(0, 3), Highway(1, 3), Highway(2, 3), Building()]
-
                              ],
                                  '''HSE: 1 + 5 + 5 + 3 + 3 = 17
 FAC: 1 = 1
@@ -531,7 +530,6 @@ def test_save_game(game_board, match, mocker):
     with open("game_save.json", "r") as save_file:
         save_data = json.load(save_file)
         assert(save_data == match)
-
 
 @pytest.mark.parametrize("game_board, match",
                          [
