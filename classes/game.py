@@ -1,5 +1,5 @@
 from random import randrange
-import json
+import os
 
 from classes.monument import Monument
 from classes.park import Park
@@ -10,6 +10,7 @@ from .factory import Factory
 from .highway import Highway
 from .house import House
 from .beach import Beach
+from .json import *
 
 
 class Game:
@@ -125,6 +126,7 @@ class Game:
         if self.turn_num > self.height * self.width and self.game_ended is False:
             self.game_ended = True
             self.end_of_game()
+            self.update_high_score()
 
         # return back to main menu if game ends
         if self.game_ended:
@@ -341,6 +343,76 @@ class Game:
                     print("{0}: {1} = {2}".format(building, display_dict[building], str(total_dict[building])))
         print("Total score: {0}".format(total_score))
         self.start_new_turn()
+    
+    def calculate_total_score(self):
+        """
+        Calculate total score at any stage
+
+        Swah Jianoon T01 27th January
+        """
+        total_score = 0
+        for h in range(0, self.height):
+            for w in range(0, self.width):
+                if self.board[h][w].name != "":
+                    score = self.board[h][w].calculate_score(self)
+                    total_score += score
+        return total_score
+
+    def update_high_score(self):
+        """
+        Update high score with user's score
+
+        Swah Jianoon T01 27th January
+        """
+        filename = "high_score_{0}.json".format((self.width)*(self.height))
+        file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),filename)
+        save_data = load_json(file_path)
+        save_data["board_size"] = (self.width)*(self.height)
+        high_score_list = save_data["high_scores"]
+        position = 0
+        total_score = self.calculate_total_score()
+        if len(high_score_list) != 0:
+            for high_score in high_score_list:
+                if not(total_score > high_score["score"]):
+                    position += 1
+        if position <= 9:
+            print("Congratulations! You made the high score board at position {0}!".format(position+1))
+        while position <= 9:
+            name = input("Please enter your name (max 20 chars): ")
+            if len(name) > 20:
+                print("")
+                print("Invalid input for the name has been entered.")
+                print("Please remember only a max of 20 characters are allowed for the name.")
+                print("")
+            else:
+                user_data = {'name':name,'score':total_score}
+                high_score_list.insert(position,user_data)
+                save_data["high_scores"] = high_score_list
+                if len(save_data["high_scores"]) > 10:
+                    save_data["high_scores"].pop()
+                update_json(file_path, save_data)
+                self.display_high_score()
+                return
+
+    def display_high_score(self):
+        """
+        Display high score
+
+        Swah Jianoon T01 27th January
+        """
+        filename = "high_score_{0}.json".format((self.width)*(self.height))
+        file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),filename)
+        save_data = load_json(file_path)
+        high_score_list = save_data["high_scores"]
+        print("")
+        print("--------- HIGH SCORES ---------")
+        print("Pos Player                Score")
+        print("--- ------                -----")
+        count = 1
+        for high_score in high_score_list:
+            print("{0:2d}. {1:<21} {2:5d}".format(int(count),high_score["name"],int(high_score["score"])))
+            count += 1
+        print("-------------------------------")
 
     def save_game(self):
         """
