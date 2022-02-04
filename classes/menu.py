@@ -8,6 +8,8 @@ from .factory import Factory
 from .highway import Highway
 from .house import House
 from .beach import Beach
+from .monument import Monument
+from .park import Park
 import os.path
 
 
@@ -174,9 +176,9 @@ def load_game():
         print("")
         print("No save game found!")
         return False
-    with open("game_save.json", "r") as save_file:
-        save_data = json.load(save_file)
-        try:
+    try:
+        with open("game_save.json", "r") as save_file:
+            save_data = json.load(save_file)
             loaded_game.building_pool = save_data["building_pool"]
             loaded_game.turn_num = save_data["turn_num"]
             loaded_game.width = save_data["width"]
@@ -200,12 +202,18 @@ def load_game():
                             loaded_game.board[row].append(Highway(col, row))
                         elif building_str == "BCH":
                             loaded_game.board[row].append(Beach(col, row))
+                        elif building_str == "MON":
+                            loaded_game.board[row].append(Monument(col, row))
+                        elif building_str == "PRK":
+                            loaded_game.board[row].append(Park(col, row))
                     else:
                         loaded_game.board[row].append(Building())
             return loaded_game
-        except Exception as e:
+    except Exception as e:
+        if os.path.exists("game_save.json"):
+            os.remove("game_save.json")
             print("")
-            print("Failed to load game!")
+            print("The current file is corrupt and will therefore be deleted.")
             return False
 
 

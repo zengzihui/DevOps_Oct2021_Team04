@@ -10,6 +10,9 @@ from classes.building import *
 from classes.highway import *
 from classes.house import *
 from classes.shop import *
+from classes.monument import *
+from classes.park import *
+
 from test.testing_functions import *
 
 
@@ -138,7 +141,7 @@ def test_load_game_success():
 
     # saves dummy save file
     with open("game_save.json", "w+") as save_file:
-        dummy_data = {"board": {"0,0": "SHP", "1,0": "SHP", "2,0": "HSE", "3,0": "FAC",
+        dummy_data = {"board": {"0,0": "MON", "1,0": "PRK", "2,0": "HSE", "3,0": "FAC",
                                 "0,1": "BCH", "1,1": "HSE", "2,1": "HSE", "3,1": "BCH",
                                 "0,2": "BCH", "1,2": "SHP", "2,2": "HSE", "3,2": "HSE",
                                 "0,3": "HWY", "1,3": "HWY", "2,3": "HWY"},
@@ -150,8 +153,8 @@ def test_load_game_success():
     loaded_game = load_game()
 
     # check if all game data is loaded correctly
-    assert type(loaded_game.board[0][0]) is Shop
-    assert type(loaded_game.board[0][1]) is Shop
+    assert type(loaded_game.board[0][0]) is Monument
+    assert type(loaded_game.board[0][1]) is Park
     assert type(loaded_game.board[0][2]) is House
     assert type(loaded_game.board[0][3]) is Factory
     assert type(loaded_game.board[1][0]) is Beach
@@ -203,8 +206,21 @@ def test_load_game_no_save_file():
     Zheng Jiongjie T01 25th January
     """
 
-    if os.path.exists("game_save.json"):
-        os.remove("game_save.json")
+    loaded_game = load_game()
+
+    assert loaded_game is False
+
+
+def test_load_game_with_non_json_file():
+    """
+    check if game loads on a non-json file
+
+    Zheng Jiongjie T01 25th January
+    """
+
+    # saves wrong save file (randomized_history is randoized_history)
+    with open("game_save.json", "w+") as save_file:
+        save_file.write('not json format')
 
     loaded_game = load_game()
 
