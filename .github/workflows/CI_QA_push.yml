@@ -23,7 +23,7 @@ jobs:
     # install libraries needed to run pytest
     - name: Install Libraries
       run: |
-        pip install flake8 pytest pytest-cov classes mocker pytest-mock pytest-html pytest-md
+        pip install flake8 pytest pytest-cov classes mocker pytest-mock pytest-html pytest-md pytest-order
     # checkout dev repo to retrieve source code
     - name: Checkout Own Repo
       uses: actions/checkout@v2
@@ -43,7 +43,7 @@ jobs:
     # start running test scripts
     - name: Begin Pytest
       run: |
-        pytest --cov -v --junitxml=reportTestScript.xml --html=report.html --md=report.md
+        pytest --ignore=test --cov -v --junitxml=reportTestScript.xml --html=report.html --md=report.md
     # if test scripts passed, send email notifying test scripts passed to QA lead and Tech lead
     - name: Send mail
       if: ${{success()}}
