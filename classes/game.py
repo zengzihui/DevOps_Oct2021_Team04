@@ -450,12 +450,20 @@ class Game:
                     update_json(file_path, save_data)
                     self.display_high_score()
                     return
+                    
         except:
+            filename = "high_score_{0}.json".format((self.width)*(self.height))
+            file_path = os.path.join(os.path.dirname(
+                os.path.dirname(os.path.abspath(__file__))), filename)
             print("")
             print(
                 "The current high score file is corrupt and a new high score list will be generated.")
             print("")
             update_json(file_path, {'board_size': 0, 'high_scores': []})
+            self.update_high_score()
+            
+
+        
 
     def display_high_score(self):
         """
@@ -480,8 +488,11 @@ class Game:
                 count += 1
             print("-------------------------------")
         except:
+            filename = "high_score_{0}.json".format((self.width)*(self.height))
+            file_path = os.path.join(os.path.dirname(
+                os.path.dirname(os.path.abspath(__file__))), filename)
             print("")
-            print("The current high score file is corrupt and a new high score list will be generated.")
+            print("The current file is corrupt and will therefore be deleted.")
             print("")
             update_json(file_path, {'board_size': 0, 'high_scores': []})
 

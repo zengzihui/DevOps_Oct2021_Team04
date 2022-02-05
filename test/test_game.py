@@ -588,14 +588,24 @@ def test_update_high_score(current_json, updated_json, name, score, mocker):
     assert data == updated_json
 
 
-def test_update_high_score_corrupted():
+def test_update_high_score_corrupted(mocker):
     """
     tests if corrupted message will be displayed if high score file is corrupted
 
     Swah Jian Oon 5th Feburary
     """
-    set_keyboard_input(None)
-    corrupted_message = ["","The current high score file is corrupt and a new high score list will be generated.",""]
+    set_keyboard_input(["john"])
+    mocker.patch('classes.game.Game.calculate_total_score', return_value=5)
+
+    corrupted_message = ["","The current high score file is corrupt and a new high score list will be generated.",
+                        "","Congratulations! You made the high score board at position 1!"
+                        ,"Please enter your name (max 20 chars): ",
+                        "",
+                        "--------- HIGH SCORES ---------",
+                           "Pos Player                Score",
+                           "--- ------                -----",
+                           " 1. john                      5",
+                           "-------------------------------"]
     test_game = Game()
     test_game.width = 2
     test_game.height = 2
@@ -605,13 +615,9 @@ def test_update_high_score_corrupted():
         jsonFile.write("adaldnaskdnalskdnas")
     test_game.update_high_score()
     output_print = get_display_output()
-
-    f = open(file_path, "r")
-    data = json.loads(f.read())
-    f.close()
     
     assert output_print == corrupted_message
-    assert data == {'board_size': 0, 'high_scores': []}
+
 
 @pytest.mark.parametrize("current_json, name, score, match",
                          [(
@@ -784,7 +790,7 @@ def test_display_high_score_corrupted():
     Swah Jian Oon 5th Feburary
     """
     set_keyboard_input(None)
-    corrupted_message =["","The current high score file is corrupt and a new high score list will be generated.",""]
+    corrupted_message =["","The current file is corrupt and will therefore be deleted.",""]
     test_game = Game()
     test_game.width = 10
     test_game.height = 2
