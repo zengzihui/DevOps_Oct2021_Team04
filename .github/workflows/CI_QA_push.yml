@@ -43,6 +43,7 @@ jobs:
     # start running test scripts
     - name: Begin Pytest
       run: |
+        mv ./tests/test-scripts/*.* ./
         pytest --ignore=test --cov -v --junitxml=reportTestScript.xml --html=report.html --md=report.md
     # if test scripts passed, send email notifying test scripts passed to QA lead and Tech lead
     - name: Send mail
