@@ -790,7 +790,11 @@ def test_display_high_score_corrupted():
     Swah Jian Oon 5th Feburary
     """
     set_keyboard_input(None)
-    corrupted_message =["","The current file is corrupt and will therefore be deleted.",""]
+    corrupted_message =["","The current file is corrupt and will therefore be deleted.","",
+                        "--------- HIGH SCORES ---------",
+                           "Pos Player                Score",
+                           "--- ------                -----",
+                           "-------------------------------"]
     test_game = Game()
     test_game.width = 10
     test_game.height = 2

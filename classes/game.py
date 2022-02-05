@@ -493,8 +493,8 @@ class Game:
                 os.path.dirname(os.path.abspath(__file__))), filename)
             print("")
             print("The current file is corrupt and will therefore be deleted.")
-            print("")
             update_json(file_path, {'board_size': 0, 'high_scores': []})
+            self.display_high_score()
 
     def save_game(self):
         """
