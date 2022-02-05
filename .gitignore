@@ -5,3 +5,5 @@ __pycache__/
 report.xml
 game_save.json
 reportTestScript.xml
+high_score_4.json
+high_score_16.json
