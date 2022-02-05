@@ -587,6 +587,32 @@ def test_update_high_score(current_json, updated_json, name, score, mocker):
     f.close()
     assert data == updated_json
 
+
+def test_update_high_score_corrupted():
+    """
+    tests if corrupted message will be displayed if high score file is corrupted
+
+    Swah Jian Oon 5th Feburary
+    """
+    set_keyboard_input(None)
+    corrupted_message = ["","The current high score file is corrupt and a new high score list will be generated.",""]
+    test_game = Game()
+    test_game.width = 2
+    test_game.height = 2
+    filename = "high_score_{0}.json".format((test_game.width)*(test_game.height))
+    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),filename)
+    with open(file_path, "w") as jsonFile:
+        jsonFile.write("adaldnaskdnalskdnas")
+    test_game.update_high_score()
+    output_print = get_display_output()
+
+    f = open(file_path, "r")
+    data = json.loads(f.read())
+    f.close()
+    
+    assert output_print == corrupted_message
+    assert data == {'board_size': 0, 'high_scores': []}
+
 @pytest.mark.parametrize("current_json, name, score, match",
                          [(
                             {'board_size': 4, 'high_scores': [{'name': 'john', 'score': 6}, {'name': 'john2', 'score': 5}]},
@@ -749,6 +775,33 @@ def test_display_high_score(json_output,display_output):
         if out != output_print[-1]:
             test_string+= "\n"
     assert test_string == display_output
+
+
+def test_display_high_score_corrupted():
+    """
+    tests if corrupted message will be displayed if high score file is corrupted
+
+    Swah Jian Oon 5th Feburary
+    """
+    set_keyboard_input(None)
+    corrupted_message =["","The current high score file is corrupt and a new high score list will be generated.",""]
+    test_game = Game()
+    test_game.width = 10
+    test_game.height = 2
+    filename = "high_score_{0}.json".format((test_game.width)*(test_game.height))
+    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),filename)
+    with open(file_path, "w") as jsonFile:
+        jsonFile.write("adaldnaskdnalskdnas")
+    test_game.display_high_score()
+    output_print = get_display_output()
+
+    f = open(file_path, "r")
+    data = json.loads(f.read())
+    f.close()
+    
+    assert output_print == corrupted_message
+    assert data == {'board_size': 0, 'high_scores': []}
+
 
 @pytest.mark.parametrize("game_board, match, name",
                          [

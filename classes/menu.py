@@ -60,7 +60,8 @@ def start_new_game(width, height, building_pool):
 
     Zheng Jiongjie T01 9th December
     """
-    current_game = Game(width=width, height=height, building_pool=building_pool)
+    current_game = Game(width=width, height=height,
+                        building_pool=building_pool)
     return current_game.start_new_turn()
 
 
@@ -95,7 +96,8 @@ def prompt_city_size(current_size):
                 break
 
             while True:
-                temp_city_size[key] = input("Enter value for {}: ".format(key.lower()))
+                temp_city_size[key] = input(
+                    "Enter value for {}: ".format(key.lower()))
 
                 # exit and dont update values if user enters 0
                 if temp_city_size[key] == "0":
@@ -111,12 +113,14 @@ def prompt_city_size(current_size):
                     # check if int is 1 or more
                     if temp_city_size[key] <= 0:
                         print("")
-                        print("Invalid input has been entered. Please enter a number.")
+                        print(
+                            "Invalid input has been entered. Please enter a number.")
                         print("")
                         continue
                     if key == "width" and temp_city_size[key] > 26:
                         print("")
-                        print("Invalid input has been entered. Please enter a number.")
+                        print(
+                            "Invalid input has been entered. Please enter a number.")
                         print("")
                         continue
                     break
@@ -130,7 +134,8 @@ def prompt_city_size(current_size):
         if city_size_to_be_updated is True and temp_city_size["width"] * temp_city_size["height"] > 40:
             # city size does not change
             print("")
-            print("The multiplication of width and height exceeds the limit of 40. Please re-enter your input.")
+            print(
+                "The multiplication of width and height exceeds the limit of 40. Please re-enter your input.")
             print("")
         else:
             break
@@ -188,8 +193,8 @@ def load_game():
                 loaded_game.board.append([])
                 for col in range(0, loaded_game.width):
                     if str(col) + "," + str(row) in save_data["board"]:
-                        building_str = save_data["board"][str(col) + "," + str(row)]
-
+                        building_str = save_data["board"][str(
+                            col) + "," + str(row)]
                         if building_str == "SHP":
                             loaded_game.board[row].append(Shop(col, row))
                         elif building_str == "HSE":
@@ -284,18 +289,21 @@ def choose_building_pool(building_pool):
                 elif chosen == -1:
                     print("")
                     print("Configuring building pool is unsuccessful.")
-                    print("Building pool remains the same as the current building pool.")
+                    print(
+                        "Building pool remains the same as the current building pool.")
                     return None
                 else:
                     print("")
                     print("Invalid input has been entered.")
-                    print("Please enter number for the option (e.g. 1) and it needs to be within the range.")
+                    print(
+                        "Please enter number for the option (e.g. 1) and it needs to be within the range.")
                     print("")
                     display_current_building = False
             except:
                 print("")
                 print("Invalid input has been entered.")
-                print("Please enter number for the option (e.g. 1) and it needs to be within the range.")
+                print(
+                    "Please enter number for the option (e.g. 1) and it needs to be within the range.")
                 print("")
                 display_current_building = False
         else:

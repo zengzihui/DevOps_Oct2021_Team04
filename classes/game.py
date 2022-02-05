@@ -61,7 +61,8 @@ class Game:
 
         # add column names for remaning building section
         if remaining_building_string_list:
-            column_names += "{:9}{}".format("", remaining_building_string_list.pop(0))
+            column_names += "{:9}{}".format("",
+                                            remaining_building_string_list.pop(0))
 
         print(column_names)
 
@@ -71,7 +72,8 @@ class Game:
 
         for i in range(0, self.height):
             if remaining_building_string_list:
-                print("{}{:8}{}".format(row_seperation_string, "", remaining_building_string_list.pop(0)))
+                print("{}{:8}{}".format(row_seperation_string,
+                      "", remaining_building_string_list.pop(0)))
             else:
                 print(row_seperation_string)
             row_string = "{:>2}".format(i + 1)
@@ -81,11 +83,13 @@ class Game:
             row_string += "|"
 
             if remaining_building_string_list:
-                row_string += "{:8}{}".format("", remaining_building_string_list.pop(0))
+                row_string += "{:8}{}".format("",
+                                              remaining_building_string_list.pop(0))
 
             print(row_string)
         if remaining_building_string_list:
-            print("{}{:8}{}".format(row_seperation_string, "", remaining_building_string_list.pop(0)))
+            print("{}{:8}{}".format(row_seperation_string,
+                  "", remaining_building_string_list.pop(0)))
         else:
             print(row_seperation_string)
         while(len(remaining_building_string_list) != 0):
@@ -103,7 +107,8 @@ class Game:
         remaining_building_string.append("Building   Remaining")
         remaining_building_string.append("--------------------")
         for key in self.building_pool:
-            remaining_building_string.append("{:9s}| {}".format(key, self.building_pool[key]))
+            remaining_building_string.append(
+                "{:9s}| {}".format(key, self.building_pool[key]))
         return remaining_building_string
 
     def game_menu(self, randomized_building_name=["SHP", "SHP"]):
@@ -139,7 +144,8 @@ class Game:
         chosen_option = input("Your choice? ")
 
         while chosen_option not in options.keys() or chosen_option == "":
-            print("Invalid Input. Please enter a valid input (\"1\" / \"2\" / \"3\" / \"4\" / \"5\" / \"0\").")
+            print(
+                "Invalid Input. Please enter a valid input (\"1\" / \"2\" / \"3\" / \"4\" / \"5\" / \"0\").")
             chosen_option = input("Your choice? ")
 
         return chosen_option
@@ -158,7 +164,8 @@ class Game:
         if str(self.turn_num) not in self.randomized_building_history:
             self.get_two_buildings_from_pool(self.building_pool)
         # retrieve 2 random genrated buildings from randomized building history
-        randomized_building_names = self.randomized_building_history[str(self.turn_num)]
+        randomized_building_names = self.randomized_building_history[str(
+            self.turn_num)]
 
         # check if game board is fully filled and end game if it is
         if self.turn_num > self.height * self.width and self.game_ended is False:
@@ -227,7 +234,8 @@ class Game:
             random_building_two_name = random_building_one_name
 
         # updates randomized building history with the list of 2 randomized buildings
-        self.randomized_building_history[str(self.turn_num)] = [random_building_one_name, random_building_two_name]
+        self.randomized_building_history[str(self.turn_num)] = [
+            random_building_one_name, random_building_two_name]
 
     def add_building(self, building_string):
         """
@@ -243,7 +251,8 @@ class Game:
             x_coord, y_coord = coords
             if 0 <= x_coord < self.width and 0 <= y_coord < self.height:
                 if self.check_building_exist(x_coord, y_coord):
-                    print("You cannot build on a location that has already had a building")
+                    print(
+                        "You cannot build on a location that has already had a building")
                 else:
                     if self.check_surrounding_buildings_exist(x_coord, y_coord) or self.turn_num == 1:
                         if building_string == "SHP":
@@ -269,9 +278,11 @@ class Game:
                         print("You must build next to an existing building.")
 
             else:
-                print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
+                print(
+                    "Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
         else:
-            print("Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
+            print(
+                "Your input is invalid, please follow 'letter' + 'digit' format to input for location.")
         self.start_new_turn()
 
     def input_to_coordinates(self, location_string):
@@ -326,9 +337,11 @@ class Game:
         Swah Jianoon T01 9th December
         """
         spaces = " "
-        output = "Building{0}Remaining\n--------{0}--------\n".format(spaces * 9, spaces * 9)
+        output = "Building{0}Remaining\n--------{0}--------\n".format(
+            spaces * 9, spaces * 9)
         for key in self.building_pool:
-            output += "{0}{1}{2}\n".format(key, spaces * 14, self.building_pool[key])
+            output += "{0}{1}{2}\n".format(key,
+                                           spaces * 14, self.building_pool[key])
         print(output)
         self.start_new_turn()
 
@@ -369,7 +382,8 @@ class Game:
                     total_score += score
                     total_dict[self.board[h][w].name] += int(score)
                     if display_dict[self.board[h][w].name] != "":
-                        display_dict[self.board[h][w].name] += " + {0}".format(str(score))
+                        display_dict[self.board[h]
+                                     [w].name] += " + {0}".format(str(score))
                     else:
                         display_dict[self.board[h][w].name] = str(score)
 
@@ -378,10 +392,11 @@ class Game:
                 if total_dict[building] == 0:
                     print("{0}: 0".format(building))
                 else:
-                    print("{0}: {1} = {2}".format(building, display_dict[building], str(total_dict[building])))
+                    print("{0}: {1} = {2}".format(
+                        building, display_dict[building], str(total_dict[building])))
         print("Total score: {0}".format(total_score))
         self.start_new_turn()
-    
+
     def calculate_total_score(self):
         """
         Calculate total score at any stage
@@ -402,35 +417,45 @@ class Game:
 
         Swah Jianoon T01 27th January
         """
-        filename = "high_score_{0}.json".format((self.width)*(self.height))
-        file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),filename)
-        save_data = load_json(file_path)
-        save_data["board_size"] = (self.width)*(self.height)
-        high_score_list = save_data["high_scores"]
-        position = 0
-        total_score = self.calculate_total_score()
-        if len(high_score_list) != 0:
-            for high_score in high_score_list:
-                if not(total_score > high_score["score"]):
-                    position += 1
-        if position <= 9:
-            print("Congratulations! You made the high score board at position {0}!".format(position+1))
-        while position <= 9:
-            name = input("Please enter your name (max 20 chars): ")
-            if len(name) > 20:
-                print("")
-                print("Invalid input for the name has been entered.")
-                print("Please remember only a max of 20 characters are allowed for the name.")
-                print("")
-            else:
-                user_data = {'name':name,'score':total_score}
-                high_score_list.insert(position,user_data)
-                save_data["high_scores"] = high_score_list
-                if len(save_data["high_scores"]) > 10:
-                    save_data["high_scores"].pop()
-                update_json(file_path, save_data)
-                self.display_high_score()
-                return
+        try:
+            filename = "high_score_{0}.json".format((self.width)*(self.height))
+            file_path = os.path.join(os.path.dirname(
+                os.path.dirname(os.path.abspath(__file__))), filename)
+            save_data = load_json(file_path)
+            save_data["board_size"] = (self.width)*(self.height)
+            high_score_list = save_data["high_scores"]
+            position = 0
+            total_score = self.calculate_total_score()
+            if len(high_score_list) != 0:
+                for high_score in high_score_list:
+                    if not(total_score > high_score["score"]):
+                        position += 1
+            if position <= 9:
+                print("Congratulations! You made the high score board at position {0}!".format(
+                    position+1))
+            while position <= 9:
+                name = input("Please enter your name (max 20 chars): ")
+                if len(name) > 20:
+                    print("")
+                    print("Invalid input for the name has been entered.")
+                    print(
+                        "Please remember only a max of 20 characters are allowed for the name.")
+                    print("")
+                else:
+                    user_data = {'name': name, 'score': total_score}
+                    high_score_list.insert(position, user_data)
+                    save_data["high_scores"] = high_score_list
+                    if len(save_data["high_scores"]) > 10:
+                        save_data["high_scores"].pop()
+                    update_json(file_path, save_data)
+                    self.display_high_score()
+                    return
+        except:
+            print("")
+            print(
+                "The current high score file is corrupt and a new high score list will be generated.")
+            print("")
+            update_json(file_path, {'board_size': 0, 'high_scores': []})
 
     def display_high_score(self):
         """
@@ -438,19 +463,27 @@ class Game:
 
         Swah Jianoon T01 27th January
         """
-        filename = "high_score_{0}.json".format((self.width)*(self.height))
-        file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),filename)
-        save_data = load_json(file_path)
-        high_score_list = save_data["high_scores"]
-        print("")
-        print("--------- HIGH SCORES ---------")
-        print("Pos Player                Score")
-        print("--- ------                -----")
-        count = 1
-        for high_score in high_score_list:
-            print("{0:2d}. {1:<21} {2:5d}".format(int(count),high_score["name"],int(high_score["score"])))
-            count += 1
-        print("-------------------------------")
+        try:
+            filename = "high_score_{0}.json".format((self.width)*(self.height))
+            file_path = os.path.join(os.path.dirname(
+                os.path.dirname(os.path.abspath(__file__))), filename)
+            save_data = load_json(file_path)
+            high_score_list = save_data["high_scores"]
+            print("")
+            print("--------- HIGH SCORES ---------")
+            print("Pos Player                Score")
+            print("--- ------                -----")
+            count = 1
+            for high_score in high_score_list:
+                print("{0:2d}. {1:<21} {2:5d}".format(int(count),
+                    high_score["name"], int(high_score["score"])))
+                count += 1
+            print("-------------------------------")
+        except:
+            print("")
+            print("The current high score file is corrupt and a new high score list will be generated.")
+            print("")
+            update_json(file_path, {'board_size': 0, 'high_scores': []})
 
     def save_game(self):
         """
@@ -467,7 +500,8 @@ class Game:
             for row in self.board:
                 for building in row:
                     if building.x_coord is not None and building.y_coord is not None:
-                        save_data["board"][str(building.x_coord) + "," + str(building.y_coord)] = building.name
+                        save_data["board"][str(
+                            building.x_coord) + "," + str(building.y_coord)] = building.name
             # save the game
             json.dump(save_data, save_file)
 
