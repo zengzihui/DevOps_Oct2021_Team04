@@ -52,6 +52,9 @@ In this iteration, we will be covering the follow features:
 5. Display Final Score
 6. New Requirements (If any)
 
+### Class Diagram As Of Iteration 2
+<img src="https://user-images.githubusercontent.com/64000939/152786084-d73bb25f-9abe-490e-9fc9-0a9db7649e35.png" width=60%>
+
 ### 4 Software Development Methodologies Considered
 1. Spiral Model
 2. Iterative Model
