@@ -1,5 +1,5 @@
 # DevOps_Oct2021_Team04
-This is the dev repo used by T01 Team 4 for Ngee Ann Polytechnic DevOps module's assignment.
+This is the dev repo used by P01 Team 4 for Ngee Ann Polytechnic DevOps module's assignment.
 
 ## DevOps Team Formation
 
@@ -50,7 +50,11 @@ In this iteration, we will be covering the follow features:
 3. See Current Score
 4. Save Game
 5. Display Final Score
-6. New Requirements (If any)
+6. Choose Building Pool
+7. Choose City Size
+8. Update High Score List
+9. Show High Score
+10. Always Displaying Remaining Buildings Left
 
 ### Class Diagram As Of Iteration 2
 <img src="https://user-images.githubusercontent.com/64000939/152786084-d73bb25f-9abe-490e-9fc9-0a9db7649e35.png" width=60%>
@@ -67,6 +71,7 @@ Automated Kanban board is used.
 | Column Name | Description |
 | --- | --- |
 | `User Story` | Contains user stories that are not used for development yet |
+| `Filter Cards` | Contains filter cards for all the members |
 | `project Backlog` | Contains current requirement tasks for development |
 | `Dev Backlog Tasks` | Contains current Dev backlog tasks for developer to take |
 | `QA Backlog Tasks` | Contains current QA backlog tasks for QA to take |
@@ -90,9 +95,6 @@ Inside the User Story card, the following components will be there
 | `Label` | "user story" and user story ID are used  |
 | `Milestone` | Identifies the current development iteration  |
 | `Pull Request` | the corresponding pull requests for this user story are linked  |
-| `TechLead Comment` | Tech Lead will notify QA that the dev tasks are done & require QA testing  |
-| `QA Lead Comment` | QA Lead will notify relevant QA to run the test  |
-| `Tech Lead Merge to Main` | Tech Lead will merge to main after the 3 testings (Unit test, QA test, Acceptance Test) at pull request are define done  |
-| `PM Comment` | PM will close the issue after the merge  |
+
 
 **Tasks list is used to monitor the individual user story progress*
